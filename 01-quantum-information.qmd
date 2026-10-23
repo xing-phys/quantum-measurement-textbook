@@ -1,0 +1,176 @@
+# Quantum states, entanglement, and information {#sec-quantum-information}
+
+## A state is a rule for probabilities
+
+A pure state of a $d$-level system is a unit vector $|\psi\rangle\in\mathbb C^d$, with vectors differing only by an overall phase describing the same physical state. In an orthonormal basis, $|\psi\rangle=\sum_i\psi_i|i\rangle$ and $\sum_i|\psi_i|^2=1$. Measuring the basis label gives outcome $i$ with probability $|\psi_i|^2$. For a Hermitian observable $A=\sum_a aP_a$, the probability of eigenvalue $a$ is $\langle\psi|P_a|\psi\rangle$. The expectation value is therefore $\langle A\rangle=\langle\psi|A|\psi\rangle$.
+
+A preparation can also contain classical uncertainty: with probability $w_\alpha$ we prepare $|\psi_\alpha\rangle$. The density matrix
+
+$$
+\rho=\sum_\alpha w_\alpha|\psi_\alpha\rangle\langle\psi_\alpha|,
+\qquad \rho\geq0,\qquad \operatorname{Tr}\rho=1
+$$ {#eq-density-definition}
+
+predicts every measurement through $p(a)=\operatorname{Tr}(P_a\rho)$. Positivity means $\langle v|\rho|v\rangle\geq0$ for all vectors $|v\rangle$. A pure density matrix obeys $\rho^2=\rho$; a mixed one generally does not. Different ensembles can define the same $\rho$. A spin prepared equally often along $+z$ and $-z$ is operationally indistinguishable, in the absence of its preparation label, from one prepared equally often along $+x$ and $-x$: both give $I/2$.
+
+This last qualification will become central. A density matrix describes information available to a specified observer. If the observer acquires a record correlated with the preparation, their conditional state changes. The physical preparation and record determine which ensemble is relevant; an arbitrary mathematical decomposition of $\rho$ does not supply a physically available record.
+
+For a qubit, write
+
+$$
+\rho=\frac12(I+\boldsymbol r\cdot\boldsymbol\sigma),\qquad |\boldsymbol r|\leq1.
+$$ {#eq-bloch}
+
+The Pauli matrices satisfy $\sigma_a\sigma_b=\delta_{ab}I+i\epsilon_{abc}\sigma_c$. Consequently $(\boldsymbol r\cdot\boldsymbol\sigma)^2=|\boldsymbol r|^2I$ and the eigenvalues are $(1\pm|\boldsymbol r|)/2$. The Bloch sphere's surface contains pure states; its interior contains mixed states. Loss of Bloch-vector length is loss of purity, which need not be loss of total information if the information has moved into correlations with another system.
+
+## Tensor products and the partial trace
+
+For two systems, basis states are $|i\rangle_A\otimes|j\rangle_B$, abbreviated $|ij\rangle$. A general pure state is
+
+$$
+|\psi\rangle_{AB}=\sum_{ij}C_{ij}|ij\rangle.
+$$ {#eq-coefficient-matrix}
+
+The matrix $C$ contains $d_Ad_B$ complex amplitudes. A product state has $C_{ij}=a_ib_j$, a rank-one matrix. A generic matrix cannot be factorized this way; this failure is entanglement.
+
+An observer with access only to $A$ must reproduce all expectations of $O_A\otimes I_B$. Define the partial trace by
+
+$$
+\rho_A=\operatorname{Tr}_B\rho_{AB},\qquad
+(\rho_A)_{ii'}=\sum_j(\rho_{AB})_{ij,i'j}.
+$$ {#eq-partial-trace}
+
+Then $\operatorname{Tr}_{AB}[(O_A\otimes I)\rho_{AB}]=\operatorname{Tr}_A(O_A\rho_A)$. For the pure state above, $\rho_A=CC^\dagger$. This identity is the basis of the numerical entropy calculation later in the book.
+
+Consider the Bell state $|\Phi^+\rangle=(|00\rangle+|11\rangle)/\sqrt2$. Its full density matrix is pure, but $\rho_A=I/2$. Measuring $Z_A$ gives an unpredictable outcome, while the two $Z$ outcomes are perfectly correlated. Local uncertainty here comes from entanglement, not an unknown classical choice of a product state. Bell's theorem makes the distinction between general quantum correlations and local hidden-variable descriptions precise [@f_bell1964]. We will need only the linear-algebraic distinction: a pure entangled state has mixed reduced states.
+
+## Deriving the Schmidt decomposition
+
+Apply the singular-value decomposition $C=U\Lambda V^\dagger$, where $\Lambda_{\alpha\alpha}=\sqrt{\lambda_\alpha}\geq0$. Substituting into @eq-coefficient-matrix and absorbing the complex conjugation of $V$ into a basis for $B$ gives
+
+$$
+|\psi\rangle=\sum_{\alpha=1}^r\sqrt{\lambda_\alpha}
+|\alpha\rangle_A|\widetilde\alpha\rangle_B,
+\qquad \sum_\alpha\lambda_\alpha=1.
+$$ {#eq-schmidt}
+
+Tracing out either side removes the off-diagonal Schmidt terms. Thus $\rho_A$ and $\rho_B$ have the same nonzero eigenvalues $\lambda_\alpha$. The Schmidt rank $r$ is bounded by $\min(d_A,d_B)$. A pure state is a product precisely when $r=1$.
+
+For a chain of $L$ qubits, a cut after $\ell$ sites has $d_A=2^\ell$ and $d_B=2^{L-\ell}$. The maximum possible rank grows exponentially in the smaller subsystem. This explains both why highly entangled states are common in Hilbert space and why they are difficult to store with tensor-network methods that restrict the rank at each cut.
+
+A matrix-product state with bond dimension $\chi$ has Schmidt rank at most $\chi$ across each bond. It therefore obeys $S_A\leq\ln\chi$ for a cut through one bond. This is a representational bound, not a dynamical law. An area-law phase can often be approximated efficiently, but entropy alone does not guarantee a particular algorithm's accuracy or speed.
+
+## Entropy: what it measures and what it does not
+
+For a probability distribution $p_i$, the Shannon entropy is $H(p)=-\sum_i p_i\ln p_i$. The quantity $-\ln p_i$ is the surprise of outcome $i$; averaging gives the expected surprise. The quantum version applies the same function to density-matrix eigenvalues:
+
+$$
+S(\rho)=-\operatorname{Tr}(\rho\ln\rho)
+=-\sum_i\lambda_i\ln\lambda_i.
+$$ {#eq-von-neumann}
+
+We use $0\ln0=0$ by continuity. For a pure bipartite state, $S(\rho_A)=S(\rho_B)$ is its entanglement entropy. For a mixed global state, $S(\rho_A)$ includes both entanglement and classical uncertainty and is not an entanglement measure by itself.
+
+The Rényi entropies are
+
+$$
+S_n(\rho)=\frac{1}{1-n}\ln\operatorname{Tr}\rho^n,
+\quad n>0,\ n\neq1.
+$$ {#eq-renyi}
+
+Expanding $\operatorname{Tr}\rho^n$ around $n=1$ gives $\operatorname{Tr}\rho^{1+\epsilon}=1+\epsilon\operatorname{Tr}\rho\ln\rho+O(\epsilon^2)$ and therefore $S_n\to S$. Two especially useful cases are $S_2=-\ln\operatorname{Tr}\rho^2$, the second Rényi entropy, and $S_0=\ln\operatorname{rank}\rho$, the Hartley entropy. They weight the entanglement spectrum differently. A tiny nonzero eigenvalue contributes to $S_0$ as much as a large one; its contribution to $S_1$ vanishes with its weight. This is one reason percolation results for $S_0$ need not describe $S_1$.
+
+For $d$ nonzero levels, $0\leq S(\rho)\leq\ln d$. To derive the upper bound, use the nonnegativity of classical relative entropy between the eigenvalues and the uniform distribution:
+
+$$
+D(\lambda\|1/d)=\sum_i\lambda_i\ln(d\lambda_i)=\ln d-S(\rho)\geq0.
+$$ {#eq-entropy-bound}
+
+Nonnegativity follows from $\ln x\leq x-1$, applied to the ratios of the distributions. Rényi entropies decrease with their index: $S_0\geq S_1\geq S_2\geq S_\infty$, where $S_\infty=-\ln\lambda_{\max}$. They coincide for a flat nonzero spectrum.
+
+::: {.callout-note title="Worked example: one entangled pair"}
+Let $|\psi\rangle=\sqrt a|00\rangle+\sqrt{1-a}|11\rangle$ with $0\leq a\leq1$. Then
+
+$$
+S_A=-a\ln a-(1-a)\ln(1-a),\qquad
+S_{2,A}=-\ln[a^2+(1-a)^2].
+$$
+At $a=1/2$ both are $\ln2$. At $a\to0$, both vanish, but $S_A\sim-a\ln a$ while $S_{2,A}\sim2a$. An observable can therefore have a singular sensitivity to a small eigenvalue that a different entropy largely ignores.
+:::
+
+## Area laws, volume laws, and critical logarithms
+
+A pure state in one spatial dimension has an **area law** if the entropy of a long interval remains bounded as the interval length grows, away from physical boundaries. It has a **volume law** if $S_A=s|A|+o(|A|)$ with $s>0$. A logarithm $S_A\sim\alpha\ln|A|$ is neither a strict area law nor a volume law. These definitions concern limits; a small-chain graph that rises with size is not enough to classify a phase.
+
+Product states have zero entropy. A chain made from nearest-neighbor Bell pairs has at most two Bell pairs crossing an interval boundary, so $S_A\leq2\ln2$. By contrast, pair each site in the left half with one in the right half: the half-chain entropy is $(L/2)\ln2$. Entanglement depends on the geometry of correlations, not simply on how many pairs exist.
+
+For a Haar-random pure state with subsystem dimensions $m\leq n$, the average conjectured by Page and subsequently proved is [@f_page1993; @f_foong1994]
+
+$$
+\mathbb E S_A=\sum_{k=n+1}^{mn}\frac1k-\frac{m-1}{2n}.
+$$ {#eq-page}
+
+At large $m,n$, the harmonic sum gives $\mathbb E S_A\simeq\ln m-m/(2n)$. A typical small subsystem is nearly maximally mixed. For equal halves the correction remains order one while the leading entropy is proportional to $L$. The formula describes a random pure state, not a finite-depth local circuit; locality controls how long such entanglement takes to form.
+
+At a one-dimensional conformally invariant ground-state critical point, an interval in an infinite system instead has $S_A=(c/3)\ln(\ell/a)+\mathrm{constant}$, where $a$ is a short-distance cutoff and $c$ the central charge [@f_calabrese2004]. We will derive the origin and limitations of this formula in the CFT chapter. Its familiar appearance must not tempt us to identify every logarithmic monitored state with a unitary ground-state CFT.
+
+## Correlations, mutual information, and conditional entropy
+
+The mutual information between two regions is
+
+$$
+I(A:B)=S_A+S_B-S_{AB}.
+$$ {#eq-mutual-info}
+
+It quantifies total correlations and is nonnegative. For a pure state of $AB$, $I(A:B)=2S_A$. For the classically correlated mixed state $(|00\rangle\langle00|+|11\rangle\langle11|)/2$, it is $\ln2$ even though the state is separable. Thus nonzero mutual information is not sufficient evidence for entanglement.
+
+A useful way to understand positivity is quantum relative entropy:
+
+$$
+D(\rho\|\sigma)=\operatorname{Tr}[\rho(\ln\rho-\ln\sigma)],
+\qquad I(A:B)=D(\rho_{AB}\|\rho_A\otimes\rho_B).
+$$ {#eq-relative-entropy}
+
+The relative entropy is infinite if $\rho$ has support outside the support of $\sigma$. It cannot increase under a channel applied to both arguments. This data-processing property expresses the fact that discarding or processing information cannot improve ideal distinguishability. It underlies quantum error-correction arguments later [@f_schumacher1996].
+
+The conditional entropy $S(A|B)=S_{AB}-S_B$ can be negative. For a Bell pair it equals $-\ln2$. Classical conditional entropy cannot be negative; the quantum result signals that an entangled partner is a resource. The coherent information from $A$ to $B$ is $I_c(A\rangle B)=-S(A|B)$. It is a useful channel diagnostic, but the capacity of a general channel can require optimization over inputs and many uses. A single coherent-information calculation should not be silently identified with a complete capacity theorem.
+
+For three regions the conditional mutual information is
+
+$$
+I(A:C|B)=S_{AB}+S_{BC}-S_B-S_{ABC}\geq0.
+$$ {#eq-cmi}
+
+This is strong subadditivity. It says that conditioning on an intermediate quantum system does not create a negative amount of residual correlation. It is the rigorous inequality from which many entropy constraints follow. We will use it as an established matrix inequality; none of the circuit mappings depends on assuming a classical probability distribution for noncommuting quantum observables.
+
+## Purification and the reference-system viewpoint
+
+Every mixed state can be represented as the reduction of a pure state in a larger space. Diagonalize $\rho_S=\sum_i\lambda_i|i\rangle\langle i|$ and define
+
+$$
+|\Psi\rangle_{RS}=\sum_i\sqrt{\lambda_i}|i\rangle_R|i\rangle_S.
+$$ {#eq-purification}
+
+Tracing out $R$ gives $\rho_S$. All purifications are related by an isometry on a sufficiently large reference space. A maximally mixed $L$-qubit state can therefore be studied by initially entangling each system qubit with a reference qubit. If monitored dynamics purifies the system, information initially shared with the reference has been acquired by the apparatus or lost to an unobserved environment.
+
+This construction turns an abstract question about mixedness into a concrete information-flow experiment. It will relate the entanglement transition of pure trajectories to the survival of logical quantum information.
+
+## Problems with solutions
+
+### Partial trace versus a coherent sum
+
+For $|\Phi^+\rangle$, explain why tracing out $B$ does not give $(|0\rangle+|1\rangle)/\sqrt2$ on $A$.
+
+**Solution.** The partial trace sums matrix elements with the same $B$ label. Terms $|00\rangle\langle11|$ contain $\langle1|0\rangle_B=0$ and vanish. A coherent projection of $B$ onto $|+\rangle$ is a different physical operation that retains those amplitudes conditionally. Discarding and conditioning are different maps.
+
+### Entropy of independent pairs
+
+Let $k$ Bell pairs cross a bipartition. Derive $S_n=k\ln2$ for every $n\geq0$.
+
+**Solution.** The reduced state is $I/2^k$ on a $2^k$-dimensional support. Hence $\operatorname{Tr}\rho^n=2^{k(1-n)}$, which inserted into @eq-renyi yields the result. Pairs lying wholly on one side contribute a pure factor and do not change it.
+
+### A mixed-state trap
+
+Compute $S_A$, $I(A:B)$, and the entanglement of $I_A/2\otimes I_B/2$.
+
+**Solution.** $S_A=S_B=\ln2$, $S_{AB}=2\ln2$, so $I=0$. The state is an explicit product of mixed states and contains no bipartite entanglement. A large local entropy alone says nothing about correlations.

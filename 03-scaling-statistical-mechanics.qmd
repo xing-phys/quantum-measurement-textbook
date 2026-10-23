@@ -1,0 +1,166 @@
+# Scaling, statistical mechanics, and collective descriptions {#sec-scaling-statistical-mechanics}
+
+## Why a finite circuit can have a phase diagram
+
+A finite-dimensional quantum state evolved for a finite number of smooth operations changes smoothly with a gate parameter, except at exactly zero-probability outcomes. A phase transition is a statement about a limit in which the number of degrees of freedom or the observation time diverges. The singularity can emerge because a sum of exponentially many smooth contributions becomes dominated by a different collective behavior.
+
+For an ordinary classical system with configurations $s$, energy $E(s)$, and inverse temperature $\beta$, the partition function and free energy are
+
+$$
+Z=\sum_s e^{-\beta E(s)},\qquad F=-\beta^{-1}\ln Z.
+$$ {#eq-classical-partition}
+
+For finite $N$ and real finite couplings, $Z$ is a finite positive sum, so $F$ is analytic. In the thermodynamic limit, the free-energy density $f=\lim_{N\to\infty}F/N$ can become nonanalytic. An entropy of quantum trajectories is not ordinarily a thermodynamic free energy, but replica transformations will express it as a derivative of a classical partition-function ratio. This creates a route from quantum information to collective statistical behavior.
+
+We first develop the language independently of that mapping. A spatial dimension counts independent directions in the effective classical model. A one-dimensional circuit has one spatial direction and one evolution direction; its tensor-network representation is therefore two-dimensional. Whether those directions become isotropic at criticality is a dynamical question.
+
+## Correlation length from a transfer matrix
+
+Consider a classical one-dimensional Ising chain with spins $s_i=\pm1$, energy $-J\sum_i s_is_{i+1}$ with ferromagnetic $J>0$, zero field, and periodic boundary conditions. Assign the nearest-neighbor Boltzmann weight to a matrix
+
+$$
+T_{ss'}=e^{\beta Jss'}=
+\begin{pmatrix}e^{\beta J}&e^{-\beta J}\\e^{-\beta J}&e^{\beta J}\end{pmatrix}.
+$$ {#eq-ising-transfer}
+
+Then $Z=\operatorname{Tr}T^L$. The eigenvectors are even and odd under spin flip, with eigenvalues $\lambda_+=2\cosh(\beta J)$ and $\lambda_-=2\sinh(\beta J)$. An inserted spin flips the even and odd sectors, giving in the infinite chain
+
+$$
+\langle s_0s_r\rangle=(\lambda_-/\lambda_+)^r
+=(\tanh\beta J)^r=e^{-r/\xi},\quad
+\xi^{-1}=-\ln(\tanh\beta J).
+$$ {#eq-ising-xi}
+
+The correlation length diverges only at zero temperature. The essential idea survives in more complicated models: ratios of leading transfer-matrix eigenvalues determine spatial decay. A vanishing gap in logarithms of these eigenvalues produces a diverging length. In monitored dynamics transfer matrices can be random, non-Hermitian, or act on replica spaces. One must then specify whether a spectrum is an ordinary eigenvalue spectrum or a Lyapunov spectrum of a product of random matrices.
+
+The susceptibility is a sum of connected correlations. In a translation-invariant system,
+
+$$
+\operatorname{Var}\!\left(\sum_i s_i\right)
+=\sum_{ij}\langle s_is_j\rangle_c
+=L\sum_r\langle s_0s_r\rangle_c.
+$$ {#eq-susceptibility-fluctuations}
+
+This identity is purely probabilistic. It explains how a long correlation length creates large fluctuations of a collective observable. The analogous relation between density correlations and subsystem-charge variance will become a diagnostic of sharpening.
+
+## Coarse graining and relevant perturbations
+
+Suppose a critical continuum theory contains an operator $\mathcal O(x)$ with scaling dimension $\Delta$: under $x\to bx$, it transforms as $\mathcal O\to b^{-\Delta}\mathcal O$. Perturb the action by $g\int d^dx\,\mathcal O(x)$. Rescaling gives
+
+$$
+g(b)=b^{d-\Delta}g+\cdots,\qquad
+\frac{dg}{d\ln b}=(d-\Delta)g+O(g^2).
+$$ {#eq-rg-relevance}
+
+If $\Delta<d$, the perturbation grows under coarse graining and is relevant. If $\Delta>d$, it is irrelevant; if equal, its fate depends on higher-order terms. For a perturbation on a line or boundary, replace $d$ by the dimension of its integration manifold. This simple replacement is crucial in a critical ground state measured on one time slice: the measurement acts along a defect rather than throughout a two-dimensional bulk.
+
+The correlation length exponent follows from a relevant scaling field $u$ with eigenvalue $y>0$. Coarse grain until $u b^y\sim1$, so $b\sim|u|^{-1/y}$ and
+
+$$
+\xi\sim|u|^{-\nu},\qquad \nu=1/y.
+$$ {#eq-correlation-exponent}
+
+The relation assumes a conventional power-law fixed point. Berezinskii–Kosterlitz–Thouless transitions instead have an essential singularity such as $\xi\sim\exp[b_0/\sqrt{|u|}]$. Infinite-randomness critical points can have activated time-length scaling. Neither should be forced into a standard one-parameter power-law fit.
+
+## Dynamics and finite-size scaling
+
+Let the characteristic relaxation time obey $\tau\sim\xi^z$. The exponent $z$ compares time to length: diffusion has $z=2$, a ballistic mode has $z=1$. At a scale-invariant finite system of length $L$, the natural variables are
+
+$$
+x=(p-p_c)L^{1/\nu},\qquad y=t/L^z.
+$$ {#eq-scaling-variables}
+
+A dimensionless diagnostic $R$ can obey
+
+$$
+R(p,L,t)=\mathcal R(x,y)+L^{-\omega}\mathcal R_1(x,y)+\cdots,
+$$ {#eq-fss}
+
+where $\omega>0$ controls an irrelevant correction. At sufficiently large fixed $t/L^z$, curves for different $L$ can cross near $p_c$. The crossings drift because of corrections, finite time, boundary conditions, and the possibility that the proposed form is wrong. A successful collapse is evidence for consistency with a scaling hypothesis, not a proof of a unique universality class.
+
+An entropy can have an additive logarithm, $S(p_c,L)=\alpha\ln L+\mathrm{constant}+\cdots$, rather than scale as a simple power. Derivatives, mutual informations, tripartite combinations, or reference-qubit observables may remove a large background and give more stable finite-size diagnostics. Their precise definitions matter: two quantities with similar plots can probe different replicated boundary operators.
+
+For disordered transitions, the Harris argument gives a useful stability test. Independent local disorder averaged in a region of size $\xi^d$ fluctuates as $\xi^{-d/2}$. A clean tuning distance scales as $\xi^{-1/\nu}$. The disorder becomes negligible at large $\xi$ only if $d\nu>2$. The dimension in this argument counts directions in which the disorder is independent. Spatial disorder held fixed for all circuit times is correlated along the time direction; treating it as independently fluctuating spacetime disorder gives the wrong test.
+
+## Domain walls and entropic boundary conditions
+
+In an ordered Ising system, opposite boundary conditions at the two ends force an interface. If its free energy is $\Delta F$, then
+
+$$
+\frac{Z_{\mathrm{twisted}}}{Z_{\mathrm{untwisted}}}
+=e^{-\beta\Delta F}.
+$$ {#eq-domain-wall-free-energy}
+
+The interface costs energy but has many possible paths, so its free energy combines local tension and path entropy. At a transition the effective long-distance tension can vanish. In circuit replica mappings, an entropy is produced by a permutation imposed on the final-time boundary. The interface between this permutation and the identity plays the role of a domain wall. The construction is more elaborate than Ising spins, but this elementary example explains why a boundary twist can measure the entanglement of a region.
+
+A minimal cut is the zero-temperature optimization of such an interface cost. A finite-temperature domain-wall partition sum includes all paths and fluctuations. Replacing a sum by its minimum is controlled only when a large parameter suppresses subleading paths. The local Hilbert-space dimension can provide such a parameter. It does not justify treating every qubit entropy as an exact shortest-path problem.
+
+## Gaussian fields: a derivation worth reusing
+
+A long-wavelength fluctuating density or order parameter can be approximated by a quadratic action. For a real field in Fourier space,
+
+$$
+S[\phi]=\frac12\int\frac{d^dk}{(2\pi)^d}
+K(k)|\phi_k|^2.
+$$ {#eq-gaussian-action}
+
+A one-variable Gaussian integral gives $\int dx\,e^{-ax^2/2}=\sqrt{2\pi/a}$. Differentiating its logarithm with respect to $a$ yields $\langle x^2\rangle=1/a$. Diagonalizing the field into independent modes therefore gives
+
+$$
+\langle\phi_k\phi_{k'}\rangle=(2\pi)^d\delta(k+k')K(k)^{-1}.
+$$ {#eq-gaussian-propagator}
+
+For $K(k)=r+ck^2$, the crossover occurs at $k\sim\sqrt{r/c}$ and $\xi=\sqrt{c/r}$. This Gaussian estimate gives $\nu=1/2$. Interactions between fluctuations can change the exponent; the Gaussian value is a starting point, not an automatic result for an interacting transition.
+
+For a compact phase field in two dimensions,
+
+$$
+S[\theta]=\frac K2\int d^2x\,(\nabla\theta)^2,
+\qquad \theta\equiv\theta+2\pi,
+$$ {#eq-compact-gaussian}
+
+smooth Gaussian modes give logarithmic fluctuations. Specifically, with ultraviolet cutoff $a$,
+
+$$
+\langle[\theta(x)-\theta(0)]^2\rangle
+=\frac{1}{\pi K}\ln(|x|/a)+O(1).
+$$ {#eq-log-fluctuations}
+
+For Gaussian $X$ with zero mean, $\langle e^{i\alpha X}\rangle=e^{-\alpha^2\langle X^2\rangle/2}$, so a vertex correlator decays as $\langle e^{i\alpha\theta(x)}e^{-i\alpha\theta(0)}\rangle\sim|x|^{-\alpha^2/(2\pi K)}$. The corresponding scaling dimension is $\alpha^2/(4\pi K)$ under this convention.
+
+Compactness permits vortices. A unit vortex has $|\nabla\theta|=1/r$, energy $\pi K\ln(L/a)$, and a positional entropy $2\ln(L/a)$. The elementary energy-entropy balance suggests proliferation at $\pi K=2$. Renormalization changes the bare stiffness before this criterion is applied; the universal statement concerns the renormalized stiffness at the transition. This mechanism reappears in charge-sharpening field theories, with replica constraints determining which vortices are allowed. Importing the ordinary XY vortex set without checking those constraints can give a wrong threshold.
+
+## Disorder, replicas, and logarithms
+
+Suppose $Z_J$ depends on random couplings $J$. Averaging $\ln Z_J$ gives a quenched free energy, while taking $\ln\overline{Z_J}$ gives an annealed one. Jensen's inequality implies $\overline{\ln Z_J}\leq\ln\overline{Z_J}$. Rare large partition functions can strongly affect the latter.
+
+The elementary identity
+
+$$
+\ln Z=\left.\frac{\partial Z^m}{\partial m}\right|_{m=0}
+=\lim_{m\to0}\frac{Z^m-1}{m}
+$$ {#eq-replica-log}
+
+suggests calculating $\overline{Z^m}$ for positive integer $m$, interpreting it as $m$ coupled copies, and analytically continuing. The identity is exact for a known positive $Z$. The inference from integer-copy calculations to a continuum of $m$ is an additional assumption. An expression defined at positive integers does not uniquely determine its analytic continuation without regularity information.
+
+Quantum trajectories require another ingredient: $p(\boldsymbol m)$ both weights a record and normalizes its density matrix. This produces a physical replica limit different from a casual $m\to0$ replacement. The dedicated replica chapter derives it explicitly. The lesson here is methodological: count copies from the observable and the probability rule before choosing a statistical-mechanics model.
+
+## Problems with solutions
+
+### Diffusive time
+
+A density obeys $\partial_t n=D\partial_x^2n$ on a ring of length $L$. Find its longest nonzero-mode relaxation time.
+
+**Solution.** Fourier modes have $k=2\pi j/L$ and decay as $e^{-Dk^2t}$. The slowest nonzero mode has $\tau=L^2/(4\pi^2D)$, so $z=2$. The $k=0$ mode is conserved and does not relax.
+
+### A relevant line perturbation
+
+An operator has scaling dimension $3/4$ in a two-dimensional scale-invariant theory. Compare perturbations integrated over the full plane and over one line.
+
+**Solution.** The bulk eigenvalue is $2-3/4=5/4$, while the line eigenvalue is $1-3/4=1/4$. Both are relevant, but their crossover lengths scale differently. If the line perturbation is a product of two independent replica operators, its dimension is instead $3/2$, making that line perturbation irrelevant at weak coupling.
+
+### Rare records
+
+A positive random variable is $Z=1$ with probability $1-e^{-L}$ and $Z=e^{2L}$ with probability $e^{-L}$. Compare $\overline{\ln Z}$ and $\ln\overline Z$ at large $L$.
+
+**Solution.** The first is $2Le^{-L}\to0$. The second is $\ln(1-e^{-L}+e^L)\sim L$. An exponentially rare set controls the annealed answer. This is why log averages, averaged purities, and typical entropies must be kept distinct.

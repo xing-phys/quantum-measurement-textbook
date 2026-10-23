@@ -1,0 +1,44 @@
+/* Shared styles for the OYA-OQS report site */
+
+/* Slightly larger, clearer display equations */
+.math.display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+/* Keep long inline formulas from breaking awkwardly */
+.math.inline {
+  white-space: nowrap;
+}
+
+/* Figure captions */
+figure.quarto-float.tbl figcaption,
+figure.quarto-float.fig figcaption {
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+/* Theorem boxes */
+div.callout {
+  border-radius: 6px;
+}
+
+/* Dark mode: SVG figures with dark backgrounds can be dimmed if needed */
+/* .quarto-dark figure svg { filter: brightness(0.85); } */
+/* A quiet, readable scientific book. */
+:root { --book-accent: #167d8d; }
+#title-block-header .title { line-height: 1.12; letter-spacing: -0.025em; }
+body { font-size: 1.02rem; }
+p { line-height: 1.7; }
+.quarto-title .subtitle { color: #56717a; }
+.sidebar-title { font-weight: 650; line-height: 1.28; }
+.callout { border-radius: 5px; }
+figure { margin: 1.8rem auto; }
+figcaption { line-height: 1.5; }
+.math.display { overflow-x: auto; padding: .25rem 0; }
+table { font-size: .93rem; }
+.lab-panel { padding: 1.2rem; border: 1px solid #7b9ca5; border-radius: 8px; margin: 1.5rem 0; }
+.lab-panel label { display: block; margin: .65rem 0; }
+.lab-panel input { accent-color: #167d8d; }
+.lab-panel canvas { width: 100%; height: auto; max-width: 760px; background: #fff; border-radius: 4px; }

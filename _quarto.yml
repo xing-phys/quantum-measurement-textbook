@@ -1,0 +1,104 @@
+project:
+  type: book
+  output-dir: outputs/site
+  resources:
+    - numerics/**
+    - assets/data/**
+    - README.md
+    - assets/bayes-lab.js
+    - assets/mathjax/**
+    - "!work/**"
+book:
+  title: "Quantum Measurement, Information Dynamics, and Emergent Criticality"
+  subtitle: "From quantum trajectories to the research frontier"
+  author:
+    - name: Ze-Yu Xing
+      orcid: 0009-0009-5655-0187
+      affiliations:
+        - Institute of Physics, Chinese Academy of Sciences
+        - University of Chinese Academy of Sciences
+  date: "2026-10-23"
+  date-format: long
+  output-file: quantum-measurement
+  site-url: https://xing-phys.github.io/quantum-measurement-textbook/
+  repo-url: https://github.com/xing-phys/quantum-measurement-textbook
+  repo-actions: [source, issue]
+  search: true
+  downloads: [pdf]
+  sidebar:
+    style: docked
+    collapse-level: 1
+  chapters:
+    - index.qmd
+    - part: "I · Foundations"
+      chapters:
+        - 01-quantum-information.qmd
+        - 02-measurement-trajectories.qmd
+        - 03-scaling-statistical-mechanics.qmd
+    - part: "II · Circuits, transitions, and codes"
+      chapters:
+        - 04-random-circuits.qmd
+        - 05-measurement-transition.qmd
+        - 06-replica-mechanics.qmd
+        - 07-error-correction.qmd
+    - part: "III · Critical states and mixed-state order"
+      chapters:
+        - 08-measurement-cft.qmd
+        - 09-mixed-state-order.qmd
+    - part: "IV · Symmetry, inference, and hydrodynamics"
+      chapters:
+        - 10-charge-learning.qmd
+        - 11-nonabelian.qmd
+        - 12-monitored-hydrodynamics.qmd
+    - part: "V · Research practice"
+      chapters:
+        - 13-frontiers.qmd
+        - 14-numerical-laboratory.qmd
+        - 15-toolbox.qmd
+    - references.qmd
+  page-footer:
+    left: "Quantum Measurement, Information Dynamics, and Emergent Criticality"
+    right: "Research cutoff: 23 October 2026"
+bibliography:
+  - assets/refs-foundations.bib
+  - assets/refs-circuits.bib
+  - assets/refs-mixed.bib
+  - assets/refs-symmetry.bib
+csl: assets/aps-book.csl
+nocite: "@*"
+link-citations: true
+execute:
+  enabled: false
+format:
+  html:
+    theme:
+      light: [cosmo, assets/theme-light.scss]
+      dark: [darkly, assets/theme-dark.scss]
+    css: assets/styles.css
+    html-math-method:
+      method: mathjax
+      url: assets/mathjax/tex-chtml.js
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    fig-responsive: true
+    include-in-header: assets/mathjax-config.html
+    code-copy: true
+    code-overflow: wrap
+    smooth-scroll: true
+    link-external-newwindow: false
+  pdf:
+    documentclass: scrreprt
+    classoption: [DIV=9]
+    pdf-engine: xelatex
+    papersize: a4
+    geometry: [margin=25mm]
+    fontsize: 10pt
+    colorlinks: true
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    include-in-header: assets/macros.sty
+    keep-tex: false
+    link-citations: true
+    fig-pos: H

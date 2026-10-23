@@ -1,0 +1,362 @@
+# Monitored hydrodynamics and conditional criticality {#sec-monitored-hydrodynamics}
+
+## A phase transition in what remains unknown
+
+A conserved density cannot relax locally without moving elsewhere. This creates slow hydrodynamic modes. A measurement record supplies information about those modes, so their **conditional uncertainty** can have different scaling from their physical motion. This distinction is the organizing principle of monitored hydrodynamics.
+
+A particle distribution can continue to diffuse with $z=2$ after we begin observing it. Nevertheless, uncertainty about its long-wavelength history can relax with a scale proportional to wavelength, described by $z=1$. The latter statement concerns the posterior ensemble of histories compatible with a record. It does not mean that observation has turned a diffusing classical particle into a ballistic particle.
+
+Gopalakrishnan, McCulloch, and Vasseur developed a replicated hydrodynamic treatment of monitored stochastic dynamics. It connects Abelian charge sharpening with classical inference and examines how different transport laws and allowed observables produce different conditional fixed points [@s_gopalakrishnan2026]. Nahum and Jacobsen independently placed related conditional ensembles within a wider framework of Bayesian criticality [@s_nahum2025]. We will obtain the central Gaussian result directly by conditioning a stochastic process, which also makes the observational assumptions transparent.
+
+## Deriving fluctuating diffusion
+
+Let $n(x,t)$ be a coarse-grained one-dimensional density, and let $\rho=n-n_0$ be its fluctuation about a uniform background. Particle conservation implies
+
+$$
+\partial_t\rho+\partial_xj=0.
+$$
+
+For diffusion, the current is a deterministic Fick contribution plus random microscopic transport,
+
+$$
+j=-D\partial_x\rho+\xi,
+\qquad
+\mathbb E[\xi(x,t)\xi(x',t')]
+=2D\chi\,\delta(x-x')\delta(t-t').
+$$ {#eq-hydro-current-noise}
+
+Here $D>0$ is the diffusion constant. The susceptibility $\chi>0$ fixes the static density fluctuations; for this equilibrium Gaussian normalization, the equal-time structure factor is $\chi$ at small nonzero momentum. Thus
+
+$$
+\partial_t\rho=D\partial_x^2\rho-\partial_x\xi.
+$$ {#eq-fluctuating-diffusion}
+
+The derivative on the noise is required by conservation. Adding independent noise directly to $\rho$ would allow the total charge to fluctuate and describe a different system.
+
+With Fourier convention $\rho(x,t)=\int dk\,d\omega\,\rho(k,\omega)e^{ikx-i\omega t}/(2\pi)^2$,
+
+$$
+(-i\omega+Dk^2)\rho=-ik\xi.
+$$
+
+For $k\ne0$, the unconditional dynamical covariance is
+
+$$
+C_0(k,\omega)=\frac{2D\chi k^2}{\omega^2+D^2k^4}.
+$$ {#eq-unmonitored-density-spectrum}
+
+Integrating over frequency gives
+
+$$
+C_0(k)=\int\frac{d\omega}{2\pi}C_0(k,\omega)=\chi,
+$$
+
+because $\int d\omega/(2\pi)(\omega^2+a^2)^{-1}=1/(2a)$. The pole scale is $\omega\sim Dk^2$, so the longest relaxation time of a finite system scales as $L^2/D$.
+
+## A noisy observation model
+
+Assume a classical detector records
+
+$$
+y(x,t)=\rho(x,t)+\eta(x,t),
+\qquad
+\mathbb E[\eta(x,t)\eta(x',t')]
+=\gamma^{-1}\delta(x-x')\delta(t-t'),
+$$ {#eq-hydro-observation-model}
+
+with independent observation noise. A larger $\gamma$ means a more precise detector. This chapter defines $\gamma$ as the observation precision per unit spacetime volume. The causal-filter laboratory in @sec-numerical-laboratory instead writes $dY=2\sqrt{\gamma_{\mathrm{lab}}}\rho\,dt+dV$, so the conventions are related by $\gamma=4\gamma_{\mathrm{lab}}$. Inserting this relation into @eq-hydro-filter-riccati and @eq-hydro-filter-variance reproduces the laboratory equations. White noise is an idealization valid after coarse graining over the detector's correlation time and length. Its likelihood is
+
+$$
+P[y|\rho]\propto
+\exp\left[-\frac\gamma2\int dx\,dt\,(y-\rho)^2\right].
+$$
+
+A history of the unmonitored process has Gaussian weight $P_0[\rho]\propto e^{-S_0[\rho]}$. Bayes' rule gives the posterior
+
+$$
+P[\rho|y]=\frac{e^{-S_0[\rho]-\frac\gamma2\int(y-\rho)^2}}{Z[y]}.
+$$ {#eq-hydro-history-posterior}
+
+The normalization $Z[y]$ is the probability density of the record, apart from a record-independent factor. This is a posterior over trajectories, not a modified equation of motion for the actual density.
+
+The observer must specify whether the desired density is at the end of the record or in its interior. Estimating $\rho(t)$ from outcomes only before $t$ is **filtering**. Estimating it using outcomes both before and after $t$ is **smoothing**. The bulk spacetime theory naturally computes smoothing correlations. An end-of-time state is a boundary problem. Their long-wavelength exponents can agree while their amplitudes differ.
+
+## Gaussian conditioning: an exact calculation
+
+For the stationary Gaussian process and $k\ne0$, the prior action is
+
+$$
+S_0=\frac12\int\frac{dk\,d\omega}{(2\pi)^2}
+\frac{\omega^2+D^2k^4}{2D\chi k^2}\,|\rho(k,\omega)|^2.
+$$
+
+The observation adds $\gamma$ to the quadratic precision, the inverse covariance. Completing the square changes the mean but leaves the covariance independent of the particular record:
+
+$$
+C_{\mathrm{smooth}}(k,\omega)
+=\left[C_0(k,\omega)^{-1}+\gamma\right]^{-1}
+=\frac{2D\chi k^2}{\omega^2+D^2k^4+2\gamma D\chi k^2}.
+$$ {#eq-monitored-density-spectrum}
+
+This calculation is exact within the linear Gaussian model. No replica continuation or saddle-point approximation has been used. It describes posterior fluctuations about the record-dependent best estimate.
+
+Define
+
+$$
+\Omega_k=\sqrt{D^2k^4+v^2k^2},\qquad
+v=\sqrt{2\gamma D\chi}.
+$$ {#eq-hydro-monitored-frequency}
+
+For $|k|\gg v/D$, diffusion dominates, $\Omega_k\simeq Dk^2$. For $|k|\ll v/D$, the uncertainty scale is $\Omega_k\simeq v|k|$. The crossover length and time have the orders of magnitude
+
+$$
+\ell_*\sim D/v=\sqrt{D/(2\gamma\chi)},
+\qquad t_*\sim D/v^2=1/(2\gamma\chi).
+$$
+
+The observation term does not produce a gap for every mode. It competes with conserved noise whose strength vanishes as $k^2$. Their balance yields a gapless linear scale. With nonconserved additive density noise, the numerator and the balance would instead be different.
+
+The equal-time smoothed structure factor is
+
+$$
+C_{\mathrm{smooth}}(k)=\frac{D\chi k^2}{\Omega_k}
+\simeq\frac{D\chi}{v}|k|\quad (|k|\ell_*\ll1).
+$$ {#eq-hydro-hyperuniform-spectrum}
+
+Ordinary equilibrium fluctuations have a nonzero limit as $k\to0$; the posterior fluctuations vanish in that limit. This suppression of long-wavelength uncertainty is a conditional form of hyperuniformity.
+
+There is no contradiction with an unconditional structure factor $\chi$. The law of total covariance decomposes it into posterior covariance plus covariance of posterior means. The missing low-$k$ uncertainty has become knowledge stored in the record-dependent mean. Averaging the posterior means over records restores the original stochastic statistics.
+
+## Real-space anticorrelations and interval fluctuations
+
+Write $A=D\chi/v$. The nonanalytic term $C(k)\simeq A|k|$ determines long-distance behavior. With a smooth ultraviolet cutoff,
+
+$$
+C(x)\simeq-\frac{A}{\pi x^2},\qquad x\ne0.
+$$ {#eq-hydro-conditional-anticorrelation}
+
+The negative sign is meaningful. Conditional on a record and on conservation, an upward density fluctuation in one region must be balanced by downward fluctuations elsewhere. A positive short-distance contact contribution keeps the total covariance positive as a quadratic form.
+
+For $Q_\ell=\int_0^\ell\rho(x)\,dx$, the posterior variance is
+
+$$
+\operatorname{Var}(Q_\ell|y)
+=\int\frac{dk}{2\pi}C(k)
+\left|\frac{e^{ik\ell}-1}{ik}\right|^2.
+$$
+
+Inserting the low-momentum form gives
+
+$$
+\operatorname{Var}(Q_\ell|y)
+=\frac{2A}{\pi}\log(\ell/a)+O(1)
+$$ {#eq-hydro-logarithmic-charge-variance}
+
+for $\ell$ much larger than the crossover scale, with the cutoff $a$ absorbed into the nonuniversal constant. To see the logarithm, note that the integrand is proportional to $(1-\cos k\ell)/|k|$ between $1/\ell$ and the upper cutoff. Without monitoring, $C_0(k)=\chi$ gives an extensive interval variance $\chi\ell$. Thus even weak monitoring changes the long-distance scaling of the uncertainty.
+
+The order of limits matters. Taking $\gamma\to0$ at fixed $\ell$ eventually puts the interval below $\ell_*$, where unmonitored behavior is recovered. Taking $\ell\to\infty$ first at any fixed $\gamma>0$ accesses the conditional critical regime.
+
+## Causal filtering and its Riccati equation
+
+A detector operating in real time has no future data. For each nonzero Fourier mode, the state is an Ornstein-Uhlenbeck process with decay rate $a_k=Dk^2$ and noise variance rate $b_k=2D\chi k^2$. Let $V_k(t)$ be the conditional variance using data up to $t$.
+
+Over a short time $dt$, physical evolution predicts
+
+$$
+V_k\longmapsto V_k+(-2a_kV_k+b_k)dt.
+$$
+
+A Gaussian measurement with information $\gamma dt$ adds that amount to the precision. Since $(V^{-1}+\gamma dt)^{-1}=V-\gamma V^2dt+O(dt^2)$, the combined update is
+
+$$
+\frac{dV_k}{dt}=-2Dk^2V_k+2D\chi k^2-\gamma V_k^2.
+$$ {#eq-hydro-filter-riccati}
+
+The positive stationary solution is
+
+$$
+V_k^{\mathrm{filter}}=
+\frac{\sqrt{D^2k^4+2\gamma D\chi k^2}-Dk^2}{\gamma}.
+$$ {#eq-hydro-filter-variance}
+
+At small $k$, $V_k^{\mathrm{filter}}\simeq(v/\gamma)|k|$, while @eq-hydro-hyperuniform-spectrum gives $C_{\mathrm{smooth}}\simeq[v/(2\gamma)]|k|$. Access to future data halves the leading uncertainty in this particular bulk Gaussian model. Both have the same $|k|$ exponent. The original causal-filter plot in @fig-lab-filtering illustrates this result in the laboratory normalization $\gamma_{\mathrm{lab}}=\gamma/4$. This explicit example warns against equating a bulk replica correlation amplitude with an end-time state amplitude.
+
+The $k=0$ mode needs separate treatment. Conserved current noise cannot change the total charge, so the formula obtained by dividing by $k^2$ does not define that mode's prior. If the initial total charge has variance $V_Q(0)$, averaging the observation over a ring of length $L$ gives a direct Gaussian estimate with
+
+$$
+V_Q(t)^{-1}=V_Q(0)^{-1}+\gamma t/L.
+$$ {#eq-hydro-uniform-charge-filter}
+
+For adjacent charge hypotheses, this simple continuous-density model consequently has a global information scale of order $L/\gamma$. The $L/v$ scale of the slowest nonzero bulk mode and the global-label discrimination scale need not have identical coefficients or detector-strength dependence. In an integer-charge model, compact defects and spatially correlated inference can modify this simple Gaussian account.
+
+## A reproducible numerical demonstration
+
+Set $D=\chi=1$ and $\gamma=1/2$, so $v=1$. The exact formulas reduce to
+
+$$
+C_{\mathrm{smooth}}(k)=\frac{|k|}{\sqrt{1+k^2}},\qquad
+V_k^{\mathrm{filter}}=2|k|\left(\sqrt{1+k^2}-|k|\right).
+$$
+
+The following values show the infrared suppression directly. All unmonitored values are one.
+
+| $k$ | Smoothed variance | Filtered variance |
+|---:|---:|---:|
+| 0.01 | 0.010000 | 0.019801 |
+| 0.02 | 0.019996 | 0.039208 |
+| 0.05 | 0.049938 | 0.095125 |
+| 0.10 | 0.099504 | 0.180998 |
+| 0.20 | 0.196116 | 0.327922 |
+| 0.50 | 0.447214 | 0.618034 |
+
+This short Julia program reproduces the table and checks convergence of a time-stepped filter. It uses only standard arithmetic and does not simulate a many-body MIPT; it tests the Gaussian hydrodynamic theory just derived.
+
+```julia
+using Printf
+D, susceptibility, gamma = 1.0, 1.0, 0.5
+for k in (0.01, 0.02, 0.05, 0.1, 0.2, 0.5)
+    a = D*k^2
+    b = 2D*susceptibility*k^2
+    omega = sqrt(a^2 + gamma*b)
+    smooth = b/(2omega)
+    exact_filter = (omega-a)/gamma
+    # Exact OU prediction, followed by a small Gaussian update.
+    dt = 0.02
+    V = susceptibility
+    for step in 1:ceil(Int, 15/(omega*dt))
+        V = exp(-2a*dt)*V + b*(-expm1(-2a*dt))/(2a)
+        V = inv(inv(V) + gamma*dt)
+    end
+    @printf("%.2f  %.6f  %.6f  step-error=%.3e\n",
+            k, smooth, exact_filter, abs(V-exact_filter))
+end
+```
+
+The prediction-update splitting has an error that vanishes with $dt$. Halving $dt$ and checking the resulting error is a more informative validation than adding more momentum points. For very small $k$, convergence requires a time of order $\Omega_k^{-1}$, so a fixed total runtime would bias the infrared estimate.
+
+## How replicas separate dynamics from uncertainty
+
+The direct Gaussian calculation generalizes poorly when the process or observation is nonlinear. Replicas supply a systematic way to average conditional quantities. For an integer replica number $r$, consider several histories $\rho_a$ sharing the same observation $y$:
+
+$$
+\prod_{a=1}^{r}P_0[\rho_a]
+\exp\left[-\frac\gamma2\int dx\,dt\sum_a(\rho_a-y)^2\right].
+$$
+
+Integrating over $y$ uses
+
+$$
+\sum_a(\rho_a-y)^2
+=\sum_a(\rho_a-\bar\rho)^2+r(y-\bar\rho)^2,
+\qquad \bar\rho=\frac1r\sum_a\rho_a.
+$$
+
+The detector therefore produces the interaction
+
+$$
+S_{\mathrm{obs}}^{(r)}=\frac\gamma2\int dx\,dt
+\sum_{ab}\rho_a\left(\delta_{ab}-\frac1r\right)\rho_b.
+$$ {#eq-hydro-replica-observation}
+
+The matrix is a projector onto replica differences. It annihilates the vector $(1,1,\ldots,1)$, so the common mode remains unmodified. Difference modes are penalized because two histories compatible with the same accurate record should agree.
+
+Why does the physical continuation approach $r=1$? Each posterior expectation contains a denominator $Z[y]$. To average a product of two such expectations, one has $Z[y]^{-2}$, but the record itself is drawn with probability proportional to $Z[y]$. The net power is $Z[y]^{-1}$. Introducing $r-2$ additional histories provides a factor $Z[y]^{r-2}$; at $r\to1$ this becomes $Z[y]^{-1}$. A continuation to zero would correspond to a different record-weighting problem.
+
+This bookkeeping is the hydrodynamic version of the Born-weighted replica logic in monitored quantum circuits. It does not itself guarantee that every continuation is unique or that a chosen saddle remains valid. The Gaussian model provides a useful consistency check because its answer can be computed without replicas.
+
+## Entropy of the record and an effective central charge
+
+The measurement record is itself a statistical object. For a discrete detector with normalized record probabilities $P(\boldsymbol m)$, define
+
+$$
+\mathcal Z_r=\sum_{\boldsymbol m}P(\boldsymbol m)^r,
+\qquad \mathcal Z_1=1.
+$$
+
+Its Shannon entropy is
+
+$$
+H(\boldsymbol M)=-\left.\partial_r\log\mathcal Z_r\right|_{r=1}.
+$$ {#eq-hydro-record-entropy-replica}
+
+This identity follows by differentiating each power of $P$ and using normalization at $r=1$. It explains why an entropy observable can retain a nonzero universal coefficient even when the number of replica-difference fields vanishes in the physical limit.
+
+Assume a long periodic cylinder with spatial circumference $L$ and duration $t\gg L/v$, and suppose its replicated transfer problem has the conformal finite-size form
+
+$$
+\log\mathcal Z_r=-f(r)Lt+\frac{\pi v(r)c(r)t}{6L}+\cdots.
+$$
+
+Normalization requires the displayed contributions to vanish appropriately at $r=1$; in particular, take $c(1)=0$ and $f(1)=0$. Differentiation gives
+
+$$
+\frac{H(\boldsymbol M)}{Lt}
+=f'(1)-\frac{\pi v(1)c'(1)}{6L^2}+\cdots.
+$$ {#eq-hydro-record-entropy-casimir}
+
+The quantity multiplying the universal $1/L^2$ correction is therefore a derivative of a replicated central charge. If there are $r-1$ independent free-boson difference modes, $c(r)=r-1$ in this Gaussian description and $c'(1)=1$. The effective central charge of the record entropy is not obtained by simply setting the central charge to zero before taking the derivative.
+
+This argument states its geometric assumptions. Open boundaries have different finite-size terms; finite aspect ratios require the full partition function, not only its leading cylinder energy. Compactification and zero modes can also affect subleading terms. For a continuously valued white-noise record, differential entropy depends on the units and discretization of the detector output. One must fix a microscopic binning or subtract a reference noise entropy before interpreting its extensive term. The universal finite-size contribution is meaningful only after such normalization choices are held fixed.
+
+In practical data analysis, the small universal term lies beneath an extensive entropy density. A fit over a narrow range of $L$ can trade off the bulk term, the velocity, and subleading corrections. Independent determination of the velocity from spacetime correlations helps make a central-charge estimate credible. Measuring a logarithmic state entropy, a linear dispersion, and a Casimir term supplies complementary tests rather than three interchangeable definitions.
+
+## Which observable is monitored?
+
+A detector does not couple to the phrase density conservation; it couples to a specific observable. Suppose it measures $\partial_x\rho$ with the same white-noise precision. The added inverse covariance is now $\gamma k^2$ rather than $\gamma$. Therefore
+
+$$
+C_{\nabla\rho}(k,\omega)
+=\frac{2D\chi k^2}{\omega^2+(D^2+2\gamma D\chi)k^4}.
+$$ {#eq-hydro-gradient-monitoring}
+
+The uncertainty remains diffusive. Its equal-time structure factor stays constant as $k\to0$, albeit reduced. A gradient detector cannot read a uniform density shift, so the global charge label is invisible without an additional measurement channel.
+
+More generally, let a conserved Gaussian mode have relaxation $a(k)\sim|k|^\alpha$ and process-noise strength $b(k)\sim|k|^\alpha$, keeping an order-one unmonitored static variance. Direct density monitoring yields $\Omega_k^2=a(k)^2+\gamma b(k)$, hence $\Omega_k\sim|k|^{\alpha/2}$ at long wavelength. This dimensional result assumes a linear Gaussian process with the specified noise and a nonvanishing local observation precision. It is not a general theorem that monitoring halves every transport exponent.
+
+For example, a dipole-conserving density can have $a\sim k^4$ and conserved noise variance $b\sim k^4$, giving a monitored Gaussian scale $\Omega\sim k^2$. The observable and the noise correlations together determine the infrared physics.
+
+## Nonlinear transport and restricted readout
+
+A driven one-dimensional fluid can have current $j=-D\partial_x\rho+\lambda\rho^2+\xi$. This is a stochastic Burgers description. Without monitoring, its nonlinearity can produce Kardar-Parisi-Zhang scaling rather than ordinary diffusion. To test stability of the monitored Gaussian point, introduce a response field $\phi$. The relevant schematic action contains $\phi\partial_t\rho$, $(\partial_x\phi)^2$, and $\gamma\rho^2$ in a replica-difference sector.
+
+At $z=1$ in one dimension, scale invariance gives dimensions $\Delta_\rho=1$ and $\Delta_\phi=0$. The Burgers vertex $\lambda\phi\partial_x(\rho^2)$ has dimension three, exceeding the spacetime dimension two. Its engineering RG eigenvalue is thus $-1$. This supports irrelevance of that nonlinearity for the conditional modes, subject to checking allowed couplings to the common sector. The common stochastic process can retain its original transport statistics even when its posterior difference modes have a different scaling.
+
+A more substantial change occurs if symmetry permits measuring $\rho^2$ but forbids measuring the sign of $\rho$. Integrating the observation now gives a quartic interaction among replica densities, rather than a quadratic penalty. Near zero background density, replacing $\rho^2$ by a linear signal is impossible. The conditional theory is interacting, and a Gaussian propagator no longer settles its dynamical exponent.
+
+A rough estimate expands around a common background $\bar\rho$. The sensitivity to a small difference is proportional to $\bar\rho$, so an effective linear monitoring strength scales as $\gamma_{\mathrm{eff}}\sim\gamma\bar\rho^2$. If coarse-grained background fluctuations satisfy $\bar\rho^2\sim\ell^{-d}$, the corresponding uncertainty velocity scales as $\ell^{-d/2}$. A mode spanning $\ell$ then suggests $t\sim\ell^{1+d/2}$. This is a scaling estimate. The coupling to a fluctuating background is precisely what can renormalize it, so an exponent such as $z=3/2$ in one dimension must not be declared exact on the basis of this argument alone.
+
+The lesson extends beyond this example. A symmetry that hides the sign or orientation of a charge makes local readout less informative. It can leave an interacting inference problem even when the underlying unconditional transport is simple. Ordinary $SU(2)$ circuits and topological anyon chains realize further versions of this mechanism, with distinct allowed observables and low-energy sectors.
+
+## Why this does not yet produce the full sharpening transition
+
+The real Gaussian field in @eq-hydro-history-posterior has no memory of integer charge. It predicts a conditional critical regime at every nonzero precision, with continuously varying amplitudes and a diverging crossover length as monitoring becomes weak. It cannot describe a compact-field vortex proliferation transition because such configurations are absent from its configuration space.
+
+Restoring discreteness makes the conjugate response field compact. In a lattice path integral, an integer-valued conservation constraint is enforced by an integral over a phase in $[-\pi,\pi)$, rather than over the real line. The continuum expansion recovers the smooth action, while retaining this compact range permits winding defects. Their proliferation can gap the replica-difference sector and produce the sharp phase discussed in @sec-charge-learning.
+
+This division of labor is useful. Hydrodynamics derives the gapless long-distance fluctuations and their response to an observation channel. Compactness supplies nonperturbative events and potential phase transitions. Microscopic dynamics fixes allowed defects, their fugacities, boundary conditions, and whether an effective continuum description remains applicable. A fully coherent theory needs all three ingredients.
+
+## Exercises with solutions
+
+### Verify that monitoring does not alter the unconditional process
+
+**Problem.** Show directly that $\int\mathcal Dy\,P[y]P[\rho|y]=P_0[\rho]$ for a normalized observation channel.
+
+**Solution.** Bayes' rule gives $P[y]P[\rho|y]=P_0[\rho]P[y|\rho]$. Integrating over $y$ gives $P_0[\rho]$ because $\int\mathcal Dy\,P[y|\rho]=1$. Conditional criticality therefore need not imply a change of unconditional trajectories.
+
+### Recover the unmonitored filter
+
+**Problem.** Take $\gamma\to0$ in @eq-hydro-filter-variance without subtracting two nearly equal numerical quantities.
+
+**Solution.** Rationalize the numerator to obtain $V_k=b_k/[\sqrt{a_k^2+\gamma b_k}+a_k]$. Its limit is $b_k/(2a_k)=\chi$. The rationalized formula is also preferable for numerical evaluation at very weak monitoring.
+
+### An unobservable charge
+
+**Problem.** A record measures only gradients on a periodic ring. Can any amount of data reveal an unknown constant shift of the density in the linear Gaussian model?
+
+**Solution.** No. Replacing $\rho$ by $\rho+c$ leaves both the gradient record likelihood and the fluctuation dynamics invariant. The likelihood ratio of two constant-shift hypotheses is one, so their posterior odds equal their prior odds forever. Nonlinear density-dependent transport could supply additional information, but that is outside this specified model.
+
+### Test the predicted crossover numerically
+
+**Problem.** Use the supplied Julia calculation to estimate the small-$k$ logarithmic slope of $C_{\mathrm{smooth}}(k)$. What happens if $k$ is sampled only above $v/D$?
+
+**Solution.** A two-point estimate is $[\log C(2k)-\log C(k)]/\log2$. It approaches one for $k\ll v/D$. For $k\gg v/D$, the structure factor approaches $\chi$ and the slope approaches zero. Failure to access the crossover scale can therefore hide the monitored critical behavior in a finite system.

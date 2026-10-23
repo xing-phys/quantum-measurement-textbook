@@ -1,0 +1,222 @@
+# Experiments, universality, and the research frontier {#sec-frontiers}
+
+The simplest monitored circuit is a clean laboratory for an information transition, but it does not exhaust the subject. Spatial disorder can change dynamical scaling, free fermions can produce different entanglement laws from interacting circuits, and topological states connect monitored dynamics to error thresholds. Experiments must also confront a distinction hidden by ideal mathematical definitions: an observable can be well defined for a conditional quantum state yet expensive to estimate from laboratory data.
+
+This chapter develops tools for assessing those extensions. Its purpose is to connect models by the mechanisms they share while preserving the assumptions that distinguish them. In particular, neither “measurement-induced” nor “critical” uniquely specifies a universality class.
+
+## What an experiment actually samples
+
+An experimental shot supplies a measurement record $m$ and, possibly, a final measurement outcome $x$. It samples $p(m,x)$, not a classical file containing the entire conditional wavefunction $|\psi_m\rangle$. To estimate a linear conditional observable one can bin shots by $m$ and average $x$ in each bin. If the number of random outcomes is extensive, the number of likely records is exponentially large. A typical bin then contains too few shots.
+
+The problem is sharper for a nonlinear quantity such as purity. Formally,
+
+$$
+\overline{\operatorname{Tr}\rho_m^2}=\sum_mp_m\operatorname{Tr}\rho_m^2
+$$
+
+compares two copies of the *same conditional state*. Two independent shots normally produce different records. Their overlap instead estimates something related to $\operatorname{Tr}(\sum_mp_m\rho_m)^2$, which is generally different.
+
+A toy example demonstrates the mismatch. Let the record choose $|0\rangle$ or $|1\rangle$ with equal probability. Every conditional state has purity one. The averaged state has purity $1/2$. Comparing independently drawn records gives overlap one only when they match, so the independent-pair average is $1/2$. A trajectory average requires an appropriate same-record estimator or extra protocol structure.
+
+If $M$ independent fair binary outcomes are specified, a fixed record occurs with probability $2^{-M}$. Repeating that record a fixed number of times therefore requires exponentially many shots. The exact probability distribution need not be uniform for the basic problem to remain: its entropy is typically extensive. Direct tomography also grows exponentially with the number of qubits, even if records could be repeated freely.
+
+These are resource constraints on a measurement protocol. They do not invalidate a thermodynamic transition in conditional states. They do mean that an experimental claim should specify which diagnostic is estimated, which quantum and classical resources are used, and how the estimator connects to the proposed transition.
+
+### Decoder-assisted observables
+
+Suppose a classical simulator or decoder supplies a score $f(m)$ and the experiment supplies a binary final outcome $x$. The mean of $x f(m)$ can be estimated without repeating a record. With $x,f\in[-1,1]$, the variance is bounded by one, and independent shots give a standard error at most of order $N^{-1/2}$. The laboratory sample complexity can therefore be modest.
+
+That statement does not bound the cost of computing $f(m)$. A decoder based on exact simulation may take exponential time; an approximate decoder may fail or become biased in a phase-dependent way. A transparent assessment separates three questions: does the record contain the information, can an algorithm extract it, and can the proposed experiment estimate the algorithm's diagnostic accurately? An affirmative answer to one does not settle the others.
+
+For a known target conditional probability $p_{\mathrm{model}}(x|m)$, one can also score observed outcomes by a log likelihood or cross entropy. A change in such a score can witness a transition when its connection to a replica observable or inference problem is established. It is not generically identical to a von Neumann entropy.
+
+### Experimental milestones and their scope
+
+Noel and collaborators used a trapped-ion quantum computer to realize measurement-induced phases, including reference-qubit purification diagnostics [@c_noel2022]. Koh and collaborators studied entanglement-transition signatures on a superconducting processor [@m_koh2023]. Google Quantum AI and collaborators used a space-time duality and decoder correlations to access measurement-induced entanglement and teleportation signatures on up to 70 superconducting qubits [@c_google2023]. These are finite-device observations with specific protocols and noise controls. They establish experimental access to the physics without implying that an arbitrary conditional many-body state can be reconstructed efficiently.
+
+A newer April 2026 preprint reports SW-SSB signatures in a dephased Fermi gas using nonlinear correlators and a quantum-classical estimator based on a Gaussian reference state [@m_wang_experiment2026]. This extends the experimental questions beyond pure-trajectory entanglement. As a preprint result, its estimator assumptions and phase identification should be assessed alongside subsequent independent checks.
+
+## Static disorder is a different perturbation from circuit randomness
+
+A random circuit already has disorder in space and time, so why should additional randomness matter? The answer is its correlation structure. A site-dependent measurement rate $p_i$ held fixed for the entire experiment is columnar disorder: an atypically weakly measured location remains atypical at every time. Ordinary independent gate randomness decorrelates between time steps.
+
+The Harris stability test can be derived with the central limit theorem. Near a clean critical point, write the distance from criticality as $\delta$ and the correlation length as $\xi\sim|\delta|^{-\nu}$. Average independent static spatial disorder over a region of volume $\xi^d$. The fluctuation of its local critical parameter is
+
+$$
+\delta_{\mathrm{rand}}(\xi)\sim \xi^{-d/2}.
+$$
+
+Clean scaling can be self-consistent only if this is small compared with the global tuning distance $|\delta|\sim\xi^{-1/\nu}$. Their ratio decreases at large $\xi$ if
+
+$$
+d\nu>2.
+$$ {#eq-frontier-harris}
+
+For disorder independent throughout space-time, the averaging volume instead includes time, giving a condition involving the effective space-time dimension. A circuit can satisfy the latter stability test and fail the static-disorder test. One must use the dimension over which the perturbation supplies independent samples.
+
+A relevant random perturbation does not by itself determine the new fixed point. It only says that the original one cannot govern the asymptotic behavior for arbitrarily weak disorder. Establishing the replacement requires a flow calculation or numerical evidence.
+
+Zabalo and collaborators studied spatially random measurement rates using Clifford numerics and a large-local-dimension real-space RG [@m_zabalo_disorder]. They find an infinite-randomness scenario with activated scaling $\log t\sim\sqrt{x}$, entanglement $S(\ell)\sim\sqrt\ell$, and neighboring Griffiths regimes. Some observables differ between the tractable percolation limit and Clifford circuits, so a shared qualitative scenario need not establish equality of all critical data.
+
+### Why rare regions cause slow dynamics
+
+Consider a rare region of length $\ell$ that locally favors the opposite phase. Suppose its probability is $P(\ell)\propto e^{-a\ell}$, while its relaxation time is $\tau(\ell)\sim e^{b\ell}$. Eliminating $\ell$ gives
+
+$$
+\Pr(\tau>t)\sim t^{-a/b}.
+$$ {#eq-frontier-griffiths-tail}
+
+An exponentially rare region can therefore produce a power-law relaxation tail, because its lifetime is also exponential. The ratio $a/b$ varies continuously with parameters. Such Griffiths behavior is different from a conventional clean critical point, whose exponents are fixed within a universality class.
+
+At an activated critical point, $\log t\propto\xi^\psi$ rather than $t\propto\xi^z$. No finite constant $z$ reproduces that relation asymptotically; it is often described as $z=\infty$. Fitting limited data to a large finite $z$ can mimic it over a short window. Testing activated scaling requires comparing suitable logarithmic time variables and broad distributions, not just fitting an unusually slow average.
+
+## Free fermions: efficient numerics do not imply trivial phases
+
+A number-conserving Gaussian fermion state is determined by its one-particle correlation matrix
+
+$$
+G_{ij}=\langle c_j^\dagger c_i\rangle.
+$$
+
+For a pure Slater determinant $G^2=G$. A quadratic Hamiltonian $H=\sum_{ij}c_i^\dagger h_{ij}c_j$ evolves it as
+
+$$
+G(t)=U(t)G(0)U(t)^\dagger,\qquad U=e^{-iht}.
+$$ {#eq-frontier-gaussian-evolution}
+
+This compresses an exponentially large Fock-space state into an $L\times L$ matrix. Wick's theorem then reconstructs all higher correlators. It follows from the fact that a Gaussian density matrix has an exponent quadratic in fermion operators; its generating function is Gaussian, so derivatives factor into pairings.
+
+The entropy of a spatial region is equally simple. Diagonalize $G_A$ with eigenvalues $\nu_\alpha\in[0,1]$. A basis change within $A$ decomposes its reduced density matrix into independent fermionic modes with occupation probabilities $\nu_\alpha$. Therefore
+
+$$
+S(A)=-\sum_\alpha\left[\nu_\alpha\log\nu_\alpha+(1-\nu_\alpha)\log(1-\nu_\alpha)\right].
+$$ {#eq-frontier-gaussian-entropy}
+
+No full density matrix on $A$ is needed. The eigenvalues, rather than diagonal site occupations, contain the entanglement information.
+
+### Deriving a local measurement update
+
+Measure $n_l=c_l^\dagger c_l$. The probability of outcome one is $p_1=G_{ll}$. For $i,j\ne l$, Wick contraction gives
+
+$$
+\langle c_j^\dagger c_i n_l\rangle=G_{ij}G_{ll}-G_{il}G_{lj}.
+$$
+
+Division by $p_1$ produces
+
+$$
+G'_{ij}=G_{ij}-\frac{G_{il}G_{lj}}{G_{ll}}\quad(n_l=1).
+$$ {#eq-frontier-measure-one}
+
+For outcome zero, use $\langle c_j^\dagger c_i(1-n_l)\rangle$ instead:
+
+$$
+G'_{ij}=G_{ij}+\frac{G_{il}G_{lj}}{1-G_{ll}}\quad(n_l=0).
+$$ {#eq-frontier-measure-zero}
+
+Set all off-diagonal entries involving $l$ to zero and set $G'_{ll}$ to the observed occupation. The measured site is disentangled from the rest. Outcomes with zero Born probability must never be sampled; their formal divisions are not meaningful. In numerical code, exact or near-deterministic probabilities should be handled before the rank-one update.
+
+These equations give an efficient trajectory simulation: evolve $G$, sample a site and outcome, update the matrix, and compute interval entropies from its restricted spectrum. A meaningful implementation checks Hermiticity, eigenvalues in $[0,1]$, conserved total particle number, and idempotency after each projective measurement of a pure trajectory. Those checks detect wrong index conventions and normalization errors.
+
+For an explicit two-site test, start with one particle in $(|10\rangle+|01\rangle)/\sqrt2$. Then $G$ has every entry $1/2$, and a one-site region has entropy $\log2$. A measurement of the first occupation gives $G'=\operatorname{diag}(1,0)$ or $\operatorname{diag}(0,1)$, each with probability $1/2$, and zero conditional entanglement. Averaging the two postmeasurement matrices gives $I/2$, which is not the correlation projector of either pure branch. The entropy formula applied to an averaged Gaussian description cannot in general replace the trajectory entropy average.
+
+### Which free-fermion universality class?
+
+Fava and collaborators derive replica sigma models for monitored multiflavor Majorana chains and obtain a nontrivial phase with $S\sim(\log L)^2$ in their setting [@m_fava2023]. Poboiko and collaborators analyze one-dimensional hopping fermions with local occupation measurements and find a flow toward an area law, with an exponentially large crossover length at weak monitoring [@m_poboiko2023]. The latter warns that an apparent finite-size logarithmic phase can be a crossover. The different conclusions concern different symmetry and measurement structures; they are not mutually contradictory claims about one universal free-fermion model.
+
+A 2026 extension by Poboiko and Mirlin treats finite-time development of correlations and initial-state boundary conditions, including higher-dimensional transition scaling [@m_poboiko2026]. Initial preparation, spatial dimension, particle-number conservation, pairing, and the measured bilinear should therefore be stated before comparing data.
+
+A nonlinear sigma model describes a slowly varying matrix field constrained to a target manifold. Its coupling measures stiffness, and its topological defects or topological terms can change the flow. The target space depends on replica and physical symmetries. Calling two models “Gaussian” does not determine that target space, just as calling two Hamiltonians “quadratic” does not determine whether they conserve number or realize distinct topological bands.
+
+## Error thresholds, random bonds, and Nishimori weighting
+
+A useful bridge to statistical mechanics comes from decoding a binary error pattern. Let errors $e_b\in\{0,1\}$ occur independently on edges with probability $p$. The probability of a pattern is
+
+$$
+P(e)\propto\prod_b\left(\frac p{1-p}\right)^{e_b}.
+$$
+
+A syndrome constrains which patterns are compatible with observations. Patterns related by a stabilizer operation have the same action on the encoded information, whereas patterns in distinct logical classes do not. Maximum-likelihood decoding compares the *sum* of probabilities within each logical class, not just the single least-weight pattern.
+
+Introduce Ising variables $s_i=\pm1$ to parametrize equivalent patterns and bond signs $\tau_b=\pm1$ to record a reference error. Their class weight can take the form
+
+$$
+Z_{\mathrm{class}}=\sum_{\{s\}}\exp\left[\beta J\sum_{\langle ij\rangle}\tau_{ij}s_is_j\right],
+\qquad e^{-2\beta J}=\frac p{1-p}.
+$$ {#eq-frontier-nishimori}
+
+The last relation is not an arbitrary choice of an Ising temperature. It matches the statistical weight to the physical noise distribution. This is the Nishimori condition. Logical error classes correspond to different global boundary conditions or domain walls, and decoding asks whether their free-energy difference remains large enough to distinguish them.
+
+The derivation explains why a threshold is an information transition. Below threshold, a typical syndrome strongly favors the correct logical class. Above it, multiple global classes remain competitive. The local error density may change smoothly throughout; a nonlocal inference task changes sharply in the thermodynamic limit.
+
+Erasure errors are different because their locations are known. Some erasure thresholds reduce to connectivity or percolation questions. An unknown coherent rotation or an unheralded random Pauli error carries different information, so it need not share the same critical theory even if the numerical thresholds happen to be close.
+
+Pütz and collaborators study cluster-state preparation protocols with both qubit loss and weak-measurement imperfections [@m_putz2025]. Away from their projective Clifford limit, they find a crossover from percolation to Nishimori criticality and a strongly nonmonotonic entanglement response. This is a concrete setting where a small microscopic perturbation changes the asymptotic fixed point. It does not imply that every non-Clifford perturbation in every monitored circuit flows to Nishimori universality.
+
+## Topological order and weak self-duality
+
+The toric code has electric and magnetic excitations, conventionally called $e$ and $m$. A duality exchanges them. In a unitary model, a self-dual Hamiltonian can constrain the location or existence of a transition, but self-duality alone does not always prove continuous criticality: a self-dual point may be first order or lie in a larger phase. The dynamics and allowed perturbations still matter.
+
+An open-system version adds another distinction. A channel or an outcome ensemble can respect the exchange on average even when each individual branch does not. Such weak self-duality can protect structures in a mixed ensemble that would not follow from a symmetry of each pure realization.
+
+Wang, Vasseur, Trebst, Ludwig, and Zhu investigate decohered toric-code and cluster-state settings with a boundary critical mixed state protected by weak Kramers-Wannier self-duality [@m_wang_selfdual]. They relate the bulk description to an appropriate Born-replica sigma model and study crossovers when duality is broken. This gives a constructive connection between monitored criticality, topology, and mixed-state symmetry. Its boundary and channel assumptions are part of the result; one cannot infer a critical boundary for an arbitrary decohered topological state.
+
+The perspective complements the error-correction picture. Error correction asks whether a logical distinction can be recovered. Mixed-state order asks which distinctions survive local symmetric processing. Boundary criticality asks how those surviving distinctions organize correlations across scales. These are related operational questions, but their diagnostics need to be derived for the specified state and noise channel.
+
+## Forced outcomes can define their own criticality
+
+There are two different uses of “postselection.” One is an experimental strategy for repeatedly accessing a typical Born trajectory. The other changes the theoretical ensemble by forcing a designated outcome at each step. The second can overweight events that are extremely rare in a physical measurement experiment and hence define a distinct theory.
+
+Nambi and collaborators compare forced-measurement circuits with random tensor networks [@m_nambi2026]. They find numerical evidence for a shared postselected universality class distinct from the Born-rule MIPT, including $\nu\approx2.1$ and a negative effective central charge near $-0.4$ in their analyzed models. The effective central charge is extracted from a statistical-mechanics free-energy quantity; its negativity does not mean a physical density matrix has negative entanglement entropy. These are numerical critical estimates with model and finite-size qualifications, not exact universal constants derived for all forced circuits.
+
+A practical check is to write the probability measure before writing a replica limit. Born sampling introduces the trajectory norm as a probability weight. A forced ensemble omits or replaces that weight. Even if the conditional evolution operator has the same matrix entries, changing its sampling rule changes the replicated statistical model.
+
+## A guide to diagnosing a new model
+
+A coherent analysis begins by specifying the observer. List the accessible records, inaccessible environmental indices, preserved symmetries, and final task. Then determine whether the state conditioned on those records is pure or mixed. This fixes which entropy can be interpreted as entanglement.
+
+Next identify the long-distance variables. Generic interacting circuits often admit permutation-domain-wall descriptions after averaging. Conserved densities add slow modes; non-Abelian charges require fusion information; Gaussian fermions give constrained matrix fields; topological codes add logical sectors. The relevant statistical theory is selected by these structures, not by the mere presence of random gates.
+
+Finite-size numerics should compare hypotheses, not just produce a pleasing collapse. A logarithm, a small power, and a crossover to a constant can look similar over one decade. One should vary size, duration, initial conditions, and diagnostics where feasible, examine correction terms, and test whether the proposed asymptotic regime is actually reached. Statistical errors from finite trajectory samples and systematic errors from limited size are different uncertainties.
+
+A decoder study should separately report accuracy, sample complexity, and computational cost. An efficient heuristic can fail although the optimal decoder succeeds; an exact decoder can establish learnability while remaining computationally impractical. The threshold for a particular decoder can lie below the information-theoretic threshold.
+
+Finally, claims of universality should specify the perturbations under which the result is expected to persist. A large-local-dimension derivation, a Clifford simulation, a finite-size Haar estimate, and a continuum conjecture carry different kinds of evidence. Agreement between them can be powerful without eliminating all qualifications.
+
+## Open questions as concrete research tasks
+
+Several frontiers can be posed in forms that a beginning researcher can test. One is to determine which features of generic Born-rule MIPT criticality admit an exact field-theory description beyond controlled percolation limits. A useful first step is to compute multiple independent observables in the same ensemble and test their conformal relations, rather than infer a full CFT from one entropy coefficient.
+
+Another is to separate information-theoretic and algorithmic thresholds under realistic noise. A tractable project can compare a Bayesian optimum for small systems with an efficient approximate decoder, tracking their difference as the system grows. Noise that preserves a strong symmetry provides a natural setting because charge inference remains meaningful even after pure-state coherence is lost.
+
+A third is to quantify what incomplete detector records do to a nominal pure-state transition. The observer's state becomes mixed; the appropriate questions concern recoverable information and nonlinear mixed-state order. A detector-efficiency parameter should therefore be varied alongside the physical monitoring rate, rather than absorbed into one effective rate without proof.
+
+Measurement-altered ground states pose a related challenge: determine which microscopic outcome data survive coarse graining as a distribution over boundary conditions. The compact boson provides a rare analytic foothold, but extending that understanding to interacting CFTs and multiple measurement bases remains nontrivial. A numerical study can begin by comparing full distributions or moment spectra instead of only a mean entropy.
+
+These tasks share a guiding principle. A measurement changes both a quantum state and an observer's knowledge. A successful theory keeps the state update, the record distribution, and the inference task in the same mathematical description.
+
+## Problems and solutions
+
+### Problem: the cost of repeating a record
+
+A trajectory contains $M$ independent outcomes with probabilities $p$ and $1-p$. Estimate the probability of a typical record at large $M$.
+
+**Solution.** A typical record has approximately $pM$ outcomes of one type, so its probability is $p^{pM}(1-p)^{(1-p)M}=e^{-Mh(p)}$, with $h(p)=-p\log p-(1-p)\log(1-p)$. Except at deterministic endpoints, the repeated-record cost is exponential. The number of typical records is approximately $e^{Mh(p)}$, consistent with normalization.
+
+### Problem: a Harris test
+
+A one-dimensional clean transition has $\nu=1.3$. Is it stable by the elementary Harris test against weak independent static spatial disorder? What about disorder independent in a two-dimensional space-time description with $z=1$?
+
+**Solution.** Static disorder requires $\nu>2$ and therefore destabilizes the clean scaling. Independent space-time disorder gives the weaker condition $\nu>1$, which this exponent satisfies. The conclusion is a stability diagnostic, not a derivation of the disordered fixed point.
+
+### Problem: check the Gaussian update
+
+For a pure one-particle state with amplitudes $(\cos\alpha,\sin\alpha)$, apply @eq-frontier-measure-one to site one and verify the conditional occupation on site two.
+
+**Solution.** $G_{22}=\sin^2\alpha$, $G_{21}G_{12}=\sin^2\alpha\cos^2\alpha$, and $G_{11}=\cos^2\alpha$. Their combination gives zero. The other branch gives occupation one on site two. Total particle number remains one in each branch. A code that changes it has either normalized incorrectly or mixed conditional and nonselective updates.
+
+### Problem: maximum likelihood versus minimum weight
+
+Two logical error classes contain patterns with probabilities $\{0.30\}$ and $\{0.18,0.17\}$. Which does minimum-pattern decoding choose, and which does maximum-class-likelihood decoding choose?
+
+**Solution.** Choosing the most probable individual pattern selects the first class. Summing within classes gives $0.30$ and $0.35$, so maximum-likelihood class decoding selects the second. The difference is the entropy of competing error configurations, represented by the partition sum in @eq-frontier-nishimori.

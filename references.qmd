@@ -1,0 +1,6 @@
+# References {.unnumbered}
+
+The bibliography includes foundational papers, model-specific results, and recent preprints. A preprint citation identifies a research proposal or analysis; its evidential status is discussed where used.
+
+::: {#refs}
+:::

@@ -1,0 +1,280 @@
+# Replica statistical mechanics and emergent criticality {#sec-replica-mechanics}
+
+The difficulty of a monitored circuit is not just that its Hilbert space is large. The normalized state of a trajectory contains a denominator that depends on the outcome, and an entropy contains a logarithm. Averages of these nonlinear objects do not close under the averaged quantum channel. Replicas turn the nonlinear calculation into a linear tensor contraction on several copies. Random-unitary averaging then turns the contraction into a statistical mechanics of permutations.
+
+This chapter derives that chain of ideas. The exact identities will be distinguished from the continuation and continuum assumptions needed to obtain a critical field theory. The two foundational circuit formulations are those of Jian, You, Vasseur, and Ludwig and of Bao, Choi, and Altman [@c_jian2020; @c_bao2020]. Their replica constructions are closely related, but the precise finite-replica observables must be specified before identifying their limits.
+
+## Why an entropy introduces copies
+
+For any density matrix $\rho$, let $F_A$ swap subsystem $A$ between two copies while leaving its complement unchanged. In a product basis,
+
+$$
+\operatorname{Tr}[(\rho\otimes\rho)F_A]
+=\sum_{a,a',b,b'}\rho_{ab,a'b}\rho_{a'b',ab'}
+=\operatorname{Tr}\rho_A^2.
+$$ {#eq-replica-swap-identity}
+
+For $n$ copies, let $\tau_n=(12\cdots n)$ and $V_A(\tau_n)$ cyclically permute the $A$ factors. Repeating the index contraction gives
+
+$$
+\operatorname{Tr}[\rho^{\otimes n}V_A(\tau_n)]
+=\operatorname{Tr}\rho_A^n.
+$$ {#eq-replica-cycle-identity}
+
+The permutation is a boundary condition in replica space. It changes the final-time contraction on $A$, without changing the circuit in the bulk. This is why entanglement becomes the excess free energy of a defect ending at the boundary of $A$.
+
+There is no extra physical copy in a single experimental run. The copies are mathematical devices for calculating moments, or actual multiple preparations if one implements a swap measurement experimentally. Their interactions arise because they share the same gate realization and measurement record before averaging.
+
+## The Born rule gives an extra replica
+
+Write the unnormalized final density matrix for a record $\mathbf m$ as $R_{\mathbf m}=K_{\mathbf m}\rho_0K_{\mathbf m}^{\dagger}$, and set
+
+$$
+p_{\mathbf m}=\operatorname{Tr}R_{\mathbf m},\qquad
+X_{\mathbf m}^{(n)}=\operatorname{Tr}(R_{A,\mathbf m}^{n}).
+$$
+
+Then $\rho_{A,\mathbf m}=R_{A,\mathbf m}/p_{\mathbf m}$ and
+
+$$
+S_n(\rho_{A,\mathbf m})=
+\frac{\ln X_{\mathbf m}^{(n)}-n\ln p_{\mathbf m}}{1-n}.
+$$ {#eq-replica-normalized-entropy}
+
+We now use $\ln x=\left.\partial_k x^k\right|_{k=0}$ for positive $x$. Define, initially for nonnegative integers $k$,
+
+$$
+\begin{aligned}
+Z_A(n,k)&=\mathbb E_{\mathbf U,\mathcal L}
+\sum_{\mathbf m}p_{\mathbf m}\big[X_{\mathbf m}^{(n)}\big]^k,\\
+Z_0(n,k)&=\mathbb E_{\mathbf U,\mathcal L}
+\sum_{\mathbf m}p_{\mathbf m}^{nk+1}.
+\end{aligned}
+$$ {#eq-replica-partition-functions}
+
+Both quantities are polynomial contractions of
+
+$$
+Q=nk+1
+$$ {#eq-replica-born-number}
+
+copies of $R_{\mathbf m}$. In $Z_A$, $k$ groups of $n$ copies carry an $n$-cycle on $A$, and one additional copy carries the identity. In $Z_0$, every final-time contraction is the identity. The extra copy is exactly the Born probability multiplying the entropy average. It is not optional.
+
+At $k=0$, both partition functions equal $\sum_{\mathbf m}p_{\mathbf m}=1$, after each fixed choice of gates and locations. Therefore
+
+$$
+\overline{S_n(A)}=
+\frac{1}{1-n}\left.\partial_k
+\big[Z_A(n,k)-Z_0(n,k)\big]\right|_{k=0}
+=
+\frac{1}{1-n}\left.\partial_k
+\ln\frac{Z_A(n,k)}{Z_0(n,k)}\right|_{k=0}.
+$$ {#eq-replica-entropy-limit}
+
+For a finite system this is an exact identity if the generating functions are defined for real $k$ by the original trajectory sums, with zero-probability records omitted. The tensor model is straightforward at integer $k$; analytically continuing its large-system solution to $k\to0$ is the nontrivial theoretical step.
+
+This construction never replaces the average of a logarithm by the logarithm of an average. It represents the former by a derivative at zero. In particular, the physical total replica number approaches **one**, not zero. A model of forced equally weighted outcomes or an unnormalized tensor-network ensemble can have a different replica limit and a different universality class.
+
+### Worked example: the second Rényi entropy is not a two-copy Born average
+
+For $n=2$, let $X_{\mathbf m}=\operatorname{Tr}R_{A,\mathbf m}^2$. The normalized purity is $X_{\mathbf m}/p_{\mathbf m}^2$. Its Born average is $\sum_{\mathbf m}X_{\mathbf m}/p_{\mathbf m}$, already a nonpolynomial expression. The entropy average is still another quantity, $-\sum p_{\mathbf m}\ln(X_{\mathbf m}/p_{\mathbf m}^2)$.
+
+At the integer point $k=1$, our generating functions use three copies:
+
+$$
+Z_A(2,1)=\mathbb E\sum_{\mathbf m}p_{\mathbf m}X_{\mathbf m},
+\qquad
+Z_0(2,1)=\mathbb E\sum_{\mathbf m}p_{\mathbf m}^3.
+$$
+
+Their ratio is not the physical purity or the entropy. Only the $k\to0$ derivative has the desired meaning. This example is a useful safeguard against treating a two-replica Ising model as an exact solution of the physical Born-averaged MIPT.
+
+## Haar averaging produces permutations
+
+A $Q$-copy Haar average of a $d$-dimensional unitary has the index form
+
+$$
+\begin{aligned}
+&\mathbb E_U\prod_{a=1}^Q U_{i_a j_a}
+\prod_{a=1}^Q U^*_{i'_a j'_a}\\
+&\quad=\sum_{\sigma,\tau\in S_Q}
+\operatorname{Wg}_d(\sigma^{-1}\tau)
+\prod_a\delta_{i_a,i'_{\sigma(a)}}
+\prod_a\delta_{j_a,j'_{\tau(a)}}.
+\end{aligned}
+$$ {#eq-replica-weingarten}
+
+The symbols $\sigma,\tau$ enumerate ways of pairing the forward and backward replica indices. The function $\operatorname{Wg}_d$ is the unitary Weingarten function. At fixed $Q$ and sufficiently large $d$, it is the inverse of the permutation Gram matrix with entries $d^{\#\text{cycles}(\sigma^{-1}\tau)}$. At small $d$ the permutation operators can become linearly dependent, requiring the appropriate generalized formulation; we will use the familiar nonsingular large-$d$ setting for explicit formulas.
+
+Why do only permutations occur? The average must commute with $U^{\otimes Q}$ for every $U$. The operators with that property are spanned by permutations of the copies, the content of Schur–Weyl duality. Thus the permutation variables are not guessed order parameters. They are forced by the unitary symmetry of the ensemble.
+
+For $Q=2$, there are identity and swap. Their Gram matrix and inverse are
+
+$$
+G=\begin{pmatrix}d^2&d\\d&d^2\end{pmatrix},
+\qquad
+G^{-1}=\frac{1}{d^2-1}
+\begin{pmatrix}1&-1/d\\-1/d&1\end{pmatrix}.
+$$ {#eq-replica-q2-gram}
+
+Hence $\operatorname{Wg}_d(e)=1/(d^2-1)$ and $\operatorname{Wg}_d((12))=-1/[d(d^2-1)]$. The negative coefficient is a warning: an exact intermediate replica tensor contraction need not be a statistical model with manifestly positive local Boltzmann weights. Useful positive reduced models exist in particular settings and limits, but positivity should not be assumed merely because the original quantum probabilities are positive.
+
+## Closed index loops become an interaction energy
+
+Contract a $q$-dimensional bond joining two permutation pairings $g,h\in S_Q$. Following an index around the contraction closes it after one cycle of $g^{-1}h$. Every cycle supplies one independent sum over $q$ values. Thus the bond weight is
+
+$$
+W_0(g,h)=q^{C(g^{-1}h)},
+$$ {#eq-replica-cycle-weight}
+
+where $C$ is the number of cycles, including fixed points. Equal permutations maximize $C=Q$. Define the permutation distance $|g^{-1}h|=Q-C(g^{-1}h)$; then $W_0=q^Qe^{-(\ln q)|g^{-1}h|}$. Unmeasured bonds favor aligned permutations. A domain wall costs an amount proportional to $\ln q$ at leading large $q$.
+
+Now insert the same rank-one projector $|m\rangle\langle m|$ in every copy and sum its physical outcome once. All replica indices on that measured bond are forced to the same value $m$. The corresponding factor is
+
+$$
+W_{\mathrm{meas}}(g,h)=\sum_{m=1}^q1=q,
+$$ {#eq-replica-measured-weight}
+
+independent of the relative permutation. In a local bond convention before common normalization factors, random measurement locations therefore contribute
+
+$$
+W_p(g,h)=(1-p)q^{C(g^{-1}h)}+p q.
+$$ {#eq-replica-measurement-weight}
+
+This equation isolates the physical effect of a rank-one measurement; a full circuit partition function also contains gate Weingarten tensors, boundary tensors, and lattice-dependent index organization. It is not a replacement for those factors. Weak measurements instead generate weights depending on the Kraus operators, and higher-rank measurements retain some index structure.
+
+There are two distinct sums here. A measured location is sampled once for the physical circuit, giving coefficients $p$ and $1-p$, not $p^Q$ and $(1-p)^Q$. At that location the outcome is likewise shared by all replicas before it is summed. Sampling independent measurement outcomes in each copy would erase the interactions that encode the conditional ensemble.
+
+## Ordered replicas encode a volume law
+
+Bulk interactions depend on relative permutations and have a global left–right symmetry, schematically $g_i\mapsto a g_i b^{-1}$ with $a,b\in S_Q$. Alignment chooses a permutation pattern and reduces this symmetry to a diagonal subgroup. Increasing measurement probability weakens the preference for alignment. This is the statistical-mechanical origin of an order–disorder transition.
+
+For $Z_0$, the final boundary is uniformly pinned to the identity. For $Z_A$, it is pinned to a permutation consisting of $k$ disjoint $n$-cycles on $A$, with the extra Born copy fixed. Outside $A$ it remains identity. The boundary of $A$ is therefore the endpoint of a domain wall in the two-dimensional spacetime model.
+
+In the ordered phase the wall has a nonzero tension. A long interval forces a wall of length proportional to its size, giving an extensive free-energy cost and a volume-law entropy. In the disordered phase, boundary defects are screened over a finite correlation length. Their cost stops growing with separation and the entropy obeys an area law. At criticality the wall tension vanishes but its endpoints retain scale-dependent correlations, producing a logarithm.
+
+This picture explains why replica symmetry breaking is a statement about information correlations rather than ordinary magnetization of the physical qubits. The permutations live between mathematical copies. A local physical spin need not develop any expectation value at the MIPT.
+
+The relation to random tensor networks is now precise at the level of mechanism: both obtain permutation interactions from random tensors and diagnose entanglement through boundary twists. The monitored problem has additional causal and Born-rule structure. One should carry those distinctions through rather than infer equal critical theories from similar domain-wall drawings [@c_vasseur2019].
+
+## Large local dimension and percolation
+
+For large $q$, unequal pairings cost powers of $1/q$. Leading configurations tend to maximize the number of closed index loops, and the entropy problem reduces to a minimal geometry. In the appropriate replica limit, the resulting cluster model becomes percolation. Jian and collaborators and Bao and collaborators derive this controlled limit and also show why finite-$q$ models contain additional interactions [@c_jian2020; @c_bao2020].
+
+The logical hierarchy matters. The finite-integer-replica tensor mapping follows from exact integration. Leading large-$q$ simplifications are controlled in their regime. The physical entropy then requires continuation of replica-dependent quantities. At fixed finite $q$, fluctuations and interactions between walls remain. Taking a geometric critical point and simply substituting $q=2$ discards those terms precisely where long-distance relevance matters.
+
+The same issue occurs with Rényi indices. A generic state's Schmidt spectrum is not flat, so different $n$ can have different logarithmic coefficients and growth rates even when numerical evidence supports a common transition point for the usual $n\geq1$ observables. Clifford spectra are flat for stabilizer states, but their higher-copy averaging has a larger commutant. Matching a two-copy moment is not enough to guarantee matching full replica field theories [@c_li2024].
+
+## A free-energy calculation before criticality
+
+A simple two-copy unmonitored calculation illustrates how a domain wall already contains entropy, not just length. A swap boundary condition for the average purity propagates backward through a Haar gate. For a $q\times q$ gate, the two possible domain-wall moves have equal weight $q/(q^2+1)$. For a product initial state on an effectively infinite chain, the two continuations per layer give
+
+$$
+\mathbb E\operatorname{Tr}\rho_A^2
+=\left(\frac{2q}{q^2+1}\right)^t
+$$ {#eq-replica-annealed-purity}
+
+when $t$ counts successive gate encounters of that wall, before any physical boundary or finite subsystem produces saturation. Therefore the *annealed* second-Rényi growth is
+
+$$
+-\ln\mathbb E\operatorname{Tr}\rho_A^2
+=t\ln\frac{q^2+1}{2q}.
+$$ {#eq-replica-annealed-growth}
+
+At large $q$ the cost per step is $\ln q-\ln2+O(q^{-2})$. The $-\ln2$ is path entropy: there are two choices at each step. A minimal-cut count retaining only $t\ln q$ misses it. The physical $\mathbb ES_2$ differs from this annealed quantity because one must also treat fluctuations of the purity. Zhou and Nahum developed the interacting-walk approach and its connection to the directed polymer description [@c_zhou2019].
+
+This example makes the terminology concrete. A zero-temperature minimal path minimizes an energy. A domain-wall partition function sums many paths and produces a free energy. A quenched average then averages its logarithm. These are successive levels of description, not three interchangeable ways to write the same finite-$q$ expression.
+
+## Conformal boundary defects and logarithmic entropy
+
+Assume a one-dimensional monitored circuit reaches a scale-invariant critical point with $z=1$ and emergent two-dimensional conformal symmetry after rescaling time. This assumption is strongly supported for important short-range ensembles, but is not a theorem for every monitored system. A boundary-condition-changing operator $\phi_{n,k}$ sits at each endpoint of $A$. If its scaling dimension is $x_{n,k}$, their correlation gives
+
+$$
+\frac{Z_A(n,k)}{Z_0(n,k)}\propto
+\langle\phi_{n,k}(0)\phi_{n,k}(\ell)\rangle
+\propto\ell^{-2x_{n,k}}.
+$$ {#eq-replica-bcc-correlator}
+
+Because the twist disappears at $k=0$, $x_{n,0}=0$. Substitution into @eq-replica-entropy-limit yields
+
+$$
+\overline{S_n(A)}=
+\frac{2}{n-1}\left.\partial_kx_{n,k}\right|_{k=0}\ln\ell+O(1).
+$$ {#eq-replica-twist-coefficient}
+
+This derives the logarithm and identifies its coefficient. Mapping the line to a circle gives the chord-length formula in @eq-mipt-chord-entropy. The von Neumann entropy requires the additional $n\to1$ limit; a smooth continuation should be established rather than assumed at an arbitrary singular point.
+
+For disjoint intervals, conformal symmetry permits dependence on a cross ratio. For ordered endpoints $x_1<x_2<x_3<x_4$ on the infinite line,
+
+$$
+\eta=\frac{(x_2-x_1)(x_4-x_3)}{(x_3-x_1)(x_4-x_2)}.
+$$ {#eq-replica-cross-ratio}
+
+A four-defect correlation is not fixed by conformal symmetry alone; it is a universal function of $\eta$. At large separation, small $\eta$, an operator-product expansion identifies the leading exchanged scaling dimension. Thus mutual information can probe more of the critical theory than a fit to one logarithmic entropy coefficient.
+
+## Why a normalized theory can have $c=0$ and nontrivial physics
+
+At the physical replica point the untwisted normalization is one. In replica field-theory language, this is consistent with a critical family whose central charge $c(Q)$ vanishes at $Q=1$. It does not imply that every derivative with respect to $Q$ vanishes. These derivatives are precisely where physical information observables reside.
+
+For example, let $Z(Q)=\sum_{\mathbf m}p_{\mathbf m}^Q$ for the measurement record of a long circuit. Its Shannon entropy is
+
+$$
+H(M)=-\left.\partial_Q\ln Z(Q)\right|_{Q=1}.
+$$ {#eq-replica-record-shannon}
+
+On a periodic spatial cylinder of circumference $L$ and rescaled time length $T\gg L$, a conformal partition function has
+
+$$
+-\frac{1}{T}\ln Z(Q)=f_{\mathrm{bulk}}(Q)L-
+\frac{\pi c(Q)}{6L}+\cdots.
+$$ {#eq-replica-cylinder-free-energy}
+
+After differentiating,
+
+$$
+\frac{H(M)}{LT}=f'_{\mathrm{bulk}}(1)-
+\frac{\pi c_{\mathrm{eff}}}{6L^2}+\cdots,
+\qquad c_{\mathrm{eff}}=c'(1)
+$$ {#eq-replica-effective-central-charge}
+
+in this specific replica convention and with the temporal metric fixed. The derivative-defined $c_{\mathrm{eff}}$ is not the central charge of a unitary state Hamiltonian. Other conventions parameterize the continuation differently, so coefficients must be translated before comparison.
+
+Zero-central-charge theories can also be *logarithmic*: the dilatation operator may have a Jordan block. If $D|C\rangle=x|C\rangle$ and $D|D\rangle=x|D\rangle+|C\rangle$, then a scale transformation acts as $b^{-D}|D\rangle=b^{-x}(|D\rangle-\ln b\,|C\rangle)$. Correlators can therefore contain logarithms multiplying power laws. Replica limits can bring scaling dimensions into degeneracy and generate such structures. The existence of a $\ln\ell$ entanglement entropy alone, however, does not establish a logarithmic CFT: ordinary critical ground states already have logarithmic entropy for a different reason.
+
+## Broad distributions and multifractality
+
+Let $C(r)$ be a nonnegative trajectory diagnostic whose moments scale as
+
+$$
+\overline{C(r)^s}\sim r^{-2x(s)}.
+$$ {#eq-replica-multifractal-moments}
+
+If one exponent described every trajectory up to a scale-independent random amplitude, $x(s)$ would be linear in $s$. Nonlinearity signals that rare and typical trajectories contribute differently at different moments. Since
+
+$$
+\overline{\ln C(r)}=
+\left.\partial_s\ln\overline{C(r)^s}\right|_{s=0}
+\sim-2x'(0)\ln r,
+$$ {#eq-replica-typical-exponent}
+
+the typical exponent $x'(0)$ need not equal the exponent $x(1)$ of the mean. Higher derivatives encode fluctuations of $\ln C$: for example $\operatorname{Var}(\ln C)\sim-2x''(0)\ln r$ under this scaling form. Positivity of the variance requires the corresponding concavity condition near zero.
+
+Zabalo and collaborators used transfer-matrix and Lyapunov methods to extract scaling information and found evidence distinguishing Haar, Clifford, and percolation criticalities, including multifractal behavior in the generic case [@c_zabalo2022]. This is a numerical characterization of a critical theory, not its complete analytic solution. An important frontier remains the construction and solution of a continuum theory at physical finite local dimension.
+
+## Problems and solutions
+
+**1. Count cycles.** In $S_3$, compare a bond connecting identity to a transposition and a bond connecting identity to a three-cycle.
+
+**Solution.** Identity has three cycles, a transposition has two, and a three-cycle has one. Their weights from @eq-replica-cycle-weight are respectively $q^3$, $q^2$, and $q$. Their costs relative to alignment are $\ln q$ and $2\ln q$. A three-cycle can therefore be viewed geometrically as two elementary permutation changes, although their interactions matter at finite $q$.
+
+**2. Check the replica limit.** Why does replacing $Q=nk+1$ by $Q=nk$ change the physical problem?
+
+**Solution.** It removes the factor $p_{\mathbf m}$ that weights each record by its Born probability. The resulting derivative averages logarithms under a different record measure unless a compensating normalization is introduced and derived. The altered limit generally changes both bulk weights and continuum theory.
+
+**3. A log-normal illustration of multifractality.** Suppose $\ln C=-a\ln r+\sqrt{b\ln r}\,X$, where $X$ is a unit Gaussian. Find $x(s)$.
+
+**Solution.** Gaussian averaging gives $\overline{C^s}=r^{-as+bs^2/2}$, so $x(s)=as/2-bs^2/4$. The typical power is $a$, whereas the mean power is $a-b/2$. This is a pedagogical distribution; physical diagnostics can have bounds that truncate the log-normal approximation at large moments.
+
+**4. The status of an analytic claim.** An exact permutation mapping at integer $Q$ is known. Is the physical critical exponent thereby known exactly?
+
+**Solution.** No. One must solve the interacting model, identify its critical fixed point, and justify continuation to the physical replica limit. Exact mapping is an exact reformulation, not automatically an exact solution.

@@ -1,0 +1,183 @@
+# Random circuits and the growth of quantum information {#sec-random-circuits}
+
+A circuit is a microscopic model in which we know precisely where information can travel. Its artificial simplicity is useful: it separates locality, unitarity, randomness, conservation laws, and observation. The purpose of a random circuit is usually not to model a laboratory's exact sequence of pulses. It is to identify phenomena that survive after details have been forgotten. This chapter constructs that viewpoint from individual gates, then develops the geometric description of entanglement that will make the measurement transition intelligible.
+
+## Locality becomes a spacetime geometry
+
+Consider an open chain of $L$ sites, each with Hilbert space $\mathbb C^q$. An elementary time step applies two-site unitaries to disjoint nearest-neighbor bonds. Alternate the even and odd bonds. We count one layer of disjoint gates as one time unit; other conventions change velocities by factors of two. If $U_t$ denotes a layer,
+
+$$
+|\psi(t)\rangle=U_tU_{t-1}\cdots U_1|\psi(0)\rangle.
+$$ {#eq-circuit-evolution}
+
+A gate changes only the two sites on which it acts. In the Heisenberg picture, an operator initially on site $i$ can acquire support only on sites reached by a path through gates. Its support lies inside an exact circuit light cone. This is the discrete counterpart of a finite propagation velocity in a local Hamiltonian system.
+
+The causal bound alone does not specify how much information moves. A SWAP gate transports a pre-existing qubit without creating entanglement between two initially pure product factors. A controlled-NOT can entangle suitable inputs. A chaotic circuit repeatedly mixes these possibilities so that initially local information becomes encoded in many-body correlations.
+
+Across the cut between sites $x$ and $x+1$, define $S(x,t)$ as the von Neumann entropy of sites $1,\ldots,x$. A gate entirely to one side leaves this entropy unchanged: conjugating $\rho_A$ by a unitary preserves its eigenvalues. Only a gate crossing the cut can change it. A useful exact bound is
+
+$$
+|S(x,t+1)-S(x,t)|\leq 2\ln q.
+$$ {#eq-circuit-local-bound}
+
+To see the factor two, write the left region as $A'a$, with $a$ its boundary site. Before and after the gate, the Araki–Lieb and subadditivity inequalities give $|S(A'a)-S(A')|\leq S(a)\leq\ln q$. The gate leaves the reduced state of $A'$ unchanged. Comparing both times yields the bound. Starting from a product state, entanglement across a fixed cut therefore grows at most linearly with circuit depth.
+
+For a finite interval $A$ of length $\ell$ far from boundaries, both endpoints can contribute. Eventually $S(A)\leq\ell\ln q$ forces saturation. A simple scaling estimate is
+
+$$
+S(A,t)\simeq s_{\mathrm{eq}}\min(2v_Et,\ell),
+$$ {#eq-circuit-tsunami}
+
+where $s_{\mathrm{eq}}$ is the late-time entropy density and $v_E$ is the entanglement velocity in the layer convention chosen above. This is a coarse-grained estimate, not an exact equality for every circuit or every Rényi entropy. The two fronts in this picture are boundaries of an entangling region; they are not literal quasiparticles in a generic chaotic system.
+
+## Haar randomness: what is being averaged?
+
+The Haar measure on $U(d)$ is the unique normalized distribution invariant under left and right multiplication by fixed unitaries. A Haar-random two-site gate has $d=q^2$. In particular,
+
+$$
+\mathbb E_U\,U_{ij}U^*_{kl}=\frac{\delta_{ik}\delta_{jl}}d.
+$$ {#eq-circuit-haar-first}
+
+This follows without integration. Invariance forces the average to be proportional to the identity in both index pairs; unitarity fixes the proportionality constant. If a complete $d$-dimensional system is conjugated by a Haar unitary and the unitary is forgotten, its averaged state becomes $I/d$. The state in each realization remains pure if it started pure. This elementary distinction between an ensemble and an individual realization is central to all later chapters.
+
+Haar-random gates are a useful definition of maximal local scrambling, but they are expensive to simulate because a generic state requires $q^L$ complex amplitudes. Randomness also need not mean disorder fixed in space. In the usual circuit ensemble, each spacetime gate is sampled independently. Static disorder can introduce additional long time scales and alter critical behavior; it should not be silently identified with independent gate noise.
+
+### Worked example: typical entanglement of two random subsystems
+
+Draw a Haar-random normalized state in $\mathbb C^{d_A}\otimes\mathbb C^{d_B}$. Its two-copy moment is
+
+$$
+\mathbb E(|\psi\rangle\langle\psi|)^{\otimes2}
+=\frac{I+F_{AB}}{d_Ad_B(d_Ad_B+1)},
+$$ {#eq-circuit-state-moment}
+
+where $F_{AB}$ swaps the two complete copies. The state lies in the symmetric subspace, so invariance allows only the normalized symmetric projector; this fixes the expression. The swap identity gives
+
+$$
+\mathbb E\operatorname{Tr}\rho_A^2
+=\operatorname{Tr}\left[\mathbb E(\rho^{\otimes2})F_A\right]
+=\frac{d_A+d_B}{d_Ad_B+1}.
+$$ {#eq-circuit-purity-page}
+
+Indeed $\operatorname{Tr}F_A=d_Ad_B^2$, whereas $\operatorname{Tr}(F_{AB}F_A)=d_A^2d_B$. If $d_B\gg d_A$, the purity approaches $1/d_A$, its minimum. Thus a small region of a globally pure, sufficiently scrambled state looks almost maximally mixed.
+
+The second Rényi entropy is $S_2=-\ln\operatorname{Tr}\rho_A^2$. One must not take the logarithm through the average: $\mathbb ES_2\neq-\ln\mathbb E\operatorname{Tr}\rho_A^2$ in general. Jensen's inequality instead gives $\mathbb ES_2\geq-\ln\mathbb E\operatorname{Tr}\rho_A^2$. This distinction between a typical free energy and an averaged partition function will return in replica calculations.
+
+## Tensor networks and the minimal-cut bound
+
+Write a two-site gate as a four-index tensor, two incoming and two outgoing legs. Contract adjacent time layers by summing shared indices. The entire wavefunction is a tensor network with open legs at the final time. A *cut* is a line through internal legs that separates the final legs belonging to $A$ from those belonging to its complement. If it crosses bonds of dimensions $\chi_1,\ldots,\chi_N$, the wavefunction can be written
+
+$$
+|\psi\rangle=\sum_{\alpha_1,\ldots,\alpha_N}
+|v_{\boldsymbol\alpha}\rangle_A
+|w_{\boldsymbol\alpha}\rangle_{\bar A}.
+$$
+
+This is a decomposition with at most $\prod_j\chi_j$ terms. The Schmidt rank cannot exceed that number. Consequently
+
+$$
+S_n(A)\leq S_0(A)\equiv\ln\operatorname{rank}\rho_A
+\leq\min_{\text{cuts }\gamma}\sum_{j\in\gamma}\ln\chi_j
+\quad(n>0).
+$$ {#eq-circuit-mincut-bound}
+
+The leftmost statement uses that the uniform spectrum maximizes entropy at fixed rank. The geometric bound does not require random tensors. Saturation is an additional property, often valid at leading order in large bond dimension or for generic-rank constructions; it is not automatic for an arbitrary unitary network.
+
+A local rank-one projective measurement has tensor $|m\rangle\langle m|$. It factors its incoming and outgoing indices. In the corresponding trajectory network the bond across that insertion can be treated as dimension one. Its cut cost is zero. This gives a physical picture of measurement: it makes a local shortcut for a domain wall that measures entanglement. The shortcut does not imply that the entire many-body state has become a product.
+
+Vasseur, Potter, You, and Ludwig developed a statistical-mechanical description of entanglement transitions in random tensor networks, where the cost of a domain wall distinguishes area and volume laws [@c_vasseur2019]. Monitored circuits add a temporal direction and the Born-rule normalization of trajectories. The common geometry is powerful, but tensor-network ensembles and dynamical circuit ensembles have different normalization constraints.
+
+## From a fluctuating cut to a membrane
+
+At large scales an entanglement cut behaves like a fluctuating directed path in one space dimension, or a membrane in higher dimensions. For a final cut at $(x,t)$, a coarse-grained variational expression is
+
+$$
+S(x,t)=\min_{y(\tau)}\left[
+S(y(0),0)+s_{\mathrm{eq}}\int_0^t
+\mathcal E(\dot y)\,d\tau\right].
+$$ {#eq-circuit-membrane}
+
+Here $\mathcal E(v)$ is a direction-dependent line tension and $y(t)=x$. It summarizes how microscopic gates entangle. A vertical membrane has cost $s_{\mathrm{eq}}\mathcal E(0)t$, so $v_E=\mathcal E(0)$ in this convention. A tilted membrane can instead escape into a region with pre-existing low entropy. The variational competition explains why entanglement depends on the initial condition and cannot be computed by a local production rate alone.
+
+To derive a local equation, append a thin final time strip $\delta t$. Over it, $y(t-\delta t)=x-v\delta t$. Expanding the incoming entropy gives
+
+$$
+\partial_tS(x,t)=\min_v\left[s_{\mathrm{eq}}\mathcal E(v)-v\partial_xS(x,t)\right].
+$$ {#eq-circuit-hamilton-jacobi}
+
+The minimum is a Legendre transform of the tension. If reflection symmetry holds and $\mathcal E(v)=v_E+av^2/2+\cdots$ near $v=0$, minimizing gives $v=(\partial_xS)/(s_{\mathrm{eq}}a)$ and hence
+
+$$
+\partial_tS=s_{\mathrm{eq}}v_E-
+\frac{(\partial_xS)^2}{2s_{\mathrm{eq}}a}+\cdots.
+$$
+
+The negative slope correction has a simple meaning: a highly tilted entanglement profile is closer to its local entropy bound and grows more slowly. The membrane theory describes leading coarse-grained behavior in suitable chaotic systems. It is not a claim that every microscopic entropy equals the length of one literal path. Conservation laws, integrability, and measurements can require extra fields or invalidate a one-field description.
+
+## Why noisy growth produces KPZ fluctuations
+
+Let $h(x,t)$ denote the fluctuating entropy profile after coarse graining. Short-range circuit randomness contributes a local noise. Spatial smoothing gives a second derivative. Locality, height-shift symmetry, and reflection symmetry then permit
+
+$$
+\partial_th=v_0+\nu\partial_x^2h+
+\frac{\lambda}{2}(\partial_xh)^2+\eta(x,t),
+\qquad
+\mathbb E\eta(x,t)\eta(x',t')=2D\delta(x-x')\delta(t-t').
+$$ {#eq-circuit-kpz}
+
+This is the Kardar–Parisi–Zhang equation. It is a stochastic effective equation, with a microscopic cutoff implicit. The membrane expansion suggests the origin of its nonlinear term. The sign of $\lambda$ depends on whether one calls height entropy or its negative, and does not change the scaling exponents.
+
+The one-dimensional exponents can be motivated as follows. A stationary interface has Brownian spatial roughness, $\mathbb E[h(x)-h(0)]^2\propto|x|$, giving roughness exponent $\alpha=1/2$. Tilt invariance of the KPZ equation relates a uniform slope to a moving frame and imposes $\alpha+z=2$ at the nonlinear fixed point. Thus $z=3/2$ and the growth exponent is $\beta=\alpha/z=1/3$. Entropy fluctuations grow as $t^{1/3}$ and their correlation length as $t^{2/3}$. The Brownian stationary measure and tilt relation are properties of this effective equation; deriving its applicability to a quantum model is a separate step. Nahum, Ruhman, Vijay, and Haah established the noisy-circuit setting using complementary mappings and numerics [@c_nahum2017].
+
+There are three velocities or exponents to keep separate. The exact light cone bounds all influences. The *butterfly velocity* $v_B$ describes the front of a spreading operator. The entanglement velocity $v_E$ describes entropy production across a cut in a quench. A one-dimensional random-circuit operator front commonly broadens as $t^{1/2}$, even when entropy fluctuations grow as $t^{1/3}$ [@c_nahum2018]. These are different observables, so there is no contradiction.
+
+### Worked example: the operator front in a Haar circuit
+
+Use a local orthonormal operator basis with one identity and $q^2-1$ traceless operators. When a two-site Haar gate acts on a nonidentity operator, averaging distributes its squared coefficients uniformly over the $q^4-1$ nonidentity two-site basis elements. Suppose a right endpoint encounters an identity site to its right. Of these operators, $q^2-1$ are nontrivial only on the left site, and $q^2(q^2-1)$ have a nonidentity on the right. Therefore
+
+$$
+p_{\mathrm{advance}}=\frac{q^2}{q^2+1},\qquad
+p_{\mathrm{stay}}=\frac{1}{q^2+1}.
+$$ {#eq-circuit-front-probability}
+
+Alternating layers convert these local rules into a biased random walk for an appropriately tracked front coordinate. They imply ballistic drift and diffusive broadening; the precise velocity depends on the spacetime coordinate convention. This counting argument also shows why the operator front approaches the causal speed as $q\to\infty$.
+
+## Clifford circuits: an exactly simulable quantum laboratory
+
+For qubits, a Pauli string is a tensor product of $I,X,Y,Z$, with an overall phase. A Clifford unitary maps every Pauli string to another Pauli string under conjugation. The Hadamard, phase, and controlled-NOT gates generate the Clifford group. A stabilizer state is specified by $L$ independent commuting Pauli operators $g_a$ with eigenvalue $+1$:
+
+$$
+\rho=2^{-L}\prod_{a=1}^L(I+g_a).
+$$ {#eq-circuit-stabilizer-state}
+
+More conventionally the product is $\prod_a(I+g_a)/2$; these expressions are identical. Independence ensures its trace is one. Clifford evolution updates the generators rather than all $2^L$ amplitudes. A Pauli measurement is also efficient. If it commutes with the full stabilizer group, its outcome is predetermined; if it anticommutes with a generator, its outcomes are equally probable and one updates a generating set. This is a genuine simulation of conditional Born trajectories.
+
+Let $r_A$ be the number of independent stabilizers supported entirely in region $A$. When tracing out the complement, every Pauli string with nontrivial support there vanishes. Thus
+
+$$
+\rho_A=2^{-|A|}\sum_{g\in\mathcal S_A}g_A,
+\qquad
+S_n(A)=(|A|-r_A)\ln2
+$$ {#eq-circuit-stabilizer-entropy}
+
+for all Rényi indices including the von Neumann limit. The reduced state is proportional to a projector with rank $2^{|A|-r_A}$. This flat spectrum is a special algebraic property, not a generic feature of Haar states.
+
+Efficient simulation and high entanglement are compatible: a stabilizer state can have extensive entropy while admitting a short generator description. Conversely an area law alone does not prove that a particular representation or sampling task is efficient. Entanglement constrains matrix-product-state resources, but complexity also depends on structure.
+
+Clifford circuits have been indispensable for reaching large sizes and discovering transition phenomenology. They do not automatically reproduce every universal number of generic circuits. The replica commutant for Clifford gates is larger than the permutation commutant for Haar gates. Li, Vasseur, Fisher, and Ludwig derived the corresponding statistical mechanics and its dependence on the prime underlying the local qudit dimension [@c_li2024]. This provides a reason to compare universality using more than one exponent.
+
+## Problems and solutions
+
+**1. A circuit that never entangles.** Start from $|0\rangle^{\otimes L}$ and use only SWAP gates. What are the operator light cone and the entropy profile?
+
+**Solution.** An initially localized operator can be transported along a sequence of SWAPs and thus move ballistically. Every many-body state obtained from the specified initial condition is still the same product state, so $S(x,t)=0$. Operator motion by itself is insufficient for entanglement growth.
+
+**2. Bond dimension as a lower bound on simulation resources.** An exact matrix-product-state representation has bond dimension $\chi$ across a cut. Show that $\chi\geq e^{S_1}$, and explain the limitation of this conclusion.
+
+**Solution.** Its Schmidt rank is at most $\chi$, so $S_1\leq\ln\chi$. An extensive entropy requires an exponentially large exact bond dimension. This is a statement about that representation. Stabilizer tableaux show why it is not a proof of classical computational hardness for every algorithm. For approximate representations, discarded Schmidt weight rather than entropy alone controls fidelity.
+
+**3. Entanglement created by one gate.** Apply controlled-NOT, with the first qubit as control, to $|+\rangle|0\rangle$. Compute the purity of either qubit.
+
+**Solution.** The output is $(|00\rangle+|11\rangle)/\sqrt2$. The reduced state is $I/2$ and the purity is $1/2$. The entropy across the cut is $\ln2$. Apply the same gate to $|0\rangle|+\rangle$: the output is a product and the entropy is zero. A gate's entangling effect depends on its input.
+
+The useful conceptual progression is now available: local gates scramble information; a cut measures the resources needed to separate it; a coarse-grained tension describes entropy growth. Measurements will change the tension and eventually destroy its extensive cost.

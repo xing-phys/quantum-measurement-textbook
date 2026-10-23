@@ -1,0 +1,321 @@
+# Charge sharpening and the physics of learning {#sec-charge-learning}
+
+## A second question to ask of a monitored circuit
+
+An entanglement transition asks whether measurements prevent a system from storing an extensive amount of quantum information. A conservation law creates a more specific question: can the measurement record reveal the conserved quantity? These questions have different answers because a quantum state can have a precisely known charge and still possess a very large Hilbert space in which to store information.
+
+Consider $L$ qubits with local occupation operators
+
+$$
+n_i=\frac{1-Z_i}{2},\qquad Q=\sum_{i=1}^{L}n_i.
+$$ {#eq-charge-definition}
+
+The eigenvalues of $Q$ are the integers from zero to $L$. A dynamics has a **strong charge conservation law** when every unitary gate and every Kraus operator commutes with $Q$. This requirement is stronger than the statement that an averaged channel respects rotations $e^{i\theta Q}$. For example, particle loss can respect this rotation symmetry as a channel, while changing the charge in each run. Here we require the charge of a state that initially has definite $Q$ to remain unchanged in every run.
+
+Agrawal and collaborators established that charge-conserving monitored circuits can have a charge-sharpening transition inside an entangled phase: measurements can resolve the charge while a volume law persists. Their statistical-mechanics mapping and numerical study provide the starting point for this chapter [@s_agrawal2022]. We will derive the inference identities directly, then explain how a many-body transition becomes possible.
+
+## Symmetric gates and the size of a charge sector
+
+A two-qubit gate conserving $n_i+n_{i+1}$ has the form
+
+$$
+U=e^{i\alpha_0}\oplus V\oplus e^{i\alpha_2},\qquad V\in U(2).
+$$ {#eq-charge-gate-blocks}
+
+The blocks are ordered by two-site charge $0,1,2$, and $V$ acts on $\{|01\rangle,|10\rangle\}$. The two-dimensional block moves charge between neighboring sites and scrambles its quantum phase. The one-dimensional blocks acquire phases but cannot transport anything.
+
+In a fixed global sector, the number of computational basis states is
+
+$$
+\dim\mathcal H_Q=\binom{L}{Q}.
+$$
+
+At half filling, Stirling's formula gives
+
+$$
+\log\binom{L}{L/2}=L\log2-\frac12\log(\pi L/2)+O(L^{-1}).
+$$ {#eq-charge-sector-dimension}
+
+Knowing the global charge removes only about $\frac12\log L$ nats from an otherwise exponentially large space. There is consequently no information-theoretic reason why learning $Q$ should destroy extensive entanglement. A random pure state within $\mathcal H_{L/2}$ can still have an entropy proportional to subsystem size.
+
+A simple small-system example makes the distinction concrete. The state
+
+$$
+|\psi\rangle=\frac{|01\rangle+|10\rangle}{\sqrt2}
+$$
+
+has a sharp total charge $Q=1$ but one ebit of entanglement. Conversely, $|+\rangle^{\otimes L}$ is unentangled and has charge variance $L/4$. Charge uncertainty and entanglement measure different properties.
+
+## The posterior distribution is the sector weight
+
+Let $\Pi_q$ project onto sector $q$, and let the initial pure state be
+
+$$
+|\psi_0\rangle=\sum_q\sqrt{\pi_q}\,|\psi_q\rangle,
+\qquad \Pi_q|\psi_q\rangle=|\psi_q\rangle.
+$$
+
+The record $\boldsymbol m$ specifies a product $K_{\boldsymbol m}$ of unitary gates and measurement operators. Strong conservation gives $[K_{\boldsymbol m},\Pi_q]=0$. Define a likelihood for each sector,
+
+$$
+P(\boldsymbol m|q)=\|K_{\boldsymbol m}|\psi_q\rangle\|^2.
+$$
+
+Orthogonality between sectors removes interference from the record probability:
+
+$$
+P(\boldsymbol m)=\sum_q\pi_qP(\boldsymbol m|q).
+$$
+
+The squared norm of the conditional state in sector $q$ is therefore
+
+$$
+w_q(\boldsymbol m)
+=\langle\psi_{\boldsymbol m}|\Pi_q|\psi_{\boldsymbol m}\rangle
+=\frac{\pi_qP(\boldsymbol m|q)}{P(\boldsymbol m)}
+=P(q|\boldsymbol m).
+$$ {#eq-sector-bayes-identity}
+
+This is an exact identity. Quantum collapse onto a sector and Bayesian learning of its label are two descriptions of the same change in sector weights. A coherent superposition need not become an incoherent mixture during this argument: the posterior refers to the outcome of a possible final measurement of $Q$. Relative phases between sectors are irrelevant for that outcome.
+
+The conditional charge variance is
+
+$$
+V_Q(\boldsymbol m)
+=\sum_q q^2w_q(\boldsymbol m)
+-\left[\sum_q qw_q(\boldsymbol m)\right]^2.
+$$
+
+One can alternatively measure the posterior entropy
+
+$$
+H(Q|\boldsymbol m)=-\sum_qw_q(\boldsymbol m)\log w_q(\boldsymbol m),
+\qquad
+I(Q:\boldsymbol M)=H(Q)-\mathbb E_{\boldsymbol m}H(Q|\boldsymbol m).
+$$ {#eq-charge-mutual-information}
+
+Variance and entropy are not interchangeable at finite size. A narrow distribution with a rare tail can have small entropy and appreciable variance. Their vanishing both imply a definite charge for a finite discrete charge set, but finite-size scaling should specify the chosen diagnostic.
+
+## Worked example: binary sector discrimination
+
+Suppose the initial state has equal weights in sectors $q_0$ and $q_1$. Write $w=P(q_1|\boldsymbol m)$ and $\Delta q=q_1-q_0$. Then
+
+$$
+V_Q(\boldsymbol m)=(\Delta q)^2w(1-w).
+$$
+
+The optimal guess chooses the more likely sector. Its probability of being wrong for this record is
+
+$$
+e(\boldsymbol m)=\min(w,1-w).
+$$
+
+Because $e\le1/2$ and $w(1-w)=e(1-e)$,
+
+$$
+\frac12e(\boldsymbol m)\le
+\frac{V_Q(\boldsymbol m)}{(\Delta q)^2}
+\le e(\boldsymbol m).
+$$ {#eq-charge-error-variance-bound}
+
+Averaging preserves the inequalities. Thus optimal binary prediction becomes asymptotically perfect precisely when the averaged conditional variance vanishes. No assumption about random circuits, thermalization, or a continuum field theory was needed. This equivalence concerns an optimal decoder with the correct model.
+
+For an especially transparent readout model, take independent outcomes $m_j=\pm1$ with
+
+$$
+P(m_j|q_1)=\frac{1+\epsilon m_j}{2},\qquad
+P(m_j|q_0)=\frac{1-\epsilon m_j}{2}.
+$$
+
+After $N$ outcomes, the log posterior odds are
+
+$$
+\Lambda_N=\log\frac{\pi_1}{\pi_0}
++\sum_{j=1}^{N}\log\frac{1+\epsilon m_j}{1-\epsilon m_j}.
+$$
+
+For small $\epsilon$, each contribution is $2\epsilon m_j+O(\epsilon^3)$. Under hypothesis $q_1$, $\mathbb E\Lambda_N\simeq2N\epsilon^2$ and $\operatorname{Var}\Lambda_N\simeq4N\epsilon^2$. The signal-to-noise ratio grows as $\epsilon\sqrt N$, so $N\sim\epsilon^{-2}$ readouts suffice for an order-one improvement in accuracy. This elementary estimate will explain polynomial learning times for non-Abelian charges in the next chapter.
+
+There is no finite-$\epsilon$ phase transition in this independent model: every nonzero bias is eventually learned. A many-body transition requires the distinguishability of records to scale nontrivially with system size, along with a specified observation time.
+
+## Several sectors: posterior sampling and a replica diagnostic
+
+A binary charge prior is convenient but not necessary. Suppose the allowed labels are $q=1,\ldots,N$ and the correct posterior is $w_q(\boldsymbol m)$. Instead of choosing the most likely label, consider drawing a prediction independently from this posterior. Conditional on the record, the actual label also has distribution $w_q$, so the success probability of this randomized decoder is
+
+$$
+P_{\mathrm{sample}}(\text{correct}|\boldsymbol m)
+=\sum_q w_q(\boldsymbol m)^2.
+$$ {#eq-charge-posterior-sampling}
+
+The quantity on the right is the purity of the classical posterior distribution. The optimal deterministic guess has success $w_{\max}$. Since $\sum_qw_q^2\le w_{\max}$ and $\sum_qw_q^2\ge w_{\max}^2$, either success measure approaches one exactly when the other does. Thus collapse onto a unique sector can be diagnosed without privileging a numerical value or a metric on the charge labels.
+
+An experimentally convenient quadratic score evaluates the entire forecast rather than only its most likely label. Let $e_q$ be one if the actual label is $q$ and zero otherwise. The Brier score is $B=\sum_q(w_q-e_q)^2$. Averaging the actual label with the correct conditional distribution gives
+
+$$
+\mathbb E[B|\boldsymbol m]=1-\sum_qw_q(\boldsymbol m)^2.
+$$
+
+This follows by expanding the square: the three terms have conditional expectations $\sum_qw_q^2$, $-2\sum_qw_q^2$, and one. An inaccurate forecast incurs an additional nonnegative squared distance from the true posterior. This proper-scoring property distinguishes a calibrated probabilistic decoder from a classifier whose confidence estimates are unreliable.
+
+There is a quantum expression for the same purity. In two independent copies of a conditional state, define the sector-matching projector $\mathcal P=\sum_q\Pi_q\otimes\Pi_q$. Its expectation is $\sum_qw_q^2$. The operator asks only whether the copies occupy the same charge sector; it does not test whether their microscopic wave functions agree. The corresponding two-copy observable is much simpler conceptually than a full state-purity measurement, but preparing identical conditional records can still be expensive. A prediction score avoids that repetition by using the record as classical side information.
+
+This example illustrates the role of replicas without invoking a field theory. Two copies naturally appear because a posterior purity is quadratic. The probability weight assigned to records must still be the physical one when the two-copy quantity is averaged. A two-copy diagram with uniformly weighted records would compute a different object.
+
+## What a learning transition actually means
+
+For a finite chain, waiting indefinitely may resolve a charge even in a phase called fuzzy. A phase is therefore defined using an order of limits. A useful protocol chooses two neighboring sectors, fixes an aspect ratio $a=t/L$, and asks whether the posterior uncertainty remains nonzero as $L\to\infty$. Other protocols define a learning time $t_{\mathrm{learn}}(L,\varepsilon)$ at which the average optimal error first falls below a fixed tolerance $\varepsilon$.
+
+These definitions must be accompanied by the prior and by the scale of the sector separation. Distinguishing $Q=L/2$ from $Q=L/2+1$ is harder than distinguishing densities $Q/L=1/4$ and $3/4$. A measurement of a few local sites already carries order-one information about the latter pair, whereas the local difference between adjacent extensive sectors is of order $1/L$.
+
+The charge-fuzzy and charge-sharp phases are most physically characterized by their conditional long-distance fluctuations. In a fuzzy phase, uncertainty persists across scales and the associated replica field remains gapless. In a sharp phase, the record confines residual uncertainty to finite-size regions. Exact global sharpening at long time and the spatial correlation length are related but should not be confused with a statement that every local occupation becomes definite.
+
+The trapped-ion experiment of Agrawal, Lopez-Piqueres, Vasseur, Gopalakrishnan, and Potter used charge prediction to obtain finite-size evidence for observable sharpening without postselecting identical records. Its scalable test compares a prediction made from each record with a final charge measurement. Decoder efficiency and hardware errors remain separate parts of the interpretation [@s_agrawal2024].
+
+## A representative phase diagram
+
+For the representative one-dimensional $U(1)$-conserving qubit circuits studied above, increasing the local measurement rate can produce the following sequence. Let $p_{\sharp}$ denote the charge-sharpening threshold and $p_c$ the entanglement threshold.
+
+| Measurement regime | Charge information in the record | Long-time trajectory entanglement |
+|:---|:---|:---|
+| $p<p_{\sharp}$ | Charge-fuzzy: long-distance conditional charge uncertainty remains gapless | Volume law |
+| $p_{\sharp}<p<p_c$ | Charge-sharp: residual charge uncertainty has a finite spatial scale | Volume law |
+| $p>p_c$ | Charge-sharp | Area law |
+
+The middle regime is the essential new possibility: learning a conserved label does not reveal all quantum information stored within its sector. At either threshold, critical scaling replaces the simple phase labels in the table.
+
+This is a phase diagram for a specified family of monitored circuits, rather than a classification of every model with a $U(1)$ symmetry. The locations of both thresholds depend on gates, readouts, boundary conditions, and the sampling convention; modified architectures or additional constraints require a fresh analysis of their ordering. The displayed charge distinction uses thermodynamic and time limits of the kind specified above, with a fixed sector prior and observation-time scaling. At a fixed finite size, sufficiently long monitoring can eventually learn a charge even on the fuzzy side. The entanglement column likewise refers to the appropriate late-time scaling with subsystem and system size, not to the entropy immediately after preparation.
+
+## Charge motion as a hidden stochastic process
+
+It is useful to first consider an observer who knows where gates were applied but not their independently randomized internal phases. Averaging a Haar-random $V\in U(2)$ sends a density matrix within the single-particle block to its maximally mixed value. For basis occupations, this means
+
+$$
+01\longrightarrow\begin{cases}01&\text{probability }1/2,\\10&\text{probability }1/2,\end{cases}
+\qquad
+10\longrightarrow\begin{cases}01&\text{probability }1/2,\\10&\text{probability }1/2.\end{cases}
+$$
+
+The $00$ and $11$ configurations do not change. The resulting hidden dynamics is a symmetric exclusion process: particles hop, but a site cannot hold two particles. Measurements provide noisy observations of this hidden configuration.
+
+This classical description is exact for the specified averaged inference problem. It is not a claim that an individual known quantum circuit has no interference. If the observer knows every gate phase, the optimal likelihood is generally a quantum calculation. An efficient classical decoder that ignores phases can still be useful, but its performance must be assessed for its information set.
+
+Let $x$ label an occupation bit string, $T(x'|x)$ the stochastic transition kernel, and $R(m|x')$ the measurement likelihood. A forward recursion for the unnormalized posterior is
+
+$$
+f_{t+1}(x')=R(m_{t+1}|x')\sum_xT(x'|x)f_t(x).
+$$ {#eq-classical-forward-filter}
+
+Its normalization is the likelihood of the observed record. Summing $f_t(x)$ over configurations with a specified $Q$ gives a sector likelihood. This exact algorithm takes exponential time if all $2^L$ configurations are stored. Tensor-network compression can improve it when the posterior has manageable structure, but that is an additional computational property.
+
+Kim, von Keyserlingk, and Lamacraft formulate such tasks within quantum hidden Markov models. Their framework makes explicit that the physical dynamics, the observer's side information, and the assumed inference model together determine the decoding problem [@s_kim2026].
+
+## The conditional correlator and the law of total variance
+
+The appropriate density correlator measures uncertainty remaining after the record is known:
+
+$$
+C_{ij}=\mathbb E_{\boldsymbol m}\left[
+\langle n_in_j\rangle_{\boldsymbol m}
+-\langle n_i\rangle_{\boldsymbol m}\langle n_j\rangle_{\boldsymbol m}
+\right].
+$$ {#eq-charge-conditional-correlation}
+
+For classical hidden charges, this is literally a posterior covariance. For commuting quantum $n_i$, it has the same covariance interpretation for a final joint readout. Its spatial sum gives $\mathbb E V_Q$.
+
+For any random variable $X$, the law of total variance reads
+
+$$
+\operatorname{Var}(X)=
+\mathbb E_{\boldsymbol M}\operatorname{Var}(X|\boldsymbol M)
++\operatorname{Var}_{\boldsymbol M}\mathbb E(X|\boldsymbol M).
+$$ {#eq-total-charge-variance}
+
+To derive it, insert $X-\mathbb EX=[X-\mathbb E(X|\boldsymbol M)]+[\mathbb E(X|\boldsymbol M)-\mathbb EX]$ into the square. The cross term vanishes after conditioning. Monitoring transfers uncertainty from the first term to the second: different records lead to different conditional means. It does not have to change the unconditional variance.
+
+Consequently, an averaged state can look entirely featureless while the conditional ensemble exhibits a phase transition. Averaging first and then taking a variance discards exactly the information one is trying to diagnose.
+
+## From a compact field to a sharpening transition
+
+A one-dimensional conserved integer charge admits a continuum description using a height field. Schematically,
+
+$$
+\delta n(x)=\frac{1}{\pi}\partial_x\vartheta(x).
+$$
+
+The normalization here defines $\vartheta$; another bosonization convention moves factors of $\pi$ into the stiffness. An interval charge is a height difference, $\delta Q_{[0,\ell]}=[\vartheta(\ell)-\vartheta(0)]/\pi$. If this field has Gaussian logarithmic roughness,
+
+$$
+\mathbb E\left[(\vartheta(\ell)-\vartheta(0))^2\right]
+=A\log(\ell/a)+O(1),
+$$
+
+then its conditional interval-charge variance is
+
+$$
+\mathbb E\operatorname{Var}(Q_{[0,\ell]}|\boldsymbol M)
+=\frac{A}{\pi^2}\log(\ell/a)+O(1).
+$$ {#eq-charge-interval-log}
+
+Here $a$ is a short-distance cutoff, and the variance refers to the replica-difference fluctuations that survive conditioning. A massive, pinned height gives a bounded large-$\ell$ variance instead.
+
+Why can the field become massive? Charge is quantized, so its conjugate phase is compact. Smooth Gaussian fluctuations do not exhaust a compact field's configurations: the phase can wind by $2\pi$ around a spacetime point. These vortices are nonperturbative defects.
+
+To see the basic energy-entropy competition, use the normalization
+
+$$
+S_{\mathrm G}=\frac{K}{2}\int d^2r\,|\nabla\phi|^2,
+\qquad \phi\equiv\phi+2\pi.
+$$
+
+A vortex of integer winding $m$ has $|\nabla\phi|=|m|/r$. Its action in a disk is
+
+$$
+S_m=\frac K2\int_a^L2\pi r\,dr\frac{m^2}{r^2}
+=\pi Km^2\log(L/a).
+$$
+
+Its possible positions contribute an entropy $2\log(L/a)$. At sufficiently large stiffness, defects are costly; when their scaling dimension drops below two, they proliferate. Perturbatively, a defect fugacity $y$ obeys $dy/d\ell=(2-\Delta_v)y+\cdots$, while vortex pairs renormalize $K$ at order $y^2$. These coupled flows yield an essential, rather than algebraic, divergence of the correlation length,
+
+$$
+\xi\sim a\exp\left(\frac{b}{\sqrt{|g-g_c|}}\right),
+$$ {#eq-charge-bkt-length}
+
+on the appropriate approach to a Berezinskii-Kosterlitz-Thouless transition. The constant $b$ is nonuniversal.
+
+The monitored problem has several replicas. The common field represents unconditional charge motion; only differences between replicas describe residual uncertainty. A minimal allowed winding is therefore a composite vector such as $(1,-1,0,\ldots)$ rather than a vortex in the common mode. In the normalization above its squared length is two, so its Gaussian action is $2\pi K\log(L/a)$. Which vortex vectors exist is physical information, not a choice of notation.
+
+Barratt and collaborators derived the replicated compact field theory and identified a modified Kosterlitz-Thouless sharpening transition. The compact replica structure explains why one cannot simply import every numerical exponent of an ordinary XY model. Their continuum analysis and comparison with projective-circuit numerics support a distinct sharpening transition before the entanglement transition [@s_barratt2022].
+
+## What an experiment measures, and what it does not
+
+A direct measurement of $V_Q(\boldsymbol m)$ would require estimating both $\langle Q^2\rangle_{\boldsymbol m}$ and $\langle Q\rangle_{\boldsymbol m}^2$ for a fixed record. Identical long records are exponentially rare, so this route has a severe sampling problem. A prediction test uses one record once: a decoder predicts the sector, and a final projective measurement supplies the answer.
+
+This method has three logically separate layers. The quantum apparatus generates records. Statistical inference defines an optimal success probability given available information. An implementable decoder achieves some possibly lower success probability. A failure of a particular decoder does not prove that the information is absent from the record.
+
+A mismatched noise model can also move a decoder's apparent threshold. Suppose the true readout flips a bit with probability $\eta$, but the decoder assumes $\eta'$. If both are below $1/2$, a simple independent-bit majority vote happens to choose the same binary decision; in correlated many-body problems, a mismatch changes relative path weights and can change the thermodynamic inference problem. Bayes optimality is therefore a physical assumption worth stating, rather than a generic property of machine learning.
+
+## Exercises with solutions
+
+### A fixed charge can support extensive entanglement
+
+**Problem.** On $2N$ qubits partitioned into left and right halves, construct a state with exactly $N$ particles and entanglement $N\log2$.
+
+**Solution.** Pair every left qubit with one right qubit and take $\bigotimes_{j=1}^{N}(|0\rangle_{L_j}|1\rangle_{R_j}+|1\rangle_{L_j}|0\rangle_{R_j})/\sqrt2$. Each pair contains one particle and contributes $\log2$ to the bipartite entropy. Geometry may make this state expensive to prepare locally, but its existence establishes compatibility of sharp charge and a volume law.
+
+### A completely uninformative detector
+
+**Problem.** A detector reports $m$ with probability $R(m)$ independent of $Q$. Show that neither the posterior entropy nor optimal sector accuracy improves.
+
+**Solution.** Bayes' rule gives $P(q|m)=\pi_qR(m)/\sum_{q'}\pi_{q'}R(m)=\pi_q$. Repeating an independent uninformative detector leaves this identity intact. A large number of outcomes is useful only when the hypotheses give different distributions for them.
+
+### How much charge information is initially available?
+
+**Problem.** For $|+\rangle^{\otimes L}$, estimate the Shannon entropy of $Q$ at large $L$.
+
+**Solution.** The binomial distribution has variance $L/4$ and is approximately Gaussian. A discrete Gaussian with a large variance $\sigma^2$ has entropy $\frac12\log(2\pi e\sigma^2)+o(1)$. Thus $H(Q)\simeq\frac12\log(\pi eL/2)$. This is a logarithmic amount of classical information, even though the underlying state space has exponentially many dimensions.
+
+### Why local charge conservation matters
+
+**Problem.** If particles are lost at an unknown rate, does a final charge measurement still test the decoder's guess of the initial charge?
+
+**Solution.** Generally no. The final charge includes unobserved losses and need not equal the initial label. One must either decode the initial charge using a model of losses and a suitable verification protocol, or formulate a different task. Strong conservation made the initial and final sector labels identical in @eq-sector-bayes-identity.

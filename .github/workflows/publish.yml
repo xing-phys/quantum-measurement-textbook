@@ -1,0 +1,45 @@
+name: Build and publish textbook
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.8.27
+          tinytex: true
+      - name: Validate numerical implementation
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.12'
+      - run: julia numerics/monitored_circuit.jl --validate
+      - run: julia numerics/mixed_gaussian_checks.jl
+      - name: Render HTML book and combined PDF
+        run: quarto render
+      - name: Validate references and local navigation
+        run: python3 scripts/check_book.py
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: outputs/site
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

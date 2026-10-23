@@ -1,0 +1,133 @@
+# Mathematical toolbox and a research map {#sec-toolbox}
+
+## A compact dictionary
+
+| Term | Definition used in this book | Common pitfall |
+|---|---|---|
+| Trajectory | Conditional state for a particular physical measurement record | Replacing its record distribution by a convenient uniform one |
+| Instrument | Outcome probabilities together with state-update maps | Specifying a POVM without its backaction |
+| Unconditional state | State after the record is discarded | Computing its entropy in place of the average trajectory entropy |
+| MIPT | A nonanalytic change in monitored information or entanglement behavior in specified limits | Calling every monitoring crossover a phase transition |
+| Purification | Reduction of uncertainty relative to a retained record | Treating unobserved noise as a measurement available to the observer |
+| Sharpening | Collapse of conditional uncertainty in a conserved quantity on a specified scaling time | Assuming it must coincide with an entanglement transition |
+| Learnability | Operational inference of a specified hidden property from available data | Equating information-theoretic identifiability with an efficient algorithm |
+| Strong symmetry | A state has definite symmetry charge, or each channel Kraus operator preserves it, as specified | Confusing it with covariance of an averaged channel |
+| Weak symmetry | Invariance under conjugation by the symmetry | Assuming it implies a fixed charge sector |
+| SW-SSB | Loss of strong symmetry order while weak symmetry persists, diagnosed in the stated mixed-state framework | Using an ordinary one-copy correlator as a complete diagnostic |
+| Replica | A mathematical copy introduced to evaluate nonlinear moments | Interpreting it as an extra physical particle |
+| Annealed average | Logarithm after averaging a positive quantity | Confusing it with the average of a logarithm |
+| CFT | A scale-invariant local theory with conformal symmetry under specified assumptions | Inferring a particular unitary CFT from a logarithmic entropy alone |
+| Hydrodynamics | Long-wavelength theory of slow modes and conservation laws | Extending a Gaussian approximation through a defect-driven transition |
+
+## The swap trick, derived index by index
+
+Let $\rho$ act on $\mathcal H_A\otimes\mathcal H_B$. Introduce two copies with basis $|a b\rangle_1|a'b'\rangle_2$. The swap $\mathsf{Swap}_A$ exchanges the two $A$ labels and leaves the $B$ labels fixed. Then
+
+$$
+\operatorname{Tr}[(\rho\otimes\rho)\mathsf{Swap}_A]
+=\sum_{a,a',b,b'}\rho_{ab,a'b}\rho_{a'b',ab'}
+=\operatorname{Tr}\rho_A^2.
+$$ {#eq-toolbox-swap}
+
+The first equality follows by inserting the basis definition of the trace; the second follows by applying the partial trace to each factor. This is an exact finite-dimensional identity, including for a mixed global state. In an experiment, estimating a swap expectation on two copies measures a purity. In replica theory, the same identity changes how tensor-network legs are connected at the final boundary.
+
+For $n$ copies, a cyclic permutation on region $A$ yields $\operatorname{Tr}\rho_A^n$. Other permutations give products of traces determined by their cycle lengths. A cycle of length $r$ forces an index to pass through $r$ factors of $\rho$, producing $\operatorname{Tr}\rho^r$. The familiar permutation spins of replica statistical mechanics therefore arise directly from how moments contract indices.
+
+## A Haar second moment without advanced group theory
+
+For a Haar-random pure state in dimension $D$, rotational invariance implies that $\mathbb E[(|\psi\rangle\langle\psi|)^{\otimes2}]$ commutes with every $U\otimes U$. It is supported on the symmetric subspace because $|\psi\rangle^{\otimes2}$ is symmetric. Invariance makes it proportional to the symmetric projector $P_+=(I+\mathsf{Swap})/2$. Its trace is one, while $\operatorname{Tr}P_+=D(D+1)/2$, so
+
+$$
+\mathbb E[(|\psi\rangle\langle\psi|)^{\otimes2}]
+=\frac{I+\mathsf{Swap}}{D(D+1)}.
+$$ {#eq-toolbox-haar-moment}
+
+For a bipartite space with $D=mn$, contract this identity with $\mathsf{Swap}_A$. The trace of $\mathsf{Swap}_A$ is $mn^2$, while the trace of $\mathsf{Swap}_{AB}\mathsf{Swap}_A=\mathsf{Swap}_B$ is $m^2n$. Hence
+
+$$
+\mathbb E\operatorname{Tr}\rho_A^2=\frac{m+n}{mn+1}.
+$$ {#eq-toolbox-haar-purity}
+
+This is a simple exact benchmark for a random-state program. It is not the same as $e^{-\mathbb E S_2}$. Jensen's inequality gives $\mathbb E S_2\geq-\ln\mathbb E\operatorname{Tr}\rho_A^2$. The distinction is the finite-dimensional version of a central replica subtlety.
+
+## Entanglement negativity for a mixed pair
+
+Partial transposition on $B$ acts as $(|a b\rangle\langle a'b'|)^{T_B}=|a b'\rangle\langle a'b|$. If a state is separable, $\rho=\sum_jp_j\rho_{A,j}\otimes\rho_{B,j}$, its partial transpose is positive because ordinary transposition preserves positive eigenvalues. A negative partial-transpose eigenvalue therefore certifies entanglement. Positivity is not sufficient for separability in general dimensions.
+
+The logarithmic negativity is $\mathcal E_N=\ln\|\rho^{T_B}\|_1$, where the trace norm is the sum of singular values. For a Bell pair, $\rho^{T_B}$ has three eigenvalues $1/2$ and one $-1/2$, so $\|\rho^{T_B}\|_1=2$ and $\mathcal E_N=\ln2$. For the equal classical mixture of $|00\rangle$ and $|11\rangle$, partial transposition changes nothing and $\mathcal E_N=0$.
+
+This example supplies a concrete reason to introduce mixed-state entanglement diagnostics: both states have maximally mixed individual qubits, but only one carries distillable pair entanglement. Negativity, mutual information, recoverability, and mixed-state symmetry diagnostics answer different questions. None is a universal replacement for all the others.
+
+## Fidelity conventions
+
+Two conventions are common. Define the root fidelity
+
+$$
+f(\rho,\sigma)=\operatorname{Tr}\sqrt{\sqrt\rho\,\sigma\sqrt\rho},
+\qquad F(\rho,\sigma)=f(\rho,\sigma)^2.
+$$ {#eq-toolbox-fidelity}
+
+Both lie in $[0,1]$ for normalized states. For a pure $\rho=|\psi\rangle\langle\psi|$, $F=\langle\psi|\sigma|\psi\rangle$. For commuting states, $f=\sum_i\sqrt{p_iq_i}$ is the classical overlap of their square-root probability vectors. The two conventions detect zero versus nonzero long-distance limits in the same way, but give different exponents and numerical values. A statement about a fidelity correlator must state which one it uses.
+
+The trace distance $T=\tfrac12\|\rho-\sigma\|_1$ bounds optimal discrimination of equally likely states: $P_{\mathrm{success}}=(1+T)/2$. It obeys $1-f\leq T\leq\sqrt{1-f^2}$. Thus near-unit fidelity implies small distinguishability. An overlap normalized by $\operatorname{Tr}\rho^2$ is a different object and can weight rare sectors very differently; this is why second-Rényi and fidelity diagnostics of mixed-state order must be compared with care.
+
+## A short derivation of the error-correction condition
+
+Let $P$ project onto a code with orthonormal basis $|i\rangle$. Suppose error operators $E_a$ act. A recovery should identify the error without learning which logical state was stored, because learning the logical label would dephase a superposition. This requires
+
+$$
+\langle i|E_a^\dagger E_b|j\rangle=C_{ab}\delta_{ij},
+\qquad PE_a^\dagger E_bP=C_{ab}P.
+$$ {#eq-toolbox-kl}
+
+The matrix $C$ is positive: for coefficients $v_a$, $\sum_{ab}v_a^*C_{ab}v_b=\|\sum_av_aE_a|i\rangle\|^2\geq0$. Diagonalize $C$ by a unitary rotation of the error operators, obtaining $F_\alpha$ with $PF_\alpha^\dagger F_\beta P=c_\alpha\delta_{\alpha\beta}P$. For $c_\alpha>0$, $V_\alpha=F_\alpha P/\sqrt{c_\alpha}$ is an isometry from the code to an error subspace, and these subspaces are orthogonal for different $\alpha$. A recovery measures which subspace occurred and applies $V_\alpha^\dagger$. It learns the syndrome while preserving every superposition in the code. This proves sufficiency; necessity follows because a perfectly recoverable channel cannot leak logical information to its complementary environment [@f_kl1997].
+
+The condition is exact and applies to a specified set of errors. A monitored phase often supplies an approximate, dynamically generated code rather than an exact finite code satisfying this relation for arbitrary errors. The thermodynamic statement requires explicit estimates of leakage or recoverability.
+
+## Deriving a continuity equation from symmetry
+
+For local number operators $n_j$ and a nearest-neighbor number-conserving Hamiltonian $H=\sum_jh_{j,j+1}$, assume $[h_{j,j+1},n_j+n_{j+1}]=0$. Heisenberg evolution gives
+
+$$
+\partial_t n_j=i[H,n_j]=J_{j-1,j}-J_{j,j+1},
+\qquad J_{j,j+1}=-i[h_{j,j+1},n_j].
+$$ {#eq-toolbox-continuity}
+
+Summing over $j$ telescopes to zero except for boundary currents. This is the microscopic origin of a hydrodynamic conservation law. A strong-symmetry measurement that commutes with total charge preserves the global sector, but its conditional local update can still redistribute the observer's estimated density. The conditional estimate has innovation terms from new evidence in addition to physical currents. It is therefore essential to distinguish transport of actual conserved charge from updating knowledge about that charge.
+
+## How the research threads fit together
+
+| Problem | Information being tracked | Effective description | What remains model dependent |
+|---|---|---|---|
+| Entanglement growth | Quantum correlations across a cut | Membranes, replica interfaces, operator spreading | Gate ensemble, conservation, integrability |
+| Entanglement MIPT | Survival of nonlocal quantum information | Permutation order and boundary twists | Universality class, dimensions, noise |
+| Purification transition | Entanglement with an initial reference | Decoupling and channel coding | Time scale and recovery resources |
+| Measurement-altered criticality | Correlations after a spatial measurement layer | Replicated CFT defects and compact fields | Born weighting, measured operator, relevance |
+| Mixed-state SW-SSB | Strong symmetry coherence at fixed weak symmetry | Fidelity/replica observables and channel equivalence | Diagnostic and allowed local operations |
+| Charge sharpening | Conditional uncertainty in global charge | Bayesian inference, vortices, hydrodynamics | Readout, symmetry, scaling time |
+| Non-Abelian learning | Fusion sector rather than commuting local charges | Recoupling, loop models, quantum inference | Large-fugacity extrapolation and anyon theory |
+| Monitored hydrodynamics | Spacetime uncertainty conditioned on a record | Filtering, smoothing, replica density fields | Nonlinearities, compactness, symmetry |
+
+The unifying operation is to ask what information is accessible to which observer, using which record, on which time scale. The unifying mathematical step is then to translate that question into a well-defined observable before approximating its dynamics. This order prevents the most common conceptual errors: replacing quantum entanglement by mixedness, identifying every critical theory with percolation, or inferring efficient decoding from the mere existence of information.
+
+A useful personal research note records the model, ensemble, observable, limits, derivation, and evidential status together. The substantial derivations in this book—the Born replica count, Bayesian sector update, Gaussian conditional propagator, and mixed-state symmetry examples—are designed to be reusable starting points for such notes.
+
+## Problems with solutions
+
+### Two-qubit random purity
+
+Evaluate @eq-toolbox-haar-purity for $m=n=2$ and compare it with the purity of a Bell pair.
+
+**Solution.** The average is $4/5$. A Bell pair has reduced purity $1/2$, so it is more entangled than a typical two-qubit Haar state. The maximum-entropy state is a special point, not the average of all pure states.
+
+### Orthogonal sectors and fidelity
+
+If $\rho$ and $\sigma$ have orthogonal supports, show that $f=0$ and $T=1$.
+
+**Solution.** Orthogonal support gives $\sqrt\rho\,\sigma\sqrt\rho=0$, so the fidelity is zero. The positive and negative blocks of $\rho-\sigma$ have traces one and one, so its trace norm is two. Their supports can be distinguished with certainty.
+
+### A symmetry-preserving error syndrome
+
+Why can measuring stabilizers reveal an error without measuring a logical qubit?
+
+**Solution.** Stabilizers have fixed eigenvalues throughout the code. An error changes the syndrome subspace, while all logical basis states in that subspace have the same syndrome. The syndrome readout therefore distinguishes errors without distinguishing logical amplitudes, precisely the structure in @eq-toolbox-kl.

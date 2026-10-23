@@ -1,0 +1,287 @@
+# Mixed states, symmetry, and recoverability {#sec-mixed-state-order}
+
+A pure trajectory assigns a definite state to every complete record of a perfectly monitored experiment. Real observers rarely possess every record. An environment may carry away information, a detector may miss outcomes, or a subsystem may be discarded. The appropriate conditional state is then mixed. Its entropy measures both quantum correlations with inaccessible degrees of freedom and uncertainty about classical alternatives. Treating that entropy as pure-state entanglement can misidentify the phase.
+
+Mixed-state phases require an operational definition of equivalence and diagnostics adapted to the information that remains accessible. Symmetry adds a further distinction: a density matrix may be supported in one charge sector, or may merely be invariant under a symmetry that permutes or phases several sectors. The difference leads to strong-to-weak spontaneous symmetry breaking, an intrinsically mixed form of order.
+
+## Channels and inaccessible records
+
+A quantum channel is a linear, completely positive, trace-preserving map
+
+$$
+\mathcal E(\rho)=\sum_a K_a\rho K_a^\dagger,\qquad
+\sum_aK_a^\dagger K_a=I.
+$$ {#eq-mixed-channel}
+
+Complete positivity means positivity is preserved even when the map acts on one part of a larger entangled state. The Kraus form makes that property manifest. A unitary is a special case with one Kraus operator; tracing an environment or discarding a measurement outcome generally requires several.
+
+The physical origin is straightforward. Let the environment begin in $|0\rangle_E$ and let a joint unitary $V$ act on system and environment. In an orthonormal environment basis,
+
+$$
+K_a={}_E\langle a|V|0\rangle_E,\qquad
+\operatorname{Tr}_E V(\rho\otimes|0\rangle\langle0|)V^\dagger
+=\sum_aK_a\rho K_a^\dagger.
+$$
+
+The channel is therefore unitary quantum mechanics with an inaccessible record. Different Kraus representations can describe the same channel, since one can rotate the environment basis without changing its trace.
+
+If some outcomes $m$ are observed but an additional index $a$ is hidden, an instrument has maps $\mathcal E_m(\rho)=\sum_aK_{ma}\rho K_{ma}^\dagger$. Its normalized conditional state is
+
+$$
+\rho_m=\frac{\mathcal E_m(\rho)}{p_m},\qquad
+p_m=\operatorname{Tr}\mathcal E_m(\rho).
+$$ {#eq-mixed-instrument}
+
+Even a pure input can give a mixed $\rho_m$. No ambiguity arises if one specifies which indices belong to the observer and which belong to the environment. “The trajectory” is always relative to an observation scheme.
+
+### Worked example: dephasing without particle loss
+
+For a qubit let $\mathcal D_p(\rho)=(1-p)\rho+pZ\rho Z$. In the $Z$ basis this preserves populations and multiplies off-diagonal entries by $1-2p$. At $p=1/2$, $|+\rangle\langle+|$ becomes $I/2$. The observer can describe this as an unknown random phase flip, or as entanglement with an unobserved two-state environment. Both give the same reduced density matrix.
+
+A Bell state subjected to this channel on one qubit becomes
+
+$$
+\rho_{AB}=(1-p)|\Phi^+\rangle\langle\Phi^+|+p|\Phi^-\rangle\langle\Phi^-|.
+$$
+
+Its marginal on either qubit remains $I/2$ for every $p$. Thus $S(A)=\log2$ stays constant even when $p=1/2$ makes the joint state separable. Pure-state subsystem entropy is an entanglement measure only when the joint state is pure.
+
+## Which correlations survive mixing?
+
+The mutual information
+
+$$
+I(A:B)=S(A)+S(B)-S(AB)
+$$
+
+measures all correlations, classical and quantum. For the fully dephased Bell pair it equals $\log2$, although the state is separable. An entanglement diagnostic must distinguish that classical correlation from an intrinsically quantum resource.
+
+One useful computable measure is logarithmic negativity,
+
+$$
+\mathcal E_N(A:B)=\log\|\rho_{AB}^{T_B}\|_1.
+$$ {#eq-mixed-negativity}
+
+The partial transpose exchanges matrix indices on $B$. Every separable state has positive partial transpose and trace norm one, so nonzero negativity certifies entanglement. The converse is not true for arbitrary dimensions: some entangled mixed states have positive partial transpose.
+
+For the dephased Bell pair, the eigenvalues of the partial transpose are $1/2,1/2,(1-2p)/2,-(1-2p)/2$. Therefore
+
+$$
+\mathcal E_N=\log(1+|1-2p|).
+$$
+
+It vanishes at complete dephasing, while mutual information remains nonzero. This simple calculation already shows why a single entropy cannot classify mixed-state phases.
+
+Another diagnostic is coherent information from an input reference $R$ to an output $B$,
+
+$$
+I_c(R\rangle B)=S(B)-S(RB)=-S(R|B).
+$$
+
+Unlike a classical conditional entropy, $S(R|B)$ can be negative. A maximally entangled pair has $I_c=\log d$. Coherent information is related to recoverable quantum information, with precise coding statements requiring optimization and, in general, regularization over many channel uses. Its finite-system value is an information diagnostic, not automatically a complete quantum-capacity formula.
+
+Different physical resources can vanish at different thresholds. A state can retain classical charge information after losing distillable entanglement; a channel can preserve a symmetry constraint after destroying phase coherence. The observable should be chosen to match the resource being claimed.
+
+## Strong and weak symmetry are distinct algebraic conditions
+
+Let $U_g$ represent a symmetry group. A density matrix has weak symmetry when
+
+$$
+U_g\rho U_g^\dagger=\rho.
+$$ {#eq-mixed-weak-symmetry}
+
+For a $U(1)$ charge $Q$, this means $[Q,\rho]=0$; $\rho$ may have support in many charge sectors. It has strong symmetry with charge character $\chi(g)$ when
+
+$$
+U_g\rho=\chi(g)\rho.
+$$ {#eq-mixed-strong-symmetry}
+
+For an Abelian symmetry this means every vector in the support has the same charge. Strong symmetry implies weak symmetry, because the right action contributes the conjugate character. The reverse implication fails.
+
+For example, a single spin with symmetry $X$ has a strongly symmetric pure state $|+\rangle\langle+|$, with $X\rho=\rho$. The maximally mixed state $I/2$ is weakly symmetric, but $X\rho=X/2\ne\rho$. For particle-number symmetry, a canonical ensemble restricted to one $Q$ has strong symmetry, while a grand-canonical ensemble is generally only weakly symmetric.
+
+There is also a distinction between symmetry of a state and symmetry of a channel. A channel is covariant if
+
+$$
+\mathcal E(U_g\rho U_g^\dagger)=U_g\mathcal E(\rho)U_g^\dagger.
+$$
+
+This permits exchange of charge with an environment. A stronger condition is that every Kraus operator commutes with $U_g$. It ensures no charge exchange in each environmental branch and preserves a fixed charge sector. A charge-conserving Hamiltonian plus dephasing in the local density satisfies that stronger condition. A bath that randomly adds and removes particles may be covariant but does not.
+
+These statements need care for non-Abelian groups, whose irreducible sectors can have dimension greater than one. A one-dimensional character is a special representation, and a general fixed non-Abelian representation sector is not described by simply replacing $Q$ with a vector of commuting numbers. The non-Abelian chapter treats that distinction explicitly.
+
+## What does it mean to break strong symmetry spontaneously?
+
+A finite symmetric density matrix can satisfy @eq-mixed-strong-symmetry exactly and still display strong-to-weak SSB in a thermodynamic sense. The phrase does not mean that a finite matrix suddenly ceases to obey its defining equation under symmetric evolution. It describes long-distance order and the response to symmetry-breaking operations, analogous to a finite symmetric ground-state cat state diagnosing ordinary SSB by a long-range two-point function.
+
+For ordinary order, take a charged local operator $O_i$. Even if $\langle O_i\rangle=0$ in a symmetric state, a nonzero limit of $\langle O_iO_j^\dagger\rangle$ as $|i-j|\to\infty$ detects long-range order. Strong-to-weak order can instead have short-ranged ordinary correlators while a nonlinear comparison of density matrices remains long ranged.
+
+A convenient fidelity convention is the *root fidelity*
+
+$$
+f(\rho,\sigma)=\operatorname{Tr}\sqrt{\sqrt\rho\,\sigma\,\sqrt\rho},\qquad 0\leq f\leq1.
+$$ {#eq-mixed-root-fidelity}
+
+Some authors call $f^2$ the fidelity. The distinction changes powers and constants but not whether a long-range limit vanishes. For a unitary local charged operator $O_i$, the neutral pair $W_{ij}=O_iO_j^\dagger$ gives
+
+$$
+F_O(i,j)=f(\rho,W_{ij}\rho W_{ij}^\dagger).
+$$ {#eq-mixed-fidelity-correlator}
+
+In the absence of ordinary long-range order, a nonzero long-distance fidelity correlator is the central diagnostic of fidelity-defined SW-SSB. More general nonunitary charged operators can be used with appropriate normalization; the unitary case is enough for our explicit example.
+
+An intuitive reading is that a local charged disturbance cannot be recognized as a separate local excitation in the mixed state. Creating a distant neutral pair can leave the density matrix highly overlapping with itself, even though there is no coherent ordinary order parameter. This is an information-theoretic statement about a many-body ensemble, not a hidden nonzero expectation value of $O_i$.
+
+Lessa and collaborators establish stability properties for the fidelity diagnostic under strongly symmetric local channels and distinguish it from higher-Rényi alternatives [@m_lessa2025]. In particular, the fidelity and Rényi-2 definitions can disagree. Their recovery-based interpretation makes locality and the allowed symmetry of recovery essential; a formal overlap in a doubled Hilbert space alone is not a complete physical phase definition.
+
+## An exactly solvable SW-SSB state
+
+Take $L>2$ qubits, the global symmetry $G=\prod_{i=1}^{L}X_i$, and the normalized maximally mixed state in its even sector,
+
+$$
+\rho_+=\frac{I+G}{2^L}.
+$$ {#eq-mixed-parity-projector}
+
+It is positive: on the $G=+1$ subspace its eigenvalue is $2^{1-L}$, and on the odd subspace it is zero. There are $2^{L-1}$ even states, so its trace is one. Moreover $G\rho_+=\rho_+$, establishing strong symmetry.
+
+Let $O_i=Z_i$, which is charged since $GZ_iG=-Z_i$. For distinct $i,j$, $W_{ij}=Z_iZ_j$ commutes with $G$. Hence $W_{ij}\rho_+W_{ij}=\rho_+$ and
+
+$$
+F_Z(i,j)=1.
+$$
+
+The ordinary correlator vanishes:
+
+$$
+\operatorname{Tr}(\rho_+Z_iZ_j)=2^{-L}\operatorname{Tr}[(I+G)Z_iZ_j]=0.
+$$
+
+The trace of any nonidentity Pauli string is zero. This holds at all separations. The state therefore exhibits long-range nonlinear order without long-range ordinary $Z$ order.
+
+The example also explains how a local observer can miss the structure. Trace out any one qubit. The $G$ term vanishes, and every proper reduced density matrix is maximally mixed. No measurement confined to a proper subset distinguishes $\rho_+$ from $I/2^L$. Their global sector structure differs, however: one has strong symmetry and the other only weak symmetry. Local indistinguishability does not imply equality of global information resources.
+
+### Preparing the example with symmetric noise
+
+Start from $|+\rangle^{\otimes L}$. On every edge of an open connected chain apply the channel
+
+$$
+\mathcal B_{i,i+1}(\rho)=\frac12\rho+\frac12 Z_iZ_{i+1}\rho Z_iZ_{i+1}.
+$$
+
+Each Kraus operator commutes with $G$. A random edge flip changes the $X$ eigenvalues on both endpoints, so total parity is conserved. An arbitrary product of edge flips generates an even pattern of flipped $X$ spins. Conversely, on an open chain every even pattern is generated by a unique set of edge flips: solve from the left endpoint successively. Uniform independent edge choices therefore produce the uniform mixture of all even $X$ configurations, exactly $\rho_+$.
+
+The edge channels can be scheduled in two layers of disjoint edges. Thus irreversible local noise can create this mixed-state order in constant depth. This does not imply that the initial product state and $\rho_+$ belong to the same phase under reversible channel equivalence. A one-way preparation map need not have a symmetric local inverse. The allowed reverse process is precisely where information-theoretic obstructions enter.
+
+For comparison, apply the same noisy edge flips to a *known branch* while keeping every edge record. The observer knows the resulting $X$ product state, so its conditional state remains pure and unentangled. Erasing the edge records produces the mixed state above. It matters which ensemble of records is part of the physical state description.
+
+The [standard-library Julia demonstration](numerics/mixed_gaussian_checks.jl) constructs this state by the edge channels for five qubits and verifies zero ordinary correlation and unit fidelity and Rényi-2 correlations at every separation. It also checks the Gaussian-trajectory updates used in the frontier chapter. Run `julia numerics/mixed_gaussian_checks.jl` from the source directory. These are exact-identity checks, not a finite-size claim about a transition.
+
+## Rényi-2 order and the doubled-state construction
+
+A frequently studied nonlinear correlator is
+
+$$
+R_O(i,j)=\frac{\operatorname{Tr}(\rho W_{ij}\rho W_{ij}^\dagger)}{\operatorname{Tr}\rho^2}.
+$$ {#eq-mixed-renyi-correlator}
+
+For a pure state it equals $|\langle W_{ij}\rangle|^2$. For $\rho_+$ it equals one, so it agrees with the fidelity diagnostic in this example. That agreement is not a theorem for general states.
+
+The distinction can be seen already for commuting matrices. Let $\rho=\sum_sp_s|s\rangle\langle s|$ and let a permutation unitary $W$ relabel configurations. Then
+
+$$
+f(\rho,W\rho W^\dagger)=\sum_s\sqrt{p_s p_{W^{-1}s}},
+\qquad
+R=\frac{\sum_s p_s p_{W^{-1}s}}{\sum_s p_s^2}.
+$$ {#eq-mixed-classical-overlaps}
+
+The first is the overlap of square-root probabilities. The second reweights the distribution toward high-probability configurations through two powers of $p$. In a many-body problem, exponentially many low-weight states can dominate one expression while a small high-weight subset controls the other. One cannot exchange these measures merely because they are both nonlinear and both equal one for identical states.
+
+Vectorization makes the Rényi structure transparent. Associate an operator with a ket in two copies,
+
+$$
+|\rho\rangle\!\rangle=\sum_{ab}\rho_{ab}|a\rangle_L|b\rangle_R,
+\qquad \langle\!\langle\rho|\rho\rangle\!\rangle=\operatorname{Tr}\rho^2.
+$$
+
+Left multiplication acts on the first copy and right multiplication on the second. Weak symmetry becomes invariance under the diagonal action $U_g\otimes U_g^*$; strong symmetry constrains left and right actions separately. A doubled-state order parameter can break the independent actions while retaining the diagonal subgroup, explaining the name strong-to-weak.
+
+But the normalized vectorized density matrix uses the Hilbert-Schmidt norm and weights eigenvalues as $\lambda^2$. It is not the canonical purification $|\sqrt\rho\rangle\!\rangle$, whose weights are $\lambda$ and whose norm is one. Confusing these two vectors is a common route to incorrect claims about mixed-state entanglement or physical fidelity. Sala and collaborators develop a purification perspective that relates mixed-state order to order and correlations in an extended Hilbert space [@m_sala2024]. Such correspondences are useful when their specified purification and diagnostic are retained.
+
+## Recovery as a definition of phase
+
+For pure gapped ground states, finite-depth local unitary circuits give a familiar notion of phase equivalence. Channels are more flexible and more irreversible. Without a reversibility requirement, the channel that discards its input and prepares a product state would trivialize every state.
+
+A useful mixed-state question therefore asks whether $\rho$ and $\sigma$ can be mapped into each other, to a stated accuracy, by local symmetry-preserving channels of an allowed depth. The depth may be strictly bounded or allowed to grow slowly with system size; these are different definitions and should be specified. The requirement is approximate local recoverability in both directions, not microscopic inversion of every noise realization.
+
+Relative entropy provides one mathematical guide. Define
+
+$$
+D(\rho\|\sigma)=\operatorname{Tr}\rho(\log\rho-\log\sigma),
+$$
+
+when the support of $\rho$ lies in that of $\sigma$. For every channel,
+
+$$
+D(\rho\|\sigma)\geq D(\mathcal E\rho\|\mathcal E\sigma).
+$$
+
+The inequality says that processing cannot improve distinguishability. Equality is associated with exact recovery of the pair by an appropriate recovery channel. An explicit candidate, built from a reference state $\sigma$, is the Petz map
+
+$$
+\mathcal R_{\sigma,\mathcal E}(X)=
+\sigma^{1/2}\mathcal E^\dagger\!\left[(\mathcal E\sigma)^{-1/2}X(\mathcal E\sigma)^{-1/2}\right]\sigma^{1/2}.
+$$ {#eq-mixed-petz}
+
+Inverses are taken on the support, and the map can be completed outside that support to make it trace preserving. Substituting $X=\mathcal E\sigma$ immediately verifies recovery of $\sigma$. Recovering another state requires additional conditions; recovery of the reference alone proves little.
+
+The formula does not automatically produce a *local* channel. An inverse square root of a many-body density matrix can be highly nonlocal. Physical phase statements require bounds on locality, approximation error, symmetry, and depth. This separates a formal algebraic inverse from an implementable local recovery operation.
+
+Conditional mutual information is another bridge:
+
+$$
+I(A:C|B)=S(AB)+S(BC)-S(B)-S(ABC).
+$$
+
+It measures correlations between $A$ and $C$ not accounted for by an intervening region $B$. Exact quantum Markov states have zero conditional mutual information and admit a recovery structure from the intervening region. Small conditional mutual information supports approximate recovery statements, though converting a recovery theorem into a symmetry-preserving local circuit still requires work.
+
+## Noisy learnability can remain sharp
+
+A mixed conditional state can retain a sharply defined conserved charge. Noise that commutes with total charge erases phase information within a sector without directly revealing or changing that sector. An observer can then ask how rapidly the accessible record distinguishes different initial sectors, even when no pure trajectory is available.
+
+Singh, Vasseur, Potter, and Gopalakrishnan studied this problem for strongly symmetric noisy monitored dynamics [@m_singh2026]. They find sharp and fuzzy charge-learning regimes and identify the fuzzy regime with mixed-state strong-to-weak order in their setting. Both regimes admit efficient tensor-network treatment in the studied noisy models; adding noise can even assist an efficient approximate charge decoder for an underlying unitary problem. These are model-dependent algorithmic and phase results, not a proof that arbitrary noisy quantum dynamics is efficiently classically simulable.
+
+The conceptual lesson follows from our channel examples. Scrambling, decoherence, and observation remove different kinds of information. A state can lose coherent quantum memory while retaining a global classical constraint. Conversely, a local record can become more informative about a charge even while the system becomes more mixed. Entanglement, charge uncertainty, nonlinear order, and computational cost should therefore be measured independently.
+
+## Thermal ensembles and thermodynamic limits
+
+A canonical state is $\rho_Q=P_Qe^{-\beta H}P_Q/Z_Q$ for $[H,Q]=0$, while a grand-canonical state is $e^{-\beta(H-\mu Q)}/Z$. At nonzero temperature and away from singularities, a small region can have nearly identical reduced states in the two ensembles as total size grows. Their exact global symmetry support nevertheless differs. This is closely related to the global-versus-local distinction in @eq-mixed-parity-projector.
+
+One should not conclude that every canonical thermal state realizes identical nonlinear order for every charged operator. The operator, symmetry, spatial dimension, temperature, and phase matter. General proposed connections between canonical thermal ensembles and SW-SSB have supporting examples and qualified results, rather than one universal elementary theorem that replaces those assumptions.
+
+Nor does a weakly symmetric grand-canonical state become strongly symmetric merely because relative charge fluctuations $\sqrt{\operatorname{Var}Q}/\langle Q\rangle$ vanish with volume. Strong symmetry refers to exact support in a sector. Small relative fluctuations are a thermodynamic statement. Limits of local observables and limits of nonlinear global diagnostics need not commute.
+
+## Problems and solutions
+
+### Problem: covariance does not imply charge conservation
+
+For a qubit with symmetry $Z$, consider $\mathcal E(\rho)=X\rho X$. Show that this channel is covariant under conjugation by $Z$, although its Kraus operator does not commute with $Z$.
+
+**Solution.** Since $ZX=-XZ$, the two minus signs cancel in conjugation, giving $\mathcal E(Z\rho Z)=Z\mathcal E(\rho)Z$. But $X$ exchanges the $Z$ sectors. Covariance permits charge exchange and therefore does not guarantee preservation of a fixed sector.
+
+### Problem: purity of the parity-projected state
+
+Compute $\operatorname{Tr}\rho_+^2$ and $S(\rho_+)$ for @eq-mixed-parity-projector.
+
+**Solution.** The rank is $2^{L-1}$ and every nonzero eigenvalue is $2^{1-L}$. Thus purity is $2^{1-L}$ and entropy is $(L-1)\log2$. The state is extensively mixed while retaining one exact global bit of sector information.
+
+### Problem: nonselective measurement is not a unique ensemble
+
+Write $I/2$ as equal mixtures of $Z$ eigenstates and of $X$ eigenstates. Do these decompositions imply the same observer can assign either set as physical trajectories?
+
+**Solution.** They give the same density matrix, hence the same predictions for future measurements on the qubit alone. Physical trajectories require a specified instrument and accessible record. An observer who has the $Z$ readout has different classical side information from one who has an $X$ readout. A density matrix does not uniquely determine its preparation ensemble.
+
+### Problem: fidelity for pure states
+
+Show that root fidelity reduces to an amplitude overlap and that the Rényi-2 pair correlator is its square.
+
+**Solution.** For $\rho=|\psi\rangle\langle\psi|$, $\sqrt\rho=\rho$ and $\rho\sigma\rho=\langle\psi|\sigma|\psi\rangle\rho$. Hence $f(\rho,\sigma)=\sqrt{\langle\psi|\sigma|\psi\rangle}$. For $\sigma=W\rho W^\dagger$, this is $|\langle\psi|W|\psi\rangle|$, while @eq-mixed-renyi-correlator equals the squared modulus. Mixed-state inequivalence emerges because a mixed spectrum is weighted differently by the two constructions.

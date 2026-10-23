@@ -1,0 +1,173 @@
+# Measurement records and quantum trajectories {#sec-measurement-trajectories}
+
+## Instruments: an outcome and a state update
+
+An ideal projective measurement of $A=\sum_m a_mP_m$ produces outcome $m$ with probability $p_m=\operatorname{Tr}(P_m\rho)$ and conditional state $P_m\rho P_m/p_m$. Projectors satisfy $P_mP_n=\delta_{mn}P_m$ and $\sum_mP_m=I$. A more general measurement is described by Kraus operators $M_m$ obeying
+
+$$
+\sum_mM_m^\dagger M_m=I,\qquad
+\widetilde\rho_m=M_m\rho M_m^\dagger,\qquad
+p_m=\operatorname{Tr}\widetilde\rho_m,\qquad
+\rho_m=\widetilde\rho_m/p_m.
+$$ {#eq-instrument}
+
+The positive operators $E_m=M_m^\dagger M_m$ constitute a positive operator-valued measure. They determine outcome probabilities but do not uniquely determine the state update: $M_m$ and $U_mM_m$ have the same $E_m$ and different conditional dynamics. A complete instrument can have several Kraus operators per reported outcome if an additional environmental label is hidden. The single-operator notation assumes that all such information is resolved, or that the model specifies this efficient instrument.
+
+The normalization denominator makes conditional dynamics nonlinear in $\rho$. The unnormalized map is linear. Much of replica theory is bookkeeping designed to handle this denominator without forgetting that the same denominator also supplies the Born probability.
+
+To realize an instrument, couple the system to an apparatus initially in $|0\rangle_E$:
+
+$$
+U|\psi\rangle|0\rangle_E=\sum_m M_m|\psi\rangle|m\rangle_E.
+$$ {#eq-stinespring}
+
+Completeness ensures preservation of inner products, so this isometry can be extended to a unitary on the larger space. Reading the apparatus gives the conditional state; tracing it out gives a channel. Measurement is therefore compatible with ordinary unitary quantum mechanics on a larger system.
+
+## Three different averages
+
+If outcomes are ignored, the final state is
+
+$$
+\overline\rho=\sum_m p_m\rho_m=\sum_mM_m\rho M_m^\dagger\equiv\mathcal E(\rho).
+$$ {#eq-unconditional-channel}
+
+For any linear observable $O$, averaging conditional expectations agrees with evaluating it in $\overline\rho$: $\sum_mp_m\operatorname{Tr}(O\rho_m)=\operatorname{Tr}(O\overline\rho)$. For entropy this fails:
+
+$$
+\sum_mp_mS(\rho_m)\neq S\!\left(\sum_mp_m\rho_m\right)
+$$ {#eq-nonlinear-average}
+
+in general. If a pure $|+\rangle$ is measured in $Z$, each conditional state is pure and has zero entropy, while the discarded-record state is $I/2$ and has entropy $\ln2$.
+
+A third operation is **postselection**: retain a specified outcome, or retain records according to a chosen rule. The accepted record distribution is generally different from the original Born distribution. A forced trajectory with every outcome set to zero is not a typical trajectory unless the model has a special symmetry or feedback equivalence that proves this replacement is valid.
+
+For later use, make the record a classical register:
+
+$$
+\rho_{MS}=\sum_m p_m|m\rangle\langle m|_M\otimes\rho_m.
+$$ {#eq-cq-record}
+
+Its block-diagonal spectrum gives $S(MS)=H(M)+\sum_mp_mS(\rho_m)$. Consequently $I(M:S)=S(\overline\rho)-\sum_mp_mS(\rho_m)$. This is the Holevo information of this ensemble. It bounds the classical information about $M$ that can be extracted by measuring $S$, but need not be attainable in one use.
+
+## A weak measurement worked out completely
+
+Measure $Z$ weakly using two outcomes $m=\pm1$:
+
+$$
+M_m=\sqrt{\frac{I+m\eta Z}{2}},\qquad 0\leq\eta\leq1.
+$$ {#eq-weak-kraus}
+
+In the $Z$ basis these are diagonal. At $\eta=0$, each outcome is a fair coin and the state is unchanged; at $\eta=1$, they are projectors onto $Z=\pm1$. For the Bloch state in @eq-bloch,
+
+$$
+p_m=\frac{1+m\eta r_z}{2},\qquad
+r_z' =\frac{r_z+m\eta}{1+m\eta r_z},\qquad
+r_{x,y}'=\frac{\sqrt{1-\eta^2}\,r_{x,y}}{1+m\eta r_z}.
+$$ {#eq-weak-bloch}
+
+These equations follow by multiplying the two diagonal Kraus entries against each density-matrix element and dividing by $p_m$. Averaging removes the denominators: $\overline r_z'=r_z$ and $\overline r_{x,y}'=\sqrt{1-\eta^2}r_{x,y}$. The unconditioned process dephases, while a conditioned observer accumulates information about $Z$.
+
+For an initially maximally mixed qubit, one readout gives $\rho_m=(I+m\eta Z)/2$. Its entropy is the binary entropy $h((1+\eta)/2)$, smaller than $\ln2$ when $\eta>0$. Yet the unconditional state remains $I/2$. Purification is an observer-dependent statement about a record that is actually retained.
+
+Repeated QND measurements, meaning measurements of an observable conserved during the protocol, admit a classical Bayesian description for its eigenvalue. If $z=\pm1$ is fixed, $P(m|z)=(1+m\eta z)/2$. After a record $\boldsymbol m$,
+
+$$
+\frac{P(z=+1|\boldsymbol m)}{P(z=-1|\boldsymbol m)}
+=\frac{P(z=+1)}{P(z=-1)}
+\prod_t\frac{1+\eta m_t}{1-\eta m_t}.
+$$ {#eq-log-odds}
+
+Taking the logarithm converts evidence into a sum. For a prior with both possibilities and $\eta>0$, its mean drift under the true hypothesis is positive, so sufficiently many measurements identify the eigenvalue. A many-body learnability transition arises when local records and scrambling make this accumulation scale nontrivially with system size, not because the single-qubit Bayesian rule stops working.
+
+## Trajectory probabilities in a circuit
+
+For a sequence of unitaries and outcomes, define
+
+$$
+K_{\boldsymbol m}=M_{m_T}U_T\cdots M_{m_1}U_1,
+\quad \widetilde\rho_{\boldsymbol m}=K_{\boldsymbol m}\rho_0K_{\boldsymbol m}^\dagger,
+\quad p(\boldsymbol m)=\operatorname{Tr}\widetilde\rho_{\boldsymbol m}.
+$$ {#eq-trajectory-kraus}
+
+The normalized state is $\rho_{\boldsymbol m}=\widetilde\rho_{\boldsymbol m}/p(\boldsymbol m)$. Multiplying the stepwise conditional probabilities reproduces the trace expression. It is usually numerically more stable to sample and normalize after each measurement than to propagate a tiny unnormalized norm for a long trajectory.
+
+There are several sources of randomness: gates, the locations at which measurement is attempted, and the outcome conditioned on the current state. A model may choose measurement locations independently with probability $p$ while still requiring the outcomes to be sampled with the Born rule. The location probability $p$ is not the probability of obtaining a particular outcome. Confusing them changes the ensemble.
+
+A trajectory average of $F$ means averaging outcomes with their Born probabilities and, when specified, averaging over external disorder. A typical value may differ from a mean when distributions are broad. The distinction becomes physical at criticality, where rare trajectories can dominate higher moments.
+
+## Continuous monitoring from many weak steps
+
+Choose $\eta=2\sqrt{\kappa\,dt}$ in @eq-weak-kraus and expand as $dt\to0$. The readout has mean $\mathbb E[m|\rho]=\eta\langle Z\rangle$. Define $dY=m\sqrt{dt}$; then
+
+$$
+dY=2\sqrt\kappa\langle Z\rangle dt+dW,
+\quad \mathbb E[dW]=0,\quad dW^2=dt.
+$$ {#eq-continuous-record}
+
+Here $dW$ is a Wiener increment. The rule $dW^2=dt$ captures the finite accumulated variance of many independent weak fluctuations. Products such as $dt\,dW$ and $dt^2$ are higher order and vanish in the Itô limit.
+
+Expansion of the normalized update gives the stochastic master equation
+
+$$
+d\rho=-i[H,\rho]dt+\kappa\mathcal D[Z]\rho\,dt
++\sqrt\kappa\mathcal H[Z]\rho\,dW,
+$$ {#eq-sme}
+
+where
+
+$$
+\mathcal D[L]\rho=L\rho L^\dagger-\tfrac12\{L^\dagger L,\rho\},\qquad
+\mathcal H[L]\rho=L\rho+\rho L^\dagger
+-\operatorname{Tr}[(L+L^\dagger)\rho]\rho.
+$$ {#eq-superoperators}
+
+For Hermitian $Z$, the noise term is $\sqrt\kappa(Z\rho+\rho Z-2\langle Z\rangle\rho)dW$. Its trace vanishes; so does the trace of $\mathcal D$. If $\rho$ starts pure and monitoring is efficient, the Itô correction from $(d\rho)^2$ preserves $\rho^2=\rho$. Averaging adapted trajectories eliminates the $dW$ term and leaves the Lindblad equation, whose general Markovian form was established by Gorini, Kossakowski, Sudarshan, and Lindblad [@f_gks1976; @f_lindblad1976].
+
+An inefficient detector with efficiency $\epsilon$ keeps the same dephasing term but reduces the noise coefficient to $\sqrt{\epsilon\kappa}$. Unobserved information then produces mixed conditional states. Thus changing detector efficiency is a physical change to the problem, not just a numerical nuisance.
+
+For a QND qubit, @eq-sme implies
+
+$$
+dr_z=2\sqrt\kappa(1-r_z^2)dW.
+$$ {#eq-qnd-diffusion}
+
+The ensemble mean of $r_z$ stays fixed, while individual trajectories approach $\pm1$. There is no contradiction: the endpoint probabilities reproduce the initial populations. The noise vanishes at the eigenstates, which are absorbing for this ideal QND process.
+
+## Measurement can create entanglement
+
+Measuring each qubit of $|++\rangle$ in $Z$ gives product states. Measuring their joint parity $Z_1Z_2$ has a different effect. The projectors $P_\pm=(I\pm Z_1Z_2)/2$ give, with equal probability,
+
+$$
+P_+|++\rangle/\sqrt{1/2}=\frac{|00\rangle+|11\rangle}{\sqrt2},\qquad
+P_-|++\rangle/\sqrt{1/2}=\frac{|01\rangle+|10\rangle}{\sqrt2}.
+$$ {#eq-parity-entangle}
+
+The outcome removes uncertainty about parity while retaining coherence within a parity subspace. This creates a Bell pair. Measurements of noncommuting neighboring parities can therefore generate nontrivial entanglement dynamics even without unitary gates. The competition in monitored circuits is not a universal contest between an entangling unitary and a disentangling measurement; it depends on what is measured.
+
+A local measurement on one side of a bipartition cannot increase the average pure-state entanglement across that bipartition. It can increase entanglement in a selected outcome. A nonlocal parity measurement straddling the cut is outside that local-operation statement, so @eq-parity-entangle is entirely consistent with it.
+
+## Zeno dynamics and order of limits
+
+A frequently measured observable constrains dynamics to its eigenspaces. If a state begins in the range of $P$, a short free evolution gives a leakage probability $dt^2\langle H(I-P)H\rangle+O(dt^3)$. After $T/dt$ repeated projections the cumulative leakage scales as $Tdt$ and vanishes as $dt\to0$. Inside the subspace the surviving evolution is generated by $PHP$.
+
+This quantum Zeno limit assumes ideal measurements made increasingly frequent at fixed total time. In a many-body system, a finite monitoring rate can produce a nontrivial phase instead. The limits of monitoring strength, system size, and observation time must therefore be specified separately. Saying that measurement always freezes a system skips the very regime where measurement-induced phases occur.
+
+## Problems with solutions
+
+### Unread weak measurement
+
+Derive the factor multiplying the off-diagonal density-matrix entry after @eq-weak-kraus is applied and its result discarded.
+
+**Solution.** Each outcome contributes $\sqrt{(1+\eta)(1-\eta)}\rho_{01}/2$. Adding the two gives $\sqrt{1-\eta^2}\rho_{01}$. With $\eta=2\sqrt{\kappa dt}$ this is $(1-2\kappa dt)\rho_{01}$, agreeing with $\kappa(Z\rho Z-\rho)$.
+
+### Why a forbidden outcome is never sampled
+
+Suppose a qubit is exactly $|0\rangle$ before a projective $Z$ measurement. Explain how to implement the sampling without dividing by zero.
+
+**Solution.** The outcome probabilities are $p_0=1$, $p_1=0$. Sample outcome zero with certainty and normalize by $\sqrt{p_0}$. Never construct the conditional state for outcome one. Numerical code should clamp tiny roundoff errors in computed probabilities, while treating substantial normalization errors as a bug.
+
+### Measurement entropy versus entanglement
+
+Measure one qubit of a Bell pair in $Z$ and retain the result. Calculate the average remaining entanglement, the discarded-record state, and the record entropy.
+
+**Solution.** Each trajectory is $|00\rangle$ or $|11\rangle$, so its entanglement is zero. Discarding the result gives their equal classical mixture, whose total entropy is $\ln2$ and mutual information is $\ln2$. The classical record entropy is also $\ln2$. The apparatus has acquired the formerly coherent correlation.

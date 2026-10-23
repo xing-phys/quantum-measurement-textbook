@@ -1,0 +1,267 @@
+# Non-Abelian charges, fusion measurements, and anyons {#sec-nonabelian}
+
+## Why conserving a vector is different from conserving a number
+
+For a $U(1)$ charge, local occupations commute, so they can be simultaneously read out. For angular momentum, the conserved generators satisfy
+
+$$
+[S^a,S^b]=i\epsilon^{abc}S^c,\qquad S^a=\sum_i S_i^a,
+$$ {#eq-su2-commutator}
+
+where $\hbar=1$. An apparatus that measures every $S_i^z$ singles out an axis and is not fully $SU(2)$ symmetric. Preserving the full symmetry restricts what information a local detector can extract. A two-spin detector can ask whether a pair is a singlet or triplet; this is a rotationally invariant question. Detectors acting on overlapping pairs ask incompatible questions.
+
+The resulting monitoring can create or rearrange entanglement even in the absence of unitary gates. Majidy and collaborators found a volume-law phase and a critical phase in an $SU(2)$-symmetric circuit, with nontrivial spin sharpening and slow purification [@s_majidy2023]. We first derive the microscopic ingredients, then examine what distinguishes this setting from both Abelian charge learning and anyonic charge learning.
+
+## Irreducible representations and multiplicity spaces
+
+A single spin $1/2$ has states $|\uparrow\rangle$ and $|\downarrow\rangle$. Two spins decompose as
+
+$$
+\frac12\otimes\frac12=0\oplus1.
+$$
+
+The singlet and triplets are
+
+$$
+|s\rangle=\frac{|\uparrow\downarrow\rangle-|\downarrow\uparrow\rangle}{\sqrt2},
+$$
+
+$$
+|t_+\rangle=|\uparrow\uparrow\rangle,\quad
+|t_0\rangle=\frac{|\uparrow\downarrow\rangle+|\downarrow\uparrow\rangle}{\sqrt2},\quad
+|t_-\rangle=|\downarrow\downarrow\rangle.
+$$
+
+For $L$ spins, the representation decomposes as
+
+$$
+\mathcal H=\bigoplus_S\left(\mathcal V_S\otimes\mathcal M_S\right).
+$$ {#eq-su2-hilbert-decomposition}
+
+The irrep space $\mathcal V_S$ has dimension $2S+1$. The multiplicity space $\mathcal M_S$ counts the different ways of combining the local spins into the same total spin. Rotations act as $D_S(g)\otimes I$ within each summand. By Schur's lemma, an operator commuting with every rotation acts as $I_{\mathcal V_S}\otimes A_S$: it can manipulate the multiplicity space while leaving the orientation space untouched.
+
+For even $L$, the multiplicity is
+
+$$
+\dim\mathcal M_S=\binom L{L/2-S}-\binom L{L/2-S-1}.
+$$ {#eq-su2-multiplicity}
+
+To derive this, count states with magnetization $M$. Their number is $N_M=\binom L{L/2-M}$. Every spin-$S$ multiplet contributes exactly one state to each $M=-S,\ldots,S$. Hence $N_M=\sum_{S\ge M}\dim\mathcal M_S$, and subtracting $N_{S+1}$ from $N_S$ gives the result. The exponentially large multiplicity space can carry much quantum information even when the total spin is known.
+
+A measurement record from symmetric detectors can reveal the irrep label $S$. It cannot reveal an arbitrary orientation within $\mathcal V_S$ if all initial orientations are related by symmetry and no reference axis is supplied. Indeed, for $K_{\boldsymbol m}$ symmetric and $|\psi'\rangle=U_g|\psi\rangle$,
+
+$$
+\|K_{\boldsymbol m}|\psi'\rangle\|^2
+=\|U_gK_{\boldsymbol m}|\psi\rangle\|^2
+=\|K_{\boldsymbol m}|\psi\rangle\|^2.
+$$
+
+Spin sharpening thus means learning a representation label, not measuring all three components of an angular momentum vector simultaneously.
+
+## Singlet projectors and incompatible local questions
+
+For two spins,
+
+$$
+(\boldsymbol S_i+\boldsymbol S_j)^2
+=\frac32+2\boldsymbol S_i\cdot\boldsymbol S_j.
+$$
+
+Its eigenvalues are zero for a singlet and two for a triplet. Therefore
+
+$$
+P^{(0)}_{ij}=\frac14-\boldsymbol S_i\cdot\boldsymbol S_j,
+\qquad
+P^{(1)}_{ij}=\frac34+\boldsymbol S_i\cdot\boldsymbol S_j.
+$$ {#eq-singlet-triplet-projectors}
+
+These projectors add to the identity and are orthogonal. The most general two-site $SU(2)$-symmetric unitary on two spin-$1/2$ sites is
+
+$$
+U_{ij}=e^{i\alpha}P^{(0)}_{ij}+e^{i\beta}P^{(1)}_{ij}.
+$$
+
+There is only one copy of each irrep on two sites, so there is no larger invariant block to randomize. Nevertheless, overlapping gates can generate complicated dynamics in the many-spin multiplicity spaces.
+
+Overlapping singlet measurements do not commute. Direct use of the spin algebra gives
+
+$$
+[\boldsymbol S_1\cdot\boldsymbol S_2,
+\boldsymbol S_2\cdot\boldsymbol S_3]
+=i\sum_{abc}\epsilon^{abc}S_1^aS_2^cS_3^b.
+$$ {#eq-overlap-spin-commutator}
+
+The right side is a scalar spin-chirality operator up to a sign convention for the ordering of the triple product. It is generally nonzero. A definite singlet on sites $1,2$ is not a definite fusion channel on sites $2,3$.
+
+This incompatibility is easy to see without operator algebra. Start with $|s_{12}\rangle|\uparrow_3\rangle$. The probability that sites $2,3$ form a singlet is $1/4$. Conditional on that outcome, site 1 factors from a new singlet on sites $2,3$. Monitoring has moved entanglement. A measurement-only process need not simply remove local Bell pairs until a product state is reached.
+
+A weak invariant detector can be built for any pair of complementary projectors $P_0,P_1$ using
+
+$$
+M_0=\sqrt{\frac{1+\eta}{2}}P_0+
+\sqrt{\frac{1-\eta}{2}}P_1,
+\qquad
+M_1=\sqrt{\frac{1-\eta}{2}}P_0+
+\sqrt{\frac{1+\eta}{2}}P_1.
+$$ {#eq-invariant-weak-readout}
+
+Here $0\le\eta\le1$ and $\sum_mM_m^\dagger M_m=I$. At $\eta=0$, the outcomes are fair random bits and the state is unchanged. At $\eta=1$, the detector performs a projective fusion measurement. Every Kraus operator commutes with global rotations.
+
+## Worked example: why a local detector weakly distinguishes total spin
+
+Assume that scrambling has approximately mixed the system within a specified total-spin sector, so every pair has the same averaged spin correlation. This assumption is a model of a scrambled state, rather than an operator identity about arbitrary states. The exact relation
+
+$$
+\boldsymbol S^2=\frac{3L}{4}+2\sum_{i<j}\boldsymbol S_i\cdot\boldsymbol S_j
+$$
+
+then implies
+
+$$
+\langle\boldsymbol S_i\cdot\boldsymbol S_j\rangle_S
+=\frac{S(S+1)-3L/4}{L(L-1)}.
+$$
+
+The local singlet probability is consequently
+
+$$
+r_S=\frac14-
+\frac{S(S+1)-3L/4}{L(L-1)}.
+$$ {#eq-local-singlet-sector-bias}
+
+For two total spins $S,S'=O(1)$, $r_S-r_{S'}=O(L^{-2})$. This is much smaller than the $O(L^{-1})$ density difference between adjacent extensive $U(1)$ sectors. Full rotational invariance allows the detector to see a Casimir density, involving $S(S+1)$, rather than a signed linear spin density.
+
+For nearly independent Bernoulli outcomes with an order-one baseline probability, an $O(L^{-2})$ bias requires $O(L^4)$ observations to resolve. If detectors provide $O(pL)$ outcomes per unit time, an estimate is
+
+$$
+t_{\mathrm{learn}}\sim L^3/p.
+$$ {#eq-su2-slow-learning-estimate}
+
+The independence approximation is not guaranteed in a monitored circuit. Its usefulness is physical: a small local sensitivity can explain a long global learning time without invoking an exponentially small signal. Correlations between outcomes, initial spin scales, or a different sector prior can change the estimate.
+
+In a less scrambled regime, the record can instead exploit long-lived collective structures. A diffusive slow mode of wavelength $L$ relaxes in time $L^2/D$, suggesting a distinct route to learning. A learning time proportional to $L^2$ is still slow compared with an order-one local measurement time. Calling it the sharp side does not mean instantaneous collapse.
+
+## Replica pairing and the limits of the current theory
+
+For replicated quantum trajectories, a discrete pairing field records how forward and backward branches are connected. A non-Abelian circuit also retains collective charge modes; eliminating all charge structure in favor of a permutation spin model would lose the slow sector. A useful conceptual decomposition is a replica-pairing sector coupled to a background carrying the conserved representations.
+
+The 2026 preprint of Ma and Vasseur derives such a coupled loop description using a large-loop-fugacity expansion. It predicts that a single pairing transition controls entanglement and spin learning, and proposes $L^3$ and $L^2$ learning scales in its two regimes. This is a controlled expansion at large fugacity, with an extrapolation to physical spin $1/2$ and a replica continuation. The authors explicitly identify unresolved measurement-dominated physics and the failure of their approximation at the measurement-only endpoint [@s_ma2026].
+
+The status of this proposal matters. Symmetry exactly constrains allowed operators and learning targets. A large-parameter expansion can control a particular effective theory. Agreement with finite-size data supports, but does not prove, continuity to the physical microscopic model. Coincidence of spin and entanglement transitions should therefore be read as a theoretical prediction with stated assumptions, rather than a theorem for every $SU(2)$-symmetric circuit.
+
+There is another important distinction from Abelian monitoring. A fully symmetric product state of individual spin-$1/2$ sites does not exist: a pure state of one spin chooses a direction. Symmetric pure states can form singlets over several sites, including short-range dimer states, so symmetry by itself does not forbid every area-law state. The absence of a simple area-law phase in a particular translation-invariant monitored model is a dynamical result, not a universal logical consequence of the phrase non-Abelian symmetry.
+
+## Anyons: a Hilbert space built from fusion paths
+
+Non-Abelian anyons provide a different realization of incompatible fusion measurements. Their non-Abelian character concerns how topological charges combine; it is not the same thing as an ordinary spin-rotation group.
+
+Fibonacci anyons have charges $1$ and $\tau$, with
+
+$$
+1\times a=a,\qquad \tau\times\tau=1+\tau.
+$$ {#eq-fibonacci-fusion}
+
+The plus sign means that two $\tau$ anyons can combine into either channel. It does not denote a coherent superposition with a specified amplitude. Amplitudes belong to a state in the resulting fusion space.
+
+Let $N_L^{(a)}$ count fusion paths of $L$ $\tau$ anyons ending in charge $a$. Adding one anyon gives
+
+$$
+\begin{pmatrix}N_{L+1}^{(1)}\\N_{L+1}^{(\tau)}\end{pmatrix}
+=\begin{pmatrix}0&1\\1&1\end{pmatrix}
+\begin{pmatrix}N_L^{(1)}\\N_L^{(\tau)}\end{pmatrix}.
+$$
+
+The largest eigenvalue is the golden ratio $d_\tau=\varphi=(1+\sqrt5)/2$, satisfying $\varphi^2=1+\varphi$. The Hilbert-space dimension therefore grows asymptotically as $\varphi^L$, rather than $2^L$. A fusion path is constrained: an intermediate charge $1$ followed by fusion with $\tau$ must become $\tau$.
+
+This is why it is inaccurate to regard an anyon as an ordinary qubit whose charge can simply be measured independently of all others. The many-body Hilbert space is assembled from consistent fusion paths, and a spatial bipartition requires a convention for handling boundary topological charge sectors.
+
+## Recoupling and a concrete noncommuting measurement
+
+Three $\tau$ anyons with total charge $\tau$ have a two-dimensional fusion space. One basis first fuses particles 1 and 2; another first fuses 2 and 3. The basis change is an $F$ move. In a conventional real gauge,
+
+$$
+F=\begin{pmatrix}
+\varphi^{-1}&\varphi^{-1/2}\\
+\varphi^{-1/2}&-\varphi^{-1}
+\end{pmatrix}.
+$$ {#eq-fibonacci-f-matrix}
+
+Since $\varphi^{-2}+\varphi^{-1}=1$, this matrix obeys $F^TF=I$ and $F^2=I$. In the basis where the first pair's fusion channel is definite,
+
+$$
+\Pi^{(1)}_{12}=\begin{pmatrix}1&0\\0&0\end{pmatrix},
+\qquad
+\Pi^{(1)}_{23}=F\Pi^{(1)}_{12}F
+=\begin{pmatrix}
+\varphi^{-2}&\varphi^{-3/2}\\
+\varphi^{-3/2}&\varphi^{-1}
+\end{pmatrix}.
+$$ {#eq-fibonacci-local-projectors}
+
+Their commutator has nonzero off-diagonal entries $\pm\varphi^{-3/2}$. Successive fusion readouts are consequently incompatible, even though each is topologically natural.
+
+If a measurement has just found pair 1,2 in channel $1$, the probability that a subsequent projective measurement finds pair 2,3 in channel $1$ is $\varphi^{-2}$. If it does, a third measurement of pair 1,2 again gives channel $1$ with probability $\varphi^{-2}$. The first outcome is no longer certain. This three-readout experiment is the fusion-space analogue of alternating spin measurements along different axes.
+
+The projectors also reveal a useful algebra. Set $e_i=\varphi\Pi_i^{(1)}$. Then
+
+$$
+e_i^2=\varphi e_i,\qquad
+e_ie_{i+1}e_i=e_i,\qquad
+[e_i,e_j]=0\quad (|i-j|>1).
+$$ {#eq-temperley-lieb-fibonacci}
+
+For example, in the two-dimensional space above, $\Pi_{12}\Pi_{23}\Pi_{12}=\varphi^{-2}\Pi_{12}$, which proves the middle relation locally. These are Temperley-Lieb relations. They turn a fusion problem into a loop-algebra problem, opening a route to statistical-mechanics descriptions.
+
+The equilibrium antiferromagnetic golden chain has Hamiltonian $H=-J\sum_i\Pi_i^{(1)}$ with $J>0$. Its connection to a tricritical Ising theory was established in the original golden-chain work [@s_feiguin2007]. Replacing energy minimization by Born-sampled measurements defines a different dynamics. An equilibrium central charge cannot simply be assigned to the monitored ensemble because its projectors happen to obey the same local algebra.
+
+## Monitoring a global topological sector
+
+On a ring, threading an auxiliary topological line defines an operator $Y$ commuting with local fusion projectors. For the Fibonacci line,
+
+$$
+Y^2=I+Y.
+$$
+
+Its eigenvalues solve $y^2=1+y$, giving $y=\varphi$ and $y=-\varphi^{-1}$. Local readouts preserve these global sectors, while their accumulated probabilities can distinguish them. Bayes' rule applies to the sector weights exactly as it did for $U(1)$ charge.
+
+This is called a non-invertible symmetry because the fusion product of the simple topological defect with itself is a sum of defects rather than a single identity defect. There is a subtle algebraic point: the matrix relation implies $Y(Y-I)=I$, so an inverse exists as a linear combination of operators. Such a formal difference is not an inverse simple topological defect in the fusion category. Non-invertibility refers to the latter structure.
+
+The October 2026 preprint of Zhi and collaborators studies repeated weak fusion measurements in a monitored golden chain. Its numerics support logarithmic entanglement with chord-length dependence, Lyapunov gaps scaling as $1/L$, and topological-sector learning on a time scale proportional to $L$. The proposed continuum description is nonunitary and is not identified with the equilibrium tricritical Ising theory [@s_zhi2026]. These are very recent finite-size and continuum-interpretation results as of this book's literature cutoff.
+
+Why is a linear learning scale plausible here while spin-rotation-invariant circuits can be diffusive? Symmetry alone does not fix the low-lying spectrum. A conformal transfer description has gaps proportional to $1/L$, whereas a diffusive background has gaps proportional to $1/L^2$. Global information becomes accessible when the relevant slow modes are resolved. One must establish which background theory a microscopic fusion problem realizes before inferring a learning exponent.
+
+For a conformal transfer problem on a periodic ring, the general finite-size forms are
+
+$$
+E_0(L)=e_\infty L-\frac{\pi v c_{\mathrm{eff}}}{6L}+\cdots,
+\qquad
+E_n-E_0=\frac{2\pi v}{L}\Delta_n+\cdots.
+$$ {#eq-anyon-conformal-spectrum}
+
+Here $v$ converts spatial and transfer directions; $c_{\mathrm{eff}}$ and $\Delta_n$ characterize the relevant effective spectrum. A random product of nonunitary matrices has Lyapunov growth rates rather than the ordinary Hermitian energies of a fixed Hamiltonian. Comparing those rates with @eq-anyon-conformal-spectrum requires a normalization and statistical ensemble. Observing $1/L$ alone is evidence for scale invariance with $z=1$; additional spectral and correlation tests are needed for a specific CFT identification.
+
+## Exercises with solutions
+
+### A symmetric readout cannot learn an orientation
+
+**Problem.** Take a single spin initially in either $|\uparrow_z\rangle$ or $|\uparrow_x\rangle$. Can an exactly rotation-invariant one-spin detector distinguish them?
+
+**Solution.** The spin-$1/2$ representation is irreducible. Schur's lemma makes every invariant Kraus operator a scalar times the identity. Its outcome probability is the same in every pure state, so it supplies no orientation information. A reference spin or an external axis changes the physical resources of the problem.
+
+### Four spins with total spin zero
+
+**Problem.** Find the dimension of the singlet space for four spin-$1/2$ particles. Can a symmetric operation act nontrivially on it?
+
+**Solution.** Equation @eq-su2-multiplicity gives $\binom42-\binom41=2$. The irrep itself is one dimensional but has multiplicity two. Symmetric operations can manipulate this two-dimensional multiplicity space. A known total spin does not specify the state.
+
+### Check a Fibonacci readout
+
+**Problem.** Verify that $\Pi^{(1)}_{23}$ in @eq-fibonacci-local-projectors is a rank-one projector.
+
+**Solution.** It equals $vv^T$ with $v=(\varphi^{-1},\varphi^{-1/2})^T$ and $v^Tv=1$. Thus $\Pi^2=vv^Tvv^T=vv^T$ and $\operatorname{Tr}\Pi=1$. Its eigenvalues are zero and one, as required for a projective measurement.
+
+### A change of prior can change a learning scale
+
+**Problem.** In the scrambled-spin estimate, what happens if one compares $S=0$ with $S=\alpha L$ instead of two $O(1)$ sectors?
+
+**Solution.** The difference in $S(S+1)/L^2$ is now order one. A local invariant detector can distinguish these sectors with order-one information per observation. The $L^3$ estimate relied on nearby small-spin sectors and cannot be applied to this prior.

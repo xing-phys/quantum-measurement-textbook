@@ -1,0 +1,288 @@
+# Critical ground states under measurement {#sec-measurement-cft}
+
+The circuit transition studied so far begins with dynamics that creates entanglement and asks whether monitoring can prevent that growth. A different experiment starts with an already critical ground state, measures some or all of its sites once, and asks what long-distance structure survives. There need be no competition between repeated unitary gates and measurements. The resource is the entanglement already present in the initial state.
+
+This chapter develops the continuum tools needed for that problem. We will derive power laws from scaling, introduce the compact boson, and explain why a measurement becomes a defect in a Euclidean path integral. We then use the distinction between a single selected outcome and a Born-weighted ensemble to understand measurement-altered criticality. Keeping those ensembles distinct is essential: they can have different relevance thresholds and different infrared physics.
+
+## From a critical chain to a field theory
+
+Consider a one-dimensional lattice with spacing $a$ and a translation-invariant Hamiltonian. If the ground state has a gap $\Delta>0$, local disturbances usually decay beyond a correlation length of order $v/\Delta$, where $v$ is a characteristic propagation velocity. At a continuous quantum critical point the gap closes. Wavelengths much longer than $a$ then dominate long-distance observables.
+
+A continuum description replaces microscopic operators by slowly varying fields. This is a controlled description of low-energy, long-distance behavior, rather than an assertion that a lattice literally disappears. A lattice spin can contain several continuum contributions with different wavevectors and scaling dimensions. The leading contribution to one correlation function need not be the leading contribution to another.
+
+Suppose a continuum operator $O$ has scaling dimension $\Delta_O$. Under $x\mapsto bx$ and $\tau\mapsto b\tau$, it transforms as $O\mapsto b^{-\Delta_O}O$. Translation invariance and scale invariance imply
+
+$$
+G(bx)=b^{-2\Delta_O}G(x),\qquad
+G(x)=\langle O(x)O(0)\rangle\propto |x|^{-2\Delta_O}.
+$$ {#eq-cft-scaling-correlation}
+
+The factor of two appears because there are two insertions. A dynamical exponent $z\ne1$ would instead rescale imaginary time as $\tau\mapsto b^z\tau$. Here we initially assume $z=1$ and rescale $v\tau$ into a second spatial coordinate.
+
+In two Euclidean dimensions, a conformal transformation preserves angles locally. In complex coordinates $z=x+iv\tau$, a primary field with weights $(h,\bar h)$ transforms by powers of $f'(z)$ and $\bar f'(\bar z)$; its scaling dimension is $\Delta=h+\bar h$ and its spin is $h-\bar h$. For a scalar primary, the plane two-point function is
+
+$$
+\langle O(z,\bar z)O(0)\rangle
+=\frac{C_O}{z^{2h}\bar z^{2\bar h}}.
+$$
+
+This is a major increase in predictive power. Scale invariance determines a two-point power law, whereas conformal symmetry also constrains how correlators change under a change of geometry. Mapping the plane to a cylinder of circumference $L$ replaces distance along an equal-time circle by the chord length
+
+$$
+d_L(x)=\frac{L}{\pi}\left|\sin\frac{\pi x}{L}\right|.
+$$ {#eq-cft-chord}
+
+Consequently a primary two-point function on a ring is proportional to $d_L(x)^{-2\Delta}$. Plotting finite-system data against $d_L$ removes a known geometric effect before one attempts to infer an exponent.
+
+Not every scale-invariant monitored process is described by the same conformal theory. The compact boson below is a unitary ground-state CFT with $c=1$. The replica theories for generic measurement-induced transitions are generally nonunitary and often have a physical replica limit with $c=0$. Similar-looking logarithms in their entropies do not identify these theories.
+
+## A derivation of the critical entropy formula
+
+The reduced density matrix $\rho_A$ of an interval is obtained by tracing its complement. In a path integral, this trace glues the upper and lower sides of the time slice outside $A$. Computing $\operatorname{Tr}\rho_A^n$ requires $n$ copies, cyclically glued along $A$. The endpoints of the interval become branch points: circling an endpoint moves from one copy to the next.
+
+Represent a branch point by a twist field $\mathcal T_n$. Its scaling dimension is
+
+$$
+\Delta_n=\frac{c}{12}\left(n-\frac1n\right).
+$$ {#eq-cft-twist-dimension}
+
+One way to see the $n-1/n$ is to uniformize the local branched surface by $w=z^{1/n}$. The stress tensor acquires a Schwarzian derivative under this transformation. Since $\{z^{1/n},z\}=(1-n^{-2})/(2z^2)$, summing the stress tensors of the $n$ sheets gives a coefficient $c(n-1/n)/24$ in each chiral sector. This is the conformal weight $h_n$; adding the two sectors gives @eq-cft-twist-dimension. Here $c$ is the central charge, the coefficient of the conformal anomaly in the stress-tensor transformation.
+
+The two endpoints therefore give
+
+$$
+\operatorname{Tr}\rho_A^n=C_n(\ell/a)^{-2\Delta_n},\qquad
+S_n(A)=\frac{c}{6}\left(1+\frac1n\right)\log\frac{\ell}{a}+s_n.
+$$ {#eq-cft-interval-entropy}
+
+Taking $n\to1$ yields $S(A)=(c/3)\log(\ell/a)+s_1$. The constant $s_n$ depends on the ultraviolet definition. For a ring, replace $\ell$ by $d_L(\ell)$. An interval touching a physical boundary has one entangling endpoint instead of two and a leading coefficient half as large. These are the standard ground-state entropy relations developed in the field-theory treatment of Calabrese and Cardy [@f_calabrese2004].
+
+The short derivation exposes its assumptions. It uses the vacuum of a unitary CFT, an ordinary spatial interval, and the standard replica gluing. A measurement can insert boundaries, change the ensemble of geometries, or create a different replica theory. One should derive the relevant twist problem again rather than insert an empirically fitted “effective central charge” into every formula above.
+
+### Worked example: extracting a logarithmic coefficient
+
+For a periodic $c=1$ chain, compare an interval of length $L/2$ with one of length $L/4$ at fixed $L$. The nonuniversal constant cancels:
+
+$$
+S(L/2)-S(L/4)=\frac13\log\frac{\sin(\pi/2)}{\sin(\pi/4)}
+=\frac16\log2.
+$$
+
+A fit to a single entropy as a function of $L$ can confuse an additive offset with a slow drift. Such differences test the geometric dependence as well as the coefficient. Corrections from irrelevant operators and lattice oscillations still have to be assessed.
+
+## The compact boson from density and phase
+
+A compressible one-dimensional fluid supports long-wavelength density waves. Introduce a field $\varphi$ such that the smooth density fluctuation is $\delta n=-\partial_x\varphi/\pi$. Introduce its conjugate phase $\theta$ with
+
+$$
+[\varphi(x),\partial_y\theta(y)]=i\pi\delta(x-y).
+$$
+
+The most general stable quadratic Hamiltonian with spatial inversion symmetry has the form
+
+$$
+H=\frac{v}{2\pi}\int dx\left[K(\partial_x\theta)^2+K^{-1}(\partial_x\varphi)^2\right].
+$$ {#eq-cft-tll-hamiltonian}
+
+The positive dimensionless number $K$ compares the cost of density and phase distortions. It encodes interactions. This Hamiltonian describes a low-energy universality class shared by many distinct microscopic systems; it does not require weak microscopic interactions.
+
+Integrating out the conjugate momentum gives the Euclidean action, with $v$ absorbed into $\tau$,
+
+$$
+S_0[\varphi]=\frac{1}{2\pi K}\int dx\,d\tau\,(\nabla\varphi)^2,
+\qquad \varphi\equiv\varphi+\pi.
+$$ {#eq-cft-boson-action}
+
+Compactness expresses the quantization of particle number and allows vertex operators. A useful density expansion is
+
+$$
+n(x)=n_0-\frac1\pi\partial_x\varphi
++A\cos(2k_Fx-2\varphi)+\cdots .
+$$ {#eq-cft-density-expansion}
+
+The coefficient $A$ is nonuniversal. Dropping it before determining which measurement perturbations are relevant would be a mistake: the oscillatory density can be more important under renormalization than the smooth gradient.
+
+Here is an explicit exponent calculation. The inverse of the two-dimensional Laplacian is logarithmic. With the normalization in @eq-cft-boson-action,
+
+$$
+\langle\varphi(r)\varphi(0)\rangle=-\frac K2\log(r/a)+\text{constant}.
+$$
+
+The Gaussian identity $\langle e^{iX}\rangle=e^{-\langle X^2\rangle/2}$ gives
+
+$$
+\langle e^{2i\varphi(r)}e^{-2i\varphi(0)}\rangle
+=\exp[-2\langle(\varphi(r)-\varphi(0))^2\rangle]
+\propto r^{-2K}.
+$$ {#eq-cft-vertex-correlation}
+
+Thus $\cos2\varphi$ has dimension $K$. The dual field has an inverse stiffness and $e^{i\theta}$ has dimension $1/(4K)$, so its two-point function decays as $r^{-1/(2K)}$. Differentiating the logarithmic propagator twice gives a smooth density correlator proportional to $r^{-2}$. These three operators probe different parts of the same liquid.
+
+For orientation, a spinless free Fermi gas has $K=1$ in this convention. Repulsive interactions commonly reduce $K$, whereas other systems can have $K>1$. A change of boson normalization changes the printed definition of the Luttinger parameter. For instance, an action $g(\nabla\phi)^2/(4\pi)$ with $\phi=2\varphi$ has $g=1/(2K)$. Comparing exponents across papers requires this conversion.
+
+## A measurement is a defect, not imaginary-time evolution
+
+![Original schematic: a measurement at one real time becomes a line defect in the Euclidean ground-state path integral. The defect is extended along space and localized at the joining of bra and ket; its statistical weight depends on whether one fixes an outcome or averages the shared record.](figs/cft-defect.png){#fig-cft-measurement-defect}
+
+The ground-state wavefunctional can be prepared by a half-plane path integral: $e^{-\beta H}|b\rangle$ projects onto the ground state as $\beta\to\infty$ if $|b\rangle$ has nonzero overlap with it. A bra contributes a second half-plane. Together they give the full plane, joined at $\tau=0$.
+
+A measurement applied at that one time changes the joining condition. An ideal measurement that fixes a local field in a spatial region makes a slit with prescribed boundary data. A weak measurement instead adds a finite action on the joining line. It is extended in space but localized in imaginary time. It should therefore be assessed as a *line perturbation*: the integration measure rescales with one power of length, rather than two.
+
+For a Gaussian readout of a Hermitian local observable $O$, write
+
+$$
+M_m=\mathcal N\exp\left[-\frac\gamma4\int dx\,(O(x)-m(x))^2\right].
+$$ {#eq-cft-gaussian-measurement}
+
+The normalization $\mathcal N$ and outcome measure are chosen so that $\int Dm\,M_m^\dagger M_m=I$ in the regulated lattice theory. The probability is $p[m]=\langle M_m^\dagger M_m\rangle_0$, and every expectation in the conditional state contains division by $p[m]$. The continuum expression is an effective description; its outcome measure is inherited from the microscopic instrument.
+
+If a particular outcome produces a line potential $u\int dx\cos2\varphi$, its leading renormalization is
+
+$$
+\frac{du}{d\ell}=(1-K)u+\cdots.
+$$ {#eq-cft-forced-rg}
+
+This follows directly from the measure dimension one and operator dimension $K$. A fixed spatially coherent outcome can therefore be relevant for $K<1$. It pins $\varphi$ at the line at long distances. This calculation answers a postselection question. It does not establish the fate of a typical Born-distributed outcome.
+
+To see what changes for an ensemble, replicate the state before integrating over the shared readout. At one spatial point the essential Gaussian integral is
+
+$$
+\int dm\,\exp\left[-\frac\gamma2\sum_{a=1}^{Q}(O_a-m)^2\right]
+\propto\exp\left[-\frac\gamma{2Q}\sum_{a<b}(O_a-O_b)^2\right].
+$$ {#eq-cft-readout-integral}
+
+Complete the square to verify it: $\sum_a(O_a-m)^2=Q(m-\bar O)^2+\sum_aO_a^2-Q\bar O^2$, and the last two terms equal $Q^{-1}\sum_{a<b}(O_a-O_b)^2$. The shared record couples replicas and penalizes their disagreement. Independent records would produce no such inter-replica interaction.
+
+Inserting the oscillatory density and discarding rapidly oscillating terms generates $\cos[2(\varphi_a-\varphi_b)]$. At the decoupled fixed point its dimension is $K+K=2K$. A line coupling $g$ therefore has
+
+$$
+\frac{dg}{d\ell}=(1-2K)g+\cdots .
+$$ {#eq-cft-born-rg}
+
+The smooth gradient contributions have dimension two and are irrelevant as line perturbations. This explains how the same microscopic density measurement can yield different thresholds for a coherent forced outcome and for the fluctuation coupling created by Born averaging. Garratt, Weinstein, and Altman identified this distinction and its critical-state consequences [@m_garratt2022]. The marginal case $K=1/2$ requires terms beyond the displayed linear flow. The result also assumes that symmetries and the measurement basis permit the indicated oscillatory operator; a different measured operator gives a different defect.
+
+## Why connected correlations are nonlinear
+
+Let $X$ and $Y$ commute with every measurement operator in a complete measurement on the same commuting basis. Completeness implies
+
+$$
+\sum_m p_m\langle XY\rangle_m=\langle XY\rangle_0.
+$$
+
+That exact identity does not make the conditional states unchanged. The covariance decomposition is
+
+$$
+\langle XY\rangle_0-\langle X\rangle_0\langle Y\rangle_0
+=\sum_m p_m\,\operatorname{Cov}_m(X,Y)
++\operatorname{Cov}_{m}(\langle X\rangle_m,\langle Y\rangle_m).
+$$ {#eq-cft-total-covariance}
+
+A measurement can move correlations from fluctuations *within* a conditional state to fluctuations *between* conditional means. The average linear two-point function is blind to that transfer. A connected correlator within each trajectory subtracts a product of conditional one-point functions, so averaging it is a nonlinear operation on the original state.
+
+A replica representation makes the subtraction transparent. $\langle X_1Y_1\rangle$ represents both insertions in one conditional state, whereas $\langle X_1Y_2\rangle$ represents the product of conditional means. Their difference, analytically continued to the Born limit $Q\to1$, gives the first term on the right of @eq-cft-total-covariance. The additional replica is a bookkeeping device for normalization, not a second physical system.
+
+### Worked example: a completely measured Bell pair
+
+For $|\Phi^+\rangle=(|00\rangle+|11\rangle)/\sqrt2$, the initial covariance of $Z_1$ and $Z_2$ is one. Measure both spins in the $Z$ basis. Within either conditional product state the covariance is zero, but the outcome-dependent means are $(+1,+1)$ or $(-1,-1)$. Their classical covariance is one. The nonselective state preserves $\langle Z_1Z_2\rangle$, while the quantum correlation structure has changed drastically.
+
+The same bookkeeping is needed in a critical liquid, where every separation can contribute. Conditional correlations should always be defined before performing a disorder or measurement average.
+
+## Strong coupling, compactness, and broad distributions
+
+A relevant boundary potential suppresses fluctuations of relative replica fields. Write their center-of-mass field as $\Phi=Q^{-1/2}\sum_a\varphi_a$. Interactions depending only on differences cannot pin $\Phi$; they act in the $Q-1$ orthogonal directions. Treating all replica fields as independently pinned would therefore remove a physical fluctuation mode.
+
+Compactness supplies another ingredient. Even when a field is locally pinned, it can jump between equivalent minima differing by $\pi$. Such a phase slip is an instanton of the boundary theory. Two opposite slips form a neutral pair. Since the underlying two-dimensional Green function is logarithmic, their action grows as a constant times $\log r$, and their Boltzmann weight is a power of separation. A small instanton fugacity can therefore generate a power-law tail that decays more slowly than the small Gaussian fluctuations around a single minimum. “Irrelevant perturbation” means its coupling decreases under coarse graining; it does not guarantee that its contribution is subleading for every observable.
+
+For a normalized conditional state, write $\langle\cdot\rangle_m=\langle\psi_m|\cdot|\psi_m\rangle$ and define
+
+$$
+\begin{aligned}
+C_{n,m}(x)&=\langle n(x)n(0)\rangle_m-\langle n(x)\rangle_m\langle n(0)\rangle_m,\\
+\mathcal N_k(x)&=\sum_m p_m[C_{n,m}(x)]^k,\\
+\Theta_k(x)&=\sum_m p_m\left|\left\langle e^{i[\theta(x)-\theta(0)]}\right\rangle_m\right|^{2k}.
+\end{aligned}
+$$ {#eq-cft-measured-moments}
+
+Thus $\mathcal N_1$ is a Born-averaged connected density correlator, whereas $\Theta_1$ is an averaged **squared modulus**, not the mean unsquared phase correlator. Integer density moments are unambiguous even if a correlator has a sign; a noninteger moment requires a specified continuation or magnitude convention.
+
+Khanna, Murciano, and Vasseur predict the following rare-outcome scaling contribution in their replica-instanton treatment of density-measured TLLs with $K<1/2$, checked against matrix-product-state calculations [@m_khanna_altered]. For dimensionless separation $r=|x|/a\gg1$, their continued moment spectrum contains
+
+$$
+\mathcal M_k(r)\sim
+\begin{cases}
+r^{-2k(1-k)/K},&0<k\leq1/2,\\
+r^{-1/(2K)}/\sqrt{\log r},&k>1/2.
+\end{cases}
+$$ {#eq-cft-frontier-multifractal}
+
+Here $\mathcal M_k$ names the common instanton contribution to $\mathcal N_k$ and $\Theta_k$, rather than either full observable. The latter also contain fixed-boundary terms proportional to $r^{-4k}$ and $r^{-2k/K}$, respectively. Consequently the rare-outcome term need not dominate density moments. These exponents match equations (2), (3), and (6) of the preprint's 24 August 2026 revision; they are not generic exponents of all monitored critical states.
+
+A useful independent model explains the saturated moment exponent. Suppose a nonnegative random correlator is $C_r=r^{-\alpha}$ and its probability density has a large-deviation form
+
+$$
+P_r(\alpha)\propto r^{-I(\alpha)},\qquad
+I(\alpha)=\frac K8\left(\alpha-\frac2K\right)^2,\qquad \alpha\geq0.
+$$
+
+The $k$th moment is controlled by the minimum of $k\alpha+I(\alpha)$. The unconstrained saddle is $\alpha_*=(2-4k)/K$. For $k\leq1/2$ it is allowed and gives $\tau(k)=2k(1-k)/K$. For larger $k$, the saddle hits the endpoint $\alpha=0$ and $\tau(k)=1/(2K)$ becomes independent of $k$. Increasing the moment order now changes the weight assigned to the same rare, unusually large correlators, rather than selecting a new typical scale.
+
+This elementary saddle model reproduces the power-law structure without deriving the full microscopic probability distribution. Prefactors, including logarithmic corrections, require the actual measure and fluctuations around the saddle. It illustrates why replacing an ensemble by one typical configuration can miss a leading asymptotic contribution. The average, typical value $\exp\overline{\log C_r}$, variance, and higher moments contain independent information.
+
+## Entanglement between separated regions after measuring their surroundings
+
+Partition a pure state into unmeasured regions $A,B$ and a region $C$ that will be measured in a rank-one product basis. Conditional on $m_C$, the state on $AB$ is pure. Define
+
+$$
+\mathcal E(A:B)=\sum_{m_C}p(m_C)S(\rho_{A|m_C}).
+$$ {#eq-cft-mie-definition}
+
+This is measurement-induced entanglement for the specified basis and protocol. Optimizing over allowed measurements defines a related localizable-entanglement problem. Neither quantity equals the entanglement of the state obtained by discarding the record.
+
+Three qubits provide an exact illustration. In the GHZ state $(|000\rangle+|111\rangle)/\sqrt2$, take the end qubits as $A,B$. Measuring the middle qubit in $X$ produces $(|00\rangle\pm|11\rangle)/\sqrt2$, so every outcome has one ebit. Measuring it in $Z$ produces product states and zero entanglement. Before either measurement, the reduced state on the ends is the same separable classical mixture. The basis and the record are indispensable parts of the physical question. No violation of entanglement monotonicity occurs: the middle party participates in a tripartite protocol, and the relevant initial resource is the full three-party state.
+
+For critical ground states the measured regions become slits in the path integral. In a long-distance limit their microscopic boundary data can flow to conformal boundary conditions. For four endpoints on a ring, the invariant geometry is encoded by a cross ratio such as
+
+$$
+\zeta=\frac{d_L(x_1-x_2)d_L(x_3-x_4)}
+{d_L(x_1-x_3)d_L(x_2-x_4)},\qquad x_1<x_2<x_3<x_4.
+$$
+
+Conformal invariance says a dimensionless universal contribution can depend on this ratio and on the operator content, not on four independent lengths. It does not specify the full function without further dynamical input.
+
+Khanna and Vasseur obtained a compact-boson calculation of Born-averaged MIE, interpreting the coarse-grained outcome sum as a partition-function-weighted sum over conformal boundary conditions [@m_khanna_cft]. Their later work extends this treatment to cumulants and the distribution of MIE, finding broad, generically bimodal distributions in the analyzed TLL setting [@m_khanna_stats]. These results explain why one uniform Dirichlet boundary condition, although useful for a forced measurement, need not represent physical measurement averaging. The operator content of the initial CFT enters the measurement-generated long-range entanglement.
+
+The connection between MIE and amplitude signs is also subtle. Lin and collaborators established bounds for specified sign-free classes, including sign-free stabilizer states and two-qubit probes, and exhibited violations in states with sign structure [@m_lin2023]. Those class-dependent results should not be promoted to an unqualified statement that every large MIE certifies an intrinsic sign problem in every basis.
+
+## A second example: measured critical Ising chains
+
+A critical transverse-field Ising chain has a $c=1/2$ continuum description. Its order and energy fields have different dimensions and symmetry properties. A parity-preserving measurement therefore need not induce the same defect as a measurement of the order parameter. The appropriate operator identification comes before the relevance test.
+
+Weinstein and collaborators studied parity-symmetric measurements in the critical Ising chain [@m_weinstein2023]. In their Born-averaged setting, the replica defect is irrelevant and the asymptotic entropy and correlation scaling remains that of the original ground state. Selecting particular likely outcomes instead produces a marginal defect and continuously varying exponents. This gives a concrete counterexample to the guess that the postselected answer always predicts the typical measured state.
+
+The instructive comparison is with @eq-cft-born-rg. In both examples the method is to identify the defect operator, compute its dimension in the unmeasured theory, and account for the outcome ensemble. Different CFTs and measurements yield different operators and hence different flows. The phrase “measurement-altered criticality” describes a family of problems, not a universal fixed point.
+
+## Problems and solutions
+
+### Problem: the geometry of a defect
+
+A bulk operator has dimension $\Delta$. Determine when $u\int dx\,d\tau\,O$ and $v\int dx\,O(x,0)$ are relevant near a $z=1$ fixed point.
+
+**Solution.** Their linear RG eigenvalues are $2-\Delta$ and $1-\Delta$, respectively. A dimension $3/2$ perturbation is relevant in the bulk and irrelevant on the line. Localizing a physical operation in time changes its scaling analysis.
+
+### Problem: total covariance as information transfer
+
+Let $X,Y$ be classical variables with a joint distribution and $M$ a readout. Derive @eq-cft-total-covariance without quantum mechanics.
+
+**Solution.** Write $\mathbb E[XY]=\mathbb E_M[\operatorname{Cov}(X,Y|M)+\mathbb E[X|M]\mathbb E[Y|M]]$, then subtract $\mathbb E[X]\mathbb E[Y]$. The quantum statement for commuting measured observables follows from the same conditional-probability identity. Its critical-state use is nevertheless quantum because the unmeasured conditional state contains incompatible observables and entanglement.
+
+### Problem: testing for multifractality
+
+Suppose $\overline{C_r^k}\sim r^{-\tau(k)}$ for $C_r\geq0$. What would $\tau(k)$ be if every trajectory had exactly the same exponent $\alpha_0$? How can Jensen's inequality constrain it?
+
+**Solution.** A narrow distribution with no scale-dependent broadening gives $\tau(k)=k\alpha_0$. For $k>1$, convexity gives $\overline{C_r^k}\geq\overline{C_r}^{k}$, and hence $\tau(k)\leq k\tau(1)$ at leading power. For $0<k<1$ the inequality reverses. A nonlinear $\tau(k)$ signals that different moments are controlled by different parts of a broad distribution; a common fitted exponent for all integer moments can itself reflect saturation rather than a narrow distribution.
+
+### Problem: an outcome record is part of the resource
+
+Measure the middle qubit of the GHZ example in $X$, then erase the outcome. Compute the state of the endpoints and its entropy.
+
+**Solution.** Averaging the two Bell states cancels their off-diagonal terms and gives $(|00\rangle\langle00|+|11\rangle\langle11|)/2$. The joint entropy is $\log2$ and the state is separable. Either endpoint has entropy $\log2$, but that number is no longer an entanglement entropy because the joint state is mixed. Conditional entanglement and entropy of an unconditioned subsystem answer different questions.

@@ -1,0 +1,17 @@
+.quarto/
+outputs/
+work/
+.DS_Store
+*.tex
+*.log
+*.aux
+*.toc
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+/.quarto/
+**/*.quarto_ipynb
+/*.html
+/*.pdf
